@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Ace Editor sample</title>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
+  <div>In common</div>
+	<div id="editor" style="height: 300px">async function func(funcname,arg){
+	const response = await fetch("/func/"+funcname,{method:"POST",body:JSON.stringify(arg)})
+	return response.json()
+	.catch((val)=>{return val})
+}
+	</div>
+  
+	<script>
+    var editor = ace.edit("editor");
+		editor.getSession().setMode("ace/mode/javascript");
+  </script>	
+	<div>Login</div>
+	
+	<div id="editor1" style="height: 200px">v={Username:"Admin",Password:"Makihata23"}
+func("Login",v).then((data)=>{console.log(data)})
+	
+	</div>
+	<script>
+    var editor1 = ace.edit("editor1");
+		editor1.getSession().setMode("ace/mode/javascript");
+  </script>
+
+	<button onclick=eval(editor.getValue()+editor1.getValue())>Exec
+	</button>	
+	<div>GetEquipByTime</div>
+	
+	<div id="editor2" style="height: 200px">//Please Login First
+var StartTime=new Date("2022-08-18 14:58:00")
+var EndTime=new Date("2023-05-13 14:58:00")
+var ResultStr=""
+v={Start:StartTime.toISOString(),End:EndTime.toISOString()}
+func("GetEquipByTime",v).then((data)=>{console.log(data);ResultStr=data
+const arr=ResultStr.split(",")
+var Result=new Array()
+for(i=0;i&lt arr.length;) {
+    Result.push({})
+    v=i/8
+    Result[v].ID=Number(arr[i++])
+    Result[v].UserID=Number(arr[i++])
+    Result[v].EquipID=Number(arr[i++])
+    Result[v].Act=arr[i++]
+    Result[v].T1=new Date(arr[i++])
+    if (arr[i]=="") {
+        Result[v].T2=null
+        i++
+    }else{
+        Result[v].T2=new Date(arr[i++])
+    }
+    if (arr[i]=="") {
+        Result[v].MoveDest=null
+        i++
+    }else{
+        Result[v].MoveDest=arr[i++]
+    }
+    if (arr[i]=="") {
+        Result[v].PlanID=null
+        i++
+    }else{
+        Result[v].PlanID=Number(arr[i++])
+    }
+}
+console.log(Result)
+})
+	
+	</div>
+  
+	<script>
+    var editor2 = ace.edit("editor2");
+		editor2.getSession().setMode("ace/mode/javascript");
+  </script>	
+	
+	<button onclick=eval(editor.getValue()+editor2.getValue())>Exec
+	</button>
+	<div>RegisterEquipInfo</div>
+	
+	<div id="editor3" style="height: 200px">//Please Login First
+let info={}
+info.ID=4
+info.UserID=1
+info.EquipID=7
+info.Act="RESERVE"
+info.T1=new Date().toISOString()
+let t2date=new Date()
+t2date.setDate(t2date.getDate() + 3);
+info.T2=t2date.toISOString()
+info.MoveDest=""
+info.PlanID=0
+func("RegisterEquipInfo",info).then((data)=>{console.log(data)})
+	</div>
+  
+	<script>
+    var editor3 = ace.edit("editor3");
+		editor3.getSession().setMode("ace/mode/javascript");
+  </script>	
+	
+	<button onclick=eval(editor.getValue()+editor3.getValue())>Exec
+</body>
+</html>
