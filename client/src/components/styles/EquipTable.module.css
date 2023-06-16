@@ -1,29 +1,40 @@
+.main {
+	flex: 1;
+}
 .Home {
 	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
 }
 
-.menu {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+.title{
+	font-size: 32px;
+	text-align: center
 }
 
-.main {
-	flex: 1;
+@media screen and (max-width: 480px) {
+	.title{
+		font-size: 16px;
+	}
+	.Typography{
+		font-size: 12px;
+	}
+	.red{
+		font-size: 12px;
+	}
+}
+
+.Typography{
+	color: black; 
+	font-size: 24px;
+	text-align: center;
 }
 
 .red {
 	position: relative;
 	text-align: center;
+	color: black; 
 	font-size: 18px;
-}
-
-.HomeLinkElement {
-	border: none;
-	color: black;
-	text-align: center;
 }
 
 .red:before {

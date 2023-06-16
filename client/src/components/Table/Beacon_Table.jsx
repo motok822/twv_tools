@@ -120,7 +120,7 @@ function Beacon_Table() {
                        (
                         <>
                        <TableCell align='left'>{Equip_State(0,"ほげ")}</TableCell>
-                       <TableCell align='center'></TableCell>
+                       <TableCell align='center'></TableCell>{/* これは横のスペース */}
                         </>
                        ) : (<TableCell align='left'>{Equip_State(0,"ほげ")}</TableCell>)
                   }

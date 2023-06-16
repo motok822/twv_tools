@@ -181,7 +181,7 @@ function Pot_Head_Table() {
                       return (
                       <>
                         <TableCell align='right'>{Equip_State(0,"ほげ")}</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell></TableCell>{/* これは横のスペース */}
                       </>)
                     }else{
                       return (<TableCell align='right'>{Equip_State(0,"ほげ")}</TableCell>)

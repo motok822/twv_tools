@@ -144,7 +144,7 @@ function Work_Saw_Table() {
                       return (
                       <>
                         <TableCell align='left'>{Equip_State(0,"ほげ")}</TableCell>
-                        <TableCell align='left'></TableCell>
+                        <TableCell align='left'></TableCell>{/* これは横のスペース */}
                       </>)
                     }else{
                       return (<TableCell align='left'>{Equip_State(0,"ほげ")}</TableCell>)
