@@ -93,7 +93,8 @@ const rows = [
 
 function Pot_Head_Table() {
   
-  const [isModal, SetIsModal] = useState(false);
+  const [clickCount, SetClickCount] = useState(0);
+  const [selectedElement, SetSelectedElement] = useState(['']);
   const information = useRef(null);
   
   const closeModal = (e) => {
@@ -108,42 +109,86 @@ function Pot_Head_Table() {
       elm = elm.parentNode;
     }
     if(flag == 1) return;
-    SetIsModal(false);
-    document.removeEventListener("click", (e) => {closeModal(e)})
+    SetClickCount(0);
+    SetSelectedElement(['']);
+    document.removeEventListener("click", closeModal)
   }
   
-  function Change_State(info,event){
-    SetIsModal(true);
+  function Change_State(name, place, event, selected) {
+    const info={
+      place: place,
+      color: "",
+      name: name
+    };
+    if (place === 0) {
+      info.place = "貸出中"
+      info.color = "gray"
+    } else if (place === 1) {
+      info.place = "駒場"
+      info.color = "blue"
+    } else if (place === 2) {
+      info.place = "本郷"
+      info.color = "red"
+    } else info.place = ""
+
     information.current = info;
-    document.addEventListener("click", (e)=>{closeModal(e)});
-    event.stopPropagation();
+    console.log(clickCount);
+    if(clickCount == 1){
+      document.addEventListener("click", closeModal);
+      event.stopPropagation();
+    }
+    if(IsElementIn(selectedElement, selected)){
+      SetClickCount((pre) => (pre + 1) % 3); 
+    }else{
+      SetClickCount(1);
+      SetSelectedElement([...selectedElement,selected]);
+    }
   }
 
-  const Equip_State = (place,name) => {
+  const IsElementIn = (array, element) => {
+    let flag = 0;
+    array.map((val,ind) => {
+      if(val == element)flag = 1;
+    })
+    if(flag == 1)return true;
+    else return false;
+  }
+
+  const Equip_State = (place, name, selected) => {
     const info = {
       place: place,
       color: "",
       name: name
     };
-    if(place === 0){
-      info.place = "貸代中"
+    if (place === 0) {
+      info.place = "貸出中"
       info.color = "gray"
-    }else if(place === 1){
+    } else if (place === 1) {
       info.place = "駒場"
       info.color = "blue"
-   }else if(place === 2){
+    } else if (place === 2) {
       info.place = "本郷"
       info.color = "red"
-    }else info.place = ""
-    return (
-      <Box style={{cursor: "default"}} onClick= {(event) => {Change_State(info, event)}}>
-      <Box style={{backgroundColor: `${info.color}`, padding: "4px", color:"white", textAlign: "center"}}>{info.name}</Box>
-      </Box>
-    );
+    } else info.place = ""
+
+    if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態
+      return (
+        <Box style={{ cursor: "default" }}>
+          <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
+        </Box>
+      );
+    } else if(IsElementIn(selectedElement, selected)){                  //クリック一回or二回 選ばれたセルのみ拡張 
+      return (
+        <Box style={{ cursor: "default" }}>
+          <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
+          <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.place}</Box>
+        </Box>
+      );
+    }
   }
     return (
       <>
-      {isModal===true ? <PopUp information={information.current}/> : <></>}
+      {clickCount==2 ? <PopUp information={information.current}/> : <></>}
       <TableContainer component={Paper}>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
               <TableHead>
@@ -179,12 +224,16 @@ function Pot_Head_Table() {
                   row.value.map((val,index) => {
                     if(index == row.value.length-1){
                       return (
-                      <>
-                        <TableCell align='right'>{Equip_State(0,"ほげ")}</TableCell>
-                        <TableCell></TableCell>{/* これは横のスペース */}
-                      </>)
+                        <>
+                          <TableCell align='right' key={row.name+index.toString()} onClick={(e) => {Change_State(1,"ほげ",e,row.name+index.toString())}}>
+                            {Equip_State(1, "ほげ",row.name+index.toString())}
+                            </TableCell>
+                          <TableCell></TableCell>  {/* これは横のスペース */}
+                        </>)
                     }else{
-                      return (<TableCell align='right'>{Equip_State(0,"ほげ")}</TableCell>)
+                      return (<TableCell align='right' key = {row.name+index.toString()} onClick={(e) => {Change_State(1,"ほげ",e,row.name+index.toString())}}>
+                              {Equip_State(0, "ほげ",row.name+index.toString())} 
+                            </TableCell>)
                     }
                   })
                 ))}

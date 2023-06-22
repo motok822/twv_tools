@@ -123,7 +123,6 @@ function Equip_table() {
       <Header></Header>
       <main className={styles.main}>
         <p className={styles.title}>装備管理システム</p>
-        <p className={styles.title}>～見方～</p>
         <p><div width="16px" height="16px"></div></p>
         <div>
           <AppBar position='static' style={{
@@ -144,8 +143,10 @@ function Equip_table() {
             </Toolbar>
           </AppBar>
         </div>
-        <div>
-          {display(selected)}
+        <div className={styles.tableDiv}>
+          <div style={{width: "85%"}}>
+            {display(selected)}
+          </div>
         </div>
       </main >
       <Footer></Footer>

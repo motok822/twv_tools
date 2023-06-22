@@ -12,15 +12,22 @@
 	text-align: center
 }
 
+.tableDiv{
+	display: flex;
+	justify-content: center;
+}
 @media screen and (max-width: 480px) {
 	.title{
 		font-size: 16px;
 	}
 	.Typography{
-		font-size: 12px;
+		font-size: 6px;
 	}
 	.red{
-		font-size: 12px;
+		font-size: 6px;
+	}
+	.tableDiv{
+		zoom: 50%;
 	}
 }
 
@@ -47,6 +54,7 @@
 	transform: translateX(-50%);
 	animation: border_anim 0.1s linear forwards;
 }
+
 
 @keyframes border_anim {
 	0% {
