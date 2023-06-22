@@ -85,7 +85,7 @@ function Tent_Table() {
     };
     information.current = info;
     console.log(clickCount);
-    if(clickCount == 1){
+    if(clickCount == 1 || clickCount == 0){
       document.addEventListener("click", closeModal);
       event.stopPropagation();
     }
