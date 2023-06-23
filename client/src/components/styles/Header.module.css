@@ -7,14 +7,30 @@
     color: black;
     text-align: center;
     font-size: 1rem;
-    margin-left: 20px;
-    margin-right: 20px;
+    margin-left: 0.7rem;
+    margin-right: 0.7rem;
     text-decoration: none;
 }
 
 .HomeLinkElement {
     margin-left: 20px;
     font-size: 1.0rem;
-    margin-right: 20px;
+    margin-right: 0.3rem;
     text-decoration: none;
+    display: flex;
+}
+@media screen and (max-width: 480px) {
+    .ToolBar{
+        margin: 0.5rem 0;
+    }
+}
+.BottonDiv{
+    color: white;
+    border: none;
+    display: inline;
+    align-items: center;
+    text-decoration: none;
+}
+.BottonDiv:hover{
+    opacity: 0.5;
 }

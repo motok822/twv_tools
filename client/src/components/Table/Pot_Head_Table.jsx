@@ -225,14 +225,14 @@ function Pot_Head_Table() {
                     if(index == row.value.length-1){
                       return (
                         <>
-                          <TableCell align='right' key={row.name+index.toString()} onClick={(e) => {Change_State(1,"ほげ",e,row.name+index.toString())}}>
-                            {Equip_State(1, "ほげ",row.name+index.toString())}
+                          <TableCell align='right' key={row.name+index.toString()} onClick={(e) => {Change_State(1,"加茂",e,row.name+index.toString())}}>
+                            {Equip_State(1, "加茂",row.name+index.toString())}
                             </TableCell>
                           <TableCell></TableCell>  {/* これは横のスペース */}
                         </>)
                     }else{
-                      return (<TableCell align='right' key = {row.name+index.toString()} onClick={(e) => {Change_State(1,"ほげ",e,row.name+index.toString())}}>
-                              {Equip_State(0, "ほげ",row.name+index.toString())} 
+                      return (<TableCell align='right' key = {row.name+index.toString()} onClick={(e) => {Change_State(1,"加茂",e,row.name+index.toString())}}>
+                              {Equip_State(0, "加茂",row.name+index.toString())} 
                             </TableCell>)
                     }
                   })
