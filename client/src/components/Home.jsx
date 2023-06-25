@@ -13,13 +13,12 @@ function Home() {
     <div className={styles.Home}>  
     <Header></Header>
         <main className={styles.main}>
+        
             <div className={styles.menu}>
+              <Link to = {'/Table'} className={styles.HomeLinkElement}>E表</Link>
               <Link to = {'/F'} className={styles.HomeLinkElement}>F清算</Link>
               <Link to = {'/Max'} className={styles.HomeLinkElement}>Max計算</Link>
-              <Link to = {'/Table'} className={styles.HomeLinkElement}>E表</Link>
-              <Link to = {'/Return'} className={styles.HomeLinkElement}>返却</Link>
               <Link to = {'/Create'} className={styles.HomeLinkElement}>E表作成</Link>
-              <Link to = {'/Modify'} className={styles.HomeLinkElement}>E表修正</Link>
               <Link to = {'/Other'} className={styles.HomeLinkElement}>その他</Link>
             </div>
         </main>

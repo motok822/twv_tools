@@ -9,6 +9,7 @@ import Other from './components/Other/Other';
 import F_calc from './components/F/F_calc';
 import Create_equip from './components/Create/Create_equip';
 import React from 'react'
+import Select_equip from './components/Create/Select_equip';
 
 
 function App() {
@@ -20,9 +21,8 @@ function App() {
             <Route path={"/F"} element={<F_calc/>} />
             <Route path={"/Max"} element={<Max_calc/>} />
             <Route path={"/Table"} element={<Equip_table/>} />
-            <Route path={"/Return"} element={<Return_equip/>} />
             <Route path={"/Create"} element={<Create_equip/>} />
-            <Route path={"/Modify"} element={<Modify_equip/>} />
+            <Route path={"/Create/SelectEquip"} element={<Select_equip/>}/>
             <Route path={"/Other"} element={<Other/>} />
         </Routes>
       </HashRouter>

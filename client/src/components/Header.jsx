@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import {AppBar, Toolbar, Typography, Button} from "@mui/material";
 import React from 'react'
-import MenuIcon from '@mui/icons-material/Menu';
+import HomeIcon from '@mui/icons-material/Home';
 import styles from './styles/Header.module.css'
 import { Link } from "react-router-dom";
 

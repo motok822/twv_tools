@@ -1,0 +1,32 @@
+.Home {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.main {
+	flex: 1;
+}
+
+.NumberInput{
+    width: 50px;
+    text-align: left;
+}
+.table{
+    border-collapse: collapse;
+    margin-left: 1%;
+}
+.title{
+    margin-left: 1%;
+    font-weight: lighter;
+}
+.NextBotton{
+    padding: 5px 10px;
+    margin-top: 1rem;
+    margin-left: 10rem;
+}
+.LinkElement{
+    border: none;
+    text-decoration: none;
+    color: black;
+}
