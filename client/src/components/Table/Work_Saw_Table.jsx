@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Greek_Character } from './Equip_table';
-import { Box } from '@mui/material';
+import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 
 const rows = [
@@ -37,32 +37,102 @@ const rows = [
   { name: "スノーソーξ", value: [0] },
 ];
 
-const Table_Header = (props) => {
-  return (
-    <>
-      {
-        Greek_Character.map((value, index) => {
-          if (index < props.num) {
-            return (
-              <>
-                <TableCell>{value}</TableCell>
-              </>
-            )
-          }
-        })
-      }
-    </>
-  )
-}
-
-
-function Work_Saw_Table() {
+function Work_Saw_Table(props) {
 
 
   const [clickCount, SetClickCount] = useState(0);
   const [selectedElement, SetSelectedElement] = useState(['']);
   const information = useRef(null);
+  const [Equips, SetEquips] = useState([
+    {
+      name: "L装",
+      type: [
+        { symbol: "α", selected: [0] },
+        { symbol: "β", selected: [0] },
+      ]
+    },
+    {
+      name: "ヘルボ",
+      type: [
+        { symbol: "α", selected: [0] },
+        { symbol: "β", selected: [0] },
+        { symbol: "γ", selected: [0] },
+        { symbol: "δ", selected: [0] },
+      ]
+    },
+    {
+      name: "エキボ",
+      type: [
+        { symbol: "α", selected: [0] },
+        { symbol: "β", selected: [0] },
+        { symbol: "γ", selected: [0] },
+      ]
+    },
+    {
+      name: "藪ノコ",
+      type: [
+        { symbol: "α", selected: [0] },
+        { symbol: "β", selected: [0] },
+        { symbol: "γ", selected: [0] },
+        { symbol: "δ", selected: [0] },
+        { symbol: "ε", selected: [0] },
+        { symbol: "ξ", selected: [0] },
+      ]
+    },
+    {
+      name: "なた",
+      type: [
+        { symbol: "α", selected: [0] },
+        { symbol: "β", selected: [0] },
+      ]
+    },
+    {
+      name: "スノーソー",
+      type: [
+        { symbol: "α", selected: [0] },
+        { symbol: "β", selected: [0] },
+        { symbol: "γ", selected: [0] },
+        { symbol: "δ", selected: [0] },
+        { symbol: "ε", selected: [0] },
+        { symbol: "ξ", selected: [0] },
+      ]
+    },
+  ])
 
+  const Table_Header = () => {
+    return (
+      <>
+        {Equips.map((val, ind) => {
+          return (
+            <>
+              {
+                val.type.map((value, index) => {
+
+                  return (<TableCell align='left' colSpan={value.selected.length}>{value.symbol}
+                    {
+                      props.CreateOption == true ?
+                        <Switch size="small" onChange={(e) => {
+                          const array = new Array(value.selected.length)
+                          for (let i = 0; i < value.selected.length; i++) {
+                            array[i] = e.target.checked
+                          }
+                          SetEquips((prev) => {
+                            const arr = [...prev]
+                            arr[ind].type[index].selected = array
+                            return arr
+                          })
+                        }} /> : ""
+                    }
+                  </TableCell>)
+                })
+              }
+              <TableCell></TableCell>
+            </>)
+        })
+        }
+      </>
+    )
+  }
   const closeModal = (e) => {
     let elm = e.target;
     let flag = 0;
@@ -160,17 +230,7 @@ function Work_Saw_Table() {
             <TableRow>
               <TableCell>日</TableCell>
               <TableCell></TableCell>
-              {Table_Header({ name: "L装", num: 2 })}
-              <TableCell></TableCell>
-              {Table_Header({ name: "ヘルボ", num: 4 })}
-              <TableCell></TableCell>
-              {Table_Header({ name: "エキボ", num: 3 })}
-              <TableCell></TableCell>
-              {Table_Header({ name: "薮ノコ", num: 6 })}
-              <TableCell></TableCell>
-              {Table_Header({ name: "なた", num: 2 })}
-              <TableCell></TableCell>
-              {Table_Header({ name: "スノーソー", num: 6 })}
+              {Table_Header()}
             </TableRow>
           </TableHead>
           <TableBody>

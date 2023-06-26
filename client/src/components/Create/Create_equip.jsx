@@ -13,7 +13,7 @@ function Create_equip() {
   const [SpareFood, SetSpareFood] = useState(0)
   const [Water, SetWater] = useState(1)
   const [Rice, SetRice] = useState(1)
-  const [ClimbingType, SetClimbingType] = useState("")
+  const [ClimbingType, SetClimbingType] = useState("夏山一般装")
   const [ClimbingId, SetClimbingId] = useState(0)
   const [ClimbingName, SetClimbingName] = useState("")
   const [ClimbingYear, SetClimbingYear] = useState(year)
@@ -59,11 +59,11 @@ function Create_equip() {
               <tr>
                 <td>山行企画の番号</td>
                 <td>twv<input type='number' value={year} className={styles.NumberInput} onClick={(e) => { SetClimbingYear(e.target.value) }}></input>-
-                  <input type="number" className={styles.NumberInput} onClick={(e) => { SetClimbingId(e.target.value) }}></input></td>
+                  <input type="number" className={styles.NumberInput} onChange={(e) => { SetClimbingId(e.target.value) }}></input></td>
               </tr>
               <tr>
                 <td>企画名</td>
-                <input type='text' onClick={(e) => { SetClimbingName(e.target.value) }}></input>
+                <input type='text' onChange={(e) => { SetClimbingName(e.target.value) }}></input>
               </tr>
               <tr>
                 <td>山行形態</td>
@@ -108,7 +108,7 @@ function Create_equip() {
               </tr>
             </tbody>
           </table>
-          <button className={styles.NextBotton} onClick={() => {JumpToNext()}}>
+          <button className={styles.NextBotton} onClick={() => {JumpToNext()}}  >
             次へ
           </button>
         </div>

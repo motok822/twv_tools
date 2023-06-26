@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Box } from '@mui/material';
+import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 
 const rows = [
@@ -32,26 +32,73 @@ const rows = [
   {name: "に", value: [0]},
 ];
 const Beacon_Character = ["A","B","E","F","G","H","M","O","Q","S","X","Y","Z","新arva","甲","丙","い","ろ","に"]
-const Table_Header = (props) => {
-    return(
-      <>
-        {
-          Beacon_Character.map((value, index) => {
-            return(
-              <TableCell align="left">{value}</TableCell>
-            )
-          })
-        }
-      </>
-    )
-}
 
 
-function Beacon_Table() {
+function Beacon_Table(props) {
   
   const [clickCount, SetClickCount] = useState(0);
   const [selectedElement, SetSelectedElement] = useState(['']);
   const information = useRef(null);
+
+  const [Equips, SetEquips] = useState([
+    {
+      name: "ビーコン",
+      type: [
+        { symbol: "A", selected: [0] },
+        { symbol: "B", selected: [0] },
+        { symbol: "E", selected: [0] },
+        { symbol: "F", selected: [0] },
+        { symbol: "G", selected: [0] },
+        { symbol: "H", selected: [0] },
+        { symbol: "M", selected: [0] },
+        { symbol: "O", selected: [0] },
+        { symbol: "Q", selected: [0] },
+        { symbol: "S", selected: [0] },
+        { symbol: "X", selected: [0] },
+        { symbol: "Y", selected: [0] },
+        { symbol: "Z", selected: [0] },
+        { symbol: "新arva", selected: [0] },
+        { symbol: "甲", selected: [0] },
+        { symbol: "乙", selected: [0] },
+        { symbol: "い", selected: [0] },
+        { symbol: "ろ", selected: [0] },
+        { symbol: "に", selected: [0] },
+      ]
+    }
+  ])
+  const Table_Header = () => {
+    return(
+      <>
+        {Equips.map((val, ind) => {
+          return (
+            <>
+              {
+                val.type.map((value, index) => {
+
+                  return (<TableCell align='left' colSpan={value.selected.length}>{value.symbol}
+                    {
+                      props.CreateOption == true ?
+                        <Switch size="small" onChange={(e) => {
+                          const array = new Array(value.selected.length)
+                          for (let i = 0; i < value.selected.length; i++) {
+                            array[i] = e.target.checked
+                          }
+                          SetEquips((prev) => {
+                            const arr = [...prev]
+                            arr[ind].type[index].selected = array
+                            return arr
+                          })
+                        }} /> : ""
+                    }
+                  </TableCell>)
+                })
+              }
+            </>)
+        })
+        }
+      </>
+    )
+}
 
   const closeModal = (e) => {
     let elm = e.target;
@@ -144,7 +191,7 @@ function Beacon_Table() {
               <TableRow>
                 <TableCell>日</TableCell>
                 <TableCell></TableCell>
-                {Table_Header({name:"ビーコン"})}
+                {Table_Header()}
               </TableRow>
             </TableHead>
             <TableBody>

@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Equip_State, Greek_Character, StyledContent, StyledOverlay, isModal } from './Equip_table';
-import { Box } from '@mui/material';
+import { Box, Switch } from '@mui/material';
 import styled from '@emotion/styled';
 import PopUp from './PopUp';
 
@@ -27,39 +27,142 @@ const rows = [
   { name: "12天α", value: [0, 0, 0] },
   { name: "その他α", value: [0, 0, 0] }];
 
-const Table_Header = (props) => {
-  return (
-    <>
-      {Greek_Character.map((value, index) => {
-        if (index < props.num) return (<TableCell align='left' colSpan={4}>{value}</TableCell>)
-      })}
-    </>
-  )
-}
-
-const Table_Header_Element = (num) => {
-  return (
-    <>
-      {Greek_Character.map((value, index) => {
-        if (index < num) return (
-          <>
-            <TableCell align='right'>本体</TableCell>
-            <TableCell align='right'>ポール</TableCell>
-            <TableCell align='right'>フライ</TableCell>
-            <TableCell></TableCell>
-          </>
-        )
-      })}
-    </>
-  )
-}
 
 
+function Tent_Table(props) {
 
-function Tent_Table() {
   const information = useRef(null);
   const [clickCount, SetClickCount] = useState(0);
   const [selectedElement, SetSelectedElement] = useState(['']);
+  const [Equips, SetEquips] = useState([
+    {
+      name: "7天",
+      type: [
+        { symbol: "α", selected: [0, 0, 0] },
+        { symbol: "β", selected: [0, 0, 0] },
+        { symbol: "γ", selected: [0, 0, 0] },
+        { symbol: "δ", selected: [0, 0, 0] },
+      ]
+    },
+    {
+      name: "45天",
+      type: [
+        { symbol: "α", selected: [0, 0, 0] },
+        { symbol: "β", selected: [0, 0, 0] },
+        { symbol: "γ", selected: [0, 0, 0] },
+        { symbol: "δ", selected: [0, 0, 0] },
+        { symbol: "ε", selected: [0, 0, 0] },
+      ]
+    },
+    {
+      name: "6天",
+      type: [
+        { symbol: "α", selected: [0, 0, 0] },
+        { symbol: "β", selected: [0, 0, 0] },
+      ]
+    },
+    {
+      name: "12天",
+      type: [
+        { symbol: "α", selected: [0, 0, 0] },
+      ]
+    },
+    {
+      name: "その他",
+      type: [
+        { symbol: "α", selected: [0, 0, 0] },
+      ]
+    }
+
+  ]
+  )
+
+  const handleToggleChange = (num, ind, index, e) => {
+    SetEquips((prev) => {
+      const arr = [...prev]
+      arr[ind].type[index].selected[num] = e.target.checked
+      return arr
+    })
+  }
+  const Table_Header = () => {
+    return (
+      <>
+        {
+          Equips.map((val, ind) => {
+            return (
+              <>
+                {val.type.map((value, index) => {
+                  return (<TableCell align='left' colSpan={4}>{value.symbol}
+                    {
+                      props.CreateOption == true ?
+                        <Switch onChange={(e) => {
+                          const array = new Array(value.selected.length)
+                          for (let i = 0; i < value.selected.length; i++) {
+                            array[i] = e.target.checked
+                          }
+                          SetEquips((prev) => {
+                            const arr = [...prev]
+                            arr[ind].type[index].selected = array
+                            return arr
+                          })
+                        }} /> : ""
+                    }
+                  </TableCell>)
+                })
+                }
+              </>
+            )
+          })
+        }
+      </>
+    )
+  }
+  const Table_Header_Element = () => {
+    return (
+      <>
+        {
+          Equips.map((val, ind) => {
+            return (
+              <>
+                {val.type.map((value, index) => {
+                  return (
+                    <>
+                      <TableCell align='right'>
+                        本体
+                        {
+                          props.CreateOption == true ?
+                            <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
+                            : ""
+                        }
+                      </TableCell>
+                      <TableCell align='right'>
+                        ポール
+                        {
+                          props.CreateOption == true ?
+                            <Switch size="small" checked={value.selected[1]} onChange={(e) => handleToggleChange(1, ind, index, e)} />
+                            : ""
+                        }
+                      </TableCell>
+                      <TableCell align='right'>
+                        フライ
+                        {
+                          props.CreateOption == true ? 
+                            <Switch size="small" checked={value.selected[2]} onChange={(e) => handleToggleChange(2, ind, index, e)} />
+                            : ""
+                        }
+                      </TableCell>
+                      <TableCell></TableCell>
+                    </>
+                  )
+                })
+                }
+              </>
+            )
+          })
+        }
+      </>
+    )
+  }
 
   const closeModal = (e) => {
     let elm = e.target;
@@ -78,31 +181,31 @@ function Tent_Table() {
   }
 
   function Change_State(name, place, event, selected) {
-    const info={
+    const info = {
       place: place,
       color: "",
       name: name
     };
     information.current = info;
     console.log(clickCount);
-    if(clickCount == 1 || clickCount == 0){
+    if (clickCount == 1 || clickCount == 0) {
       document.addEventListener("click", closeModal);
       event.stopPropagation();
     }
-    if(IsElementIn(selectedElement, selected)){
-      SetClickCount((pre) => (pre + 1) % 3); 
-    }else{
+    if (IsElementIn(selectedElement, selected)) {
+      SetClickCount((pre) => (pre + 1) % 3);
+    } else {
       SetClickCount(1);
-      SetSelectedElement([...selectedElement,selected]);
+      SetSelectedElement([...selectedElement, selected]);
     }
   }
 
   const IsElementIn = (array, element) => {
     let flag = 0;
-    array.map((val,ind) => {
-      if(val == element)flag = 1;
+    array.map((val, ind) => {
+      if (val == element) flag = 1;
     })
-    if(flag == 1)return true;
+    if (flag == 1) return true;
     else return false;
   }
 
@@ -129,7 +232,7 @@ function Tent_Table() {
           <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
         </Box>
       );
-    } else if(IsElementIn(selectedElement, selected)){                  //クリック一回or二回 選ばれたセルのみ拡張 
+    } else if (IsElementIn(selectedElement, selected)) {                  //クリック一回or二回 選ばれたセルのみ拡張 
       return (
         <Box style={{ cursor: "default" }}>
           <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
@@ -155,20 +258,12 @@ function Tent_Table() {
             <TableRow>
               <TableCell align='center' colSpan={1} >日</TableCell>
               <TableCell></TableCell>
-              {Table_Header({ num: 4 })}
-              {Table_Header({ num: 5 })}
-              {Table_Header({ num: 2 })}
-              {Table_Header({ num: 1 })}
-              {Table_Header({ num: 1 })}
+              {Table_Header()}
             </TableRow>
             <TableRow>
               <TableCell align='center'></TableCell>
               <TableCell></TableCell>
-              {Table_Header_Element(4)}
-              {Table_Header_Element(5)}
-              {Table_Header_Element(2)}
-              {Table_Header_Element(1)}
-              {Table_Header_Element(1)}
+              {Table_Header_Element()}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -178,15 +273,15 @@ function Tent_Table() {
                   if (index == row.value.length - 1) {
                     return (
                       <>
-                        <TableCell align='right' key={row.name+index.toString()} onClick={(e) => {Change_State(1,"加茂",e,row.name+index.toString())}}>
-                          {Equip_State(1, "加茂",row.name+index.toString())}
-                          </TableCell>
+                        <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>
+                          {Equip_State(1, "加茂", row.name + index.toString())}
+                        </TableCell>
                         <TableCell></TableCell>  {/* これは横のスペース */}
                       </>)
                   } else {
-                    return (<TableCell align='right' key = {row.name+index.toString()} onClick={(e) => {Change_State(1,"加茂",e,row.name+index.toString())}}>
-                              {Equip_State(0, "加茂",row.name+index.toString())} 
-                            </TableCell>)
+                    return (<TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>
+                      {Equip_State(0, "加茂", row.name + index.toString())}
+                    </TableCell>)
                   }
                 })
               ))}
@@ -194,7 +289,6 @@ function Tent_Table() {
           </TableBody>
         </Table>
       </TableContainer>
-
     </>
   )
 }

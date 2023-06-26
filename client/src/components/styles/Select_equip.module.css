@@ -1,0 +1,30 @@
+.main {
+    flex: 1;
+}
+
+.Home {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.table {
+    border-collapse: collapse;
+    margin-left: 1%;
+    margin-top: 1rem;
+}
+
+
+.TableTitle{
+    font-size: 24px;
+    padding: 10px 10px;
+}
+.TableContent{
+    font-size: 24px;
+    padding: 10px 10px;
+}
+.Text{
+    font-size: 2rem;
+    font-weight: normal;
+    margin-left: 2rem;
+}
