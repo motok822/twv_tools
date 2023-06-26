@@ -138,14 +138,14 @@ function Pot_Head_Table(props) {
                         <TableCell align='center'>大
                           {
                             props.CreateOption == true ?
-                              <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
+                              <Switch size="small" checked={value.selected[1]} onChange={(e) => handleToggleChange(1, ind, index, e)} />
                               : ""
                           }
                         </TableCell>
                         <TableCell align='center'>特大
                           {
                             props.CreateOption == true ?
-                              <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
+                              <Switch size="small" checked={value.selected[2]} onChange={(e) => handleToggleChange(2, ind, index, e)} />
                               : ""
                           }
                         </TableCell>
@@ -165,7 +165,7 @@ function Pot_Head_Table(props) {
                         <TableCell align='center'>大
                           {
                             props.CreateOption == true ?
-                              <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
+                              <Switch size="small" checked={value.selected[1]} onChange={(e) => handleToggleChange(1, ind, index, e)} />
                               : ""
                           }
                         </TableCell>
