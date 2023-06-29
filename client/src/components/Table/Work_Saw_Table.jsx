@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { Greek_Character } from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
+import { work_sawState } from './Equip_table_list';
 
 const rows = [
   { name: "日", value: [0] },
@@ -43,7 +44,8 @@ function Work_Saw_Table(props) {
   const [clickCount, SetClickCount] = useState(0);
   const [selectedElement, SetSelectedElement] = useState(['']);
   const information = useRef(null);
-  const [Equips, SetEquips] = useState([
+  const work_saw_state = useContext(work_sawState)
+  const initial_Equips = [
     {
       name: "L装",
       type: [
@@ -97,7 +99,16 @@ function Work_Saw_Table(props) {
         { symbol: "ξ", selected: [0] },
       ]
     },
-  ])
+  ]
+  const [Equips, SetEquips] = useState(work_saw_state == undefined ? initial_Equips : work_saw_state)
+
+  const handleToggleChange = (num, ind, index, e) => {
+    SetEquips((prev) => {
+      const arr = [...prev]
+      arr[ind].type[index].selected[num] = e.target.checked
+      return arr
+    })
+  }
 
   const Table_Header = () => {
     return (
@@ -109,19 +120,11 @@ function Work_Saw_Table(props) {
                 val.type.map((value, index) => {
 
                   return (<TableCell align='left' colSpan={value.selected.length}>{value.symbol}
+
                     {
                       props.CreateOption == true ?
-                        <Switch size="small" onChange={(e) => {
-                          const array = new Array(value.selected.length)
-                          for (let i = 0; i < value.selected.length; i++) {
-                            array[i] = e.target.checked
-                          }
-                          SetEquips((prev) => {
-                            const arr = [...prev]
-                            arr[ind].type[index].selected = array
-                            return arr
-                          })
-                        }} /> : ""
+                        <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
+                        : ""
                     }
                   </TableCell>)
                 })
@@ -161,21 +164,21 @@ function Work_Saw_Table(props) {
       document.addEventListener("click", closeModal);
       event.stopPropagation();
     }
-    if(IsElementIn(selectedElement, selected)){
-      SetClickCount((pre) => (pre + 1) % 3); 
-    }else{
+    if (IsElementIn(selectedElement, selected)) {
+      SetClickCount((pre) => (pre + 1) % 3);
+    } else {
       SetClickCount(1);
-      SetSelectedElement([...selectedElement,selected]);
+      SetSelectedElement([...selectedElement, selected]);
     }
   }
 
-  
+
   const IsElementIn = (array, element) => {
     let flag = 0;
-    array.map((val,ind) => {
-      if(val == element)flag = 1;
+    array.map((val, ind) => {
+      if (val == element) flag = 1;
     })
-    if(flag == 1)return true;
+    if (flag == 1) return true;
     else return false;
   }
 

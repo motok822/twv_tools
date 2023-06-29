@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import Footer from '../Footer'
 import Header from '../Header'
 import styles from '../styles/EquipTable.module.css'
@@ -8,6 +8,12 @@ import Work_Saw_Table from './Work_Saw_Table';
 import Beacon_Table from './Beacon_Table';
 import { AppBar, Box, Button, Toolbar, Typography, css } from '@mui/material';
 import styled from '@emotion/styled';
+import { EquipsContext } from '../Create/Select_equip';
+
+export const tentState = createContext()
+export const pot_headState = createContext()
+export const work_sawState = createContext()
+export const beaconState = createContext()
 
 function Equip_table_list(props) {
     const [selected, SetSelected] = useState(1);
@@ -23,7 +29,7 @@ function Equip_table_list(props) {
     active2Ref.current = active2;
     active3Ref.current = active3;
     active4Ref.current = active4;
-
+    const EquipsState = useContext(EquipsContext)
 
     const RLfunction = useCallback((event) => {
         const keyCode = event.keyCode;
@@ -98,19 +104,52 @@ function Equip_table_list(props) {
         }
     }
     const display = (val) => {
-        switch (val) {
-            case 0:
-                return;
-            case 1:
-                return (<Tent_Table CreateOption={props.CreateOption}></Tent_Table>);
-            case 2:
-                return (<Pot_Head_Table CreateOption={props.CreateOption}></Pot_Head_Table>);
-            case 3:
-                return (<Work_Saw_Table CreateOption={props.CreateOption}></Work_Saw_Table>);
-            case 4:
-                return (<Beacon_Table CreateOption={props.CreateOption}></Beacon_Table>);
-            default:
-                return;
+        if (props.CreateOption == 1) {   //E表作成で呼び出すとき
+            switch (val) {
+                case 0:
+                    return;
+                case 1:
+                    return (
+                        <tentState.Provider value={EquipsState.tent}>
+                            <Tent_Table CreateOption={props.CreateOption}></Tent_Table>
+                        </tentState.Provider>
+                    );
+                case 2:
+                    return (
+                        <pot_headState.Provider value={EquipsState.pot_head}>
+                            <Pot_Head_Table CreateOption={props.CreateOption}></Pot_Head_Table>
+                        </pot_headState.Provider>
+                    );
+                case 3:
+                    return (
+                        <work_sawState.Provider value={EquipsState.work_saw}>
+                            <Work_Saw_Table CreateOption={props.CreateOption}></Work_Saw_Table>
+                        </work_sawState.Provider>
+                    );
+                case 4:
+                    return (
+                        <beaconState.Provider value={EquipsState.beacon}>
+                            <Beacon_Table CreateOption={props.CreateOption}></Beacon_Table>
+                        </beaconState.Provider>
+                    );
+                default:
+                    return;
+            }
+        } else {
+            switch (val) {          //単にE表として呼び出すとき
+                case 0:
+                    return;
+                case 1:
+                    return (<Tent_Table></Tent_Table>);
+                case 2:
+                    return (<Pot_Head_Table></Pot_Head_Table>);
+                case 3:
+                    return (<Work_Saw_Table></Work_Saw_Table>);
+                case 4:
+                    return (<Beacon_Table></Beacon_Table>);
+                default:
+                    return;
+            }
         }
     };
     return (

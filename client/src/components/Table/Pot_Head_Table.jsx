@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { Greek_Character, StyledContent, StyledOverlay } from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
+import { pot_headState } from './Equip_table_list';
 
 const Head_Character = ["α", "β", "γ", "δ", "ε", "η", "θ", "λ", "μ", "π", "ρ", "σ", "φ", "ω"];
 
@@ -42,7 +43,8 @@ function Pot_Head_Table(props) {
   const [clickCount, SetClickCount] = useState(0);
   const [selectedElement, SetSelectedElement] = useState(['']);
   const information = useRef(null);
-  const [Equips, SetEquips] = useState([
+  const pot_head_state = useContext(pot_headState)
+  const initial_Equips = [
     {
       name: "コッヘル",
       type: [
@@ -74,7 +76,9 @@ function Pot_Head_Table(props) {
         { symbol: "ω", selected: [0] },
       ]
     }
-  ])
+  ]
+  console.log(pot_head_state)
+  const [Equips, SetEquips] = useState(pot_head_state == undefined ? initial_Equips : pot_head_state)
 
   const handleToggleChange = (num, ind, index, e) => {
     SetEquips((prev) => {
@@ -94,7 +98,7 @@ function Pot_Head_Table(props) {
 
                   return (<TableCell align='left' colSpan={value.selected.length + 1}>{value.symbol}
                     {
-                      props.CreateOption == true ?
+                      props.CreateOption == true && value.selected.length > 1?
                         <Switch size="small" onChange={(e) => {
                           const array = new Array(value.selected.length)
                           for (let i = 0; i < value.selected.length; i++) {
@@ -180,7 +184,7 @@ function Pot_Head_Table(props) {
                             props.CreateOption == true ?
                               <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
                               : ""
-                          } 
+                          }
                         </TableCell>
                         <TableCell></TableCell>
                       </>
@@ -189,7 +193,13 @@ function Pot_Head_Table(props) {
                 } else if (val.name == "ヘッド") {
                   return (
                     <>
-                      <TableCell></TableCell>
+                      <TableCell>
+                      {
+                        props.CreateOption == true ?
+                          <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
+                          : ""
+                      }
+                      </TableCell>
                       <TableCell></TableCell>
                     </>
                   )

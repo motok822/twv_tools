@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,39 +8,40 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
+import { beaconState } from './Equip_table_list';
 
 const rows = [
-  {name: "日", value: [0]},
-  {name: "A", value: [0]},
-  {name: "B", value: [0]},
-  {name: "E", value: [0]},
-  {name: "F", value: [0]},
-  {name: "G", value: [0]},
-  {name: "H", value: [0]},
-  {name: "M", value: [0]},
-  {name: "O", value: [0]},
-  {name: "Q", value: [0]},
-  {name: "S", value: [0]},
-  {name: "X", value: [0]},
-  {name: "Y", value: [0]},
-  {name: "Z", value: [0]},
-  {name: "新arva", value: [0]},
-  {name: "甲", value: [0]},
-  {name: "丙", value: [0]},
-  {name: "い", value: [0]},
-  {name: "ろ", value: [0]},
-  {name: "に", value: [0]},
+  { name: "日", value: [0] },
+  { name: "A", value: [0] },
+  { name: "B", value: [0] },
+  { name: "E", value: [0] },
+  { name: "F", value: [0] },
+  { name: "G", value: [0] },
+  { name: "H", value: [0] },
+  { name: "M", value: [0] },
+  { name: "O", value: [0] },
+  { name: "Q", value: [0] },
+  { name: "S", value: [0] },
+  { name: "X", value: [0] },
+  { name: "Y", value: [0] },
+  { name: "Z", value: [0] },
+  { name: "新arva", value: [0] },
+  { name: "甲", value: [0] },
+  { name: "丙", value: [0] },
+  { name: "い", value: [0] },
+  { name: "ろ", value: [0] },
+  { name: "に", value: [0] },
 ];
-const Beacon_Character = ["A","B","E","F","G","H","M","O","Q","S","X","Y","Z","新arva","甲","丙","い","ろ","に"]
+const Beacon_Character = ["A", "B", "E", "F", "G", "H", "M", "O", "Q", "S", "X", "Y", "Z", "新arva", "甲", "丙", "い", "ろ", "に"]
 
 
 function Beacon_Table(props) {
-  
+
   const [clickCount, SetClickCount] = useState(0);
   const [selectedElement, SetSelectedElement] = useState(['']);
   const information = useRef(null);
-
-  const [Equips, SetEquips] = useState([
+  const beacon_state = useContext(beaconState)
+  const initial_Equips = [
     {
       name: "ビーコン",
       type: [
@@ -65,30 +66,30 @@ function Beacon_Table(props) {
         { symbol: "に", selected: [0] },
       ]
     }
-  ])
+  ]
+  const [Equips, SetEquips] = useState(beacon_state == undefined ? initial_Equips : beacon_state)
+
+  const handleToggleChange = (num, ind, index, e) => {
+    SetEquips((prev) => {
+      const arr = [...prev]
+      arr[ind].type[index].selected[num] = e.target.checked
+      return arr
+    })
+  }
+
   const Table_Header = () => {
-    return(
+    return (
       <>
         {Equips.map((val, ind) => {
           return (
             <>
               {
                 val.type.map((value, index) => {
-
                   return (<TableCell align='left' colSpan={value.selected.length}>{value.symbol}
                     {
                       props.CreateOption == true ?
-                        <Switch size="small" onChange={(e) => {
-                          const array = new Array(value.selected.length)
-                          for (let i = 0; i < value.selected.length; i++) {
-                            array[i] = e.target.checked
-                          }
-                          SetEquips((prev) => {
-                            const arr = [...prev]
-                            arr[ind].type[index].selected = array
-                            return arr
-                          })
-                        }} /> : ""
+                        <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
+                        : ""
                     }
                   </TableCell>)
                 })
@@ -98,50 +99,50 @@ function Beacon_Table(props) {
         }
       </>
     )
-}
+  }
 
   const closeModal = (e) => {
     let elm = e.target;
     let flag = 0;
-    while(elm != null){
-      if(elm.className != undefined && elm.className.startsWith("PopUp")) {
-        flag=1;
+    while (elm != null) {
+      if (elm.className != undefined && elm.className.startsWith("PopUp")) {
+        flag = 1;
         break;
       }
       elm = elm.parentNode;
     }
-    if(flag == 1) return;
+    if (flag == 1) return;
     SetClickCount(0);
     SetSelectedElement(['']);
     document.removeEventListener("click", closeModal)
   }
 
   function Change_State(name, place, event, selected) {
-    const info={
+    const info = {
       place: place,
       color: "",
       name: name
     };
     information.current = info;
     console.log(clickCount);
-    if(clickCount == 1 || clickCount == 0){
+    if (clickCount == 1 || clickCount == 0) {
       document.addEventListener("click", closeModal);
       event.stopPropagation();
     }
-    if(IsElementIn(selectedElement, selected)){
-      SetClickCount((pre) => (pre + 1) % 3); 
-    }else{
+    if (IsElementIn(selectedElement, selected)) {
+      SetClickCount((pre) => (pre + 1) % 3);
+    } else {
       SetClickCount(1);
-      SetSelectedElement([...selectedElement,selected]);
+      SetSelectedElement([...selectedElement, selected]);
     }
   }
-  
+
   const IsElementIn = (array, element) => {
     let flag = 0;
-    array.map((val,ind) => {
-      if(val == element)flag = 1;
+    array.map((val, ind) => {
+      if (val == element) flag = 1;
     })
-    if(flag == 1)return true;
+    if (flag == 1) return true;
     else return false;
   }
 
@@ -168,7 +169,7 @@ function Beacon_Table(props) {
           <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
         </Box>
       );
-    } else if(IsElementIn(selectedElement, selected)){                  //クリック一回or二回 選ばれたセルのみ拡張 
+    } else if (IsElementIn(selectedElement, selected)) {                  //クリック一回or二回 選ばれたセルのみ拡張 
       return (
         <Box style={{ cursor: "default" }}>
           <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
@@ -179,41 +180,41 @@ function Beacon_Table(props) {
   }
 
   return (
-  <>
-  {clickCount == 2 ? <PopUp information = {information.current}/> : <></>}
-    <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell colSpan={2}></TableCell>
-                <TableCell colSpan={20}>ビーコン</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>日</TableCell>
-                <TableCell></TableCell>
-                {Table_Header()}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                  row.value.map((val,index) => {
-                      return row.name=="日" ?
-                       (
-                        <>
-                       <TableCell align='right' key={row.name+index.toString()} onClick={(e) => {Change_State(1,"加茂",e,row.name+index.toString())}}>
-                          {Equip_State(1, "加茂",row.name+index.toString())}
-                          </TableCell>
-                        <TableCell></TableCell>  {/* これは横のスペース */}
-                        </>
-                       ) : (<TableCell align='right' key = {row.name+index.toString()} onClick={(e) => {Change_State(1,"加茂",e,row.name+index.toString())}}>
-                       {Equip_State(0, "加茂",row.name+index.toString())} 
-                     </TableCell>)
-                  }
-                )))}
-            </TableBody>
+    <>
+      {clickCount == 2 ? <PopUp information={information.current} /> : <></>}
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell colSpan={2}></TableCell>
+              <TableCell colSpan={20}>ビーコン</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell>日</TableCell>
+              <TableCell></TableCell>
+              {Table_Header()}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              row.value.map((val, index) => {
+                return row.name == "日" ?
+                  (
+                    <>
+                      <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>
+                        {Equip_State(1, "加茂", row.name + index.toString())}
+                      </TableCell>
+                      <TableCell></TableCell>  {/* これは横のスペース */}
+                    </>
+                  ) : (<TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>
+                    {Equip_State(0, "加茂", row.name + index.toString())}
+                  </TableCell>)
+              }
+              )))}
+          </TableBody>
         </Table>
-    </TableContainer>
-  </>
+      </TableContainer>
+    </>
   )
 }
 

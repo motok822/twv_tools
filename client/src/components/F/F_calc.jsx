@@ -10,7 +10,7 @@ const PayNoMoney = 0;
 function F_calc() {
   const [PayMoneyList, SetPayMoneyList] = useState([]);
   const [PayNoMoneyList, SetPayNoMoneyList] = useState([]);
-  const [CalcRes, SetCalcRes] = useState([[{ name: "" }]])
+  const [CalcRes, SetCalcRes] = useState([[{ name: "", num: 0 }]])
 
 
   const PayMoneyForm = (num, state) => {
@@ -91,7 +91,9 @@ function F_calc() {
     })
     console.log("result")
     console.log(res);
-    SetCalcRes(res);
+    if(res.length != 0){
+      SetCalcRes(res);
+    }
   }
 
   return (
@@ -99,15 +101,15 @@ function F_calc() {
       <Header></Header>
       <main className={styles.main}>
         <h1 className={styles.text}>F清算計算ツール</h1>
-        <p className={styles.text}> お金を負担する人の数    <input type='number' onChange={(e) => { PayMoneyForm(e.target.value, PayMoney) }}></input></p>
-        <p className={styles.text}>お金を負担しない人の数    <input type='number' onChange={(e) => { PayMoneyForm(e.target.value, PayNoMoney) }}></input></p>
+        <p className={styles.text}> お金を負担する人の数    <input type='number' onChange={(e) => { if(Number(e.target.value) != NaN)PayMoneyForm(e.target.value, PayMoney) }}></input></p>
+        <p className={styles.text}>お金を負担しない人の数    <input type='number' onChange={(e) => { if(Number(e.target.value) != NaN)PayMoneyForm(e.target.value, PayNoMoney) }}></input></p>
         <p className={styles.text}>お金を負担する人の名前               金額</p>
         {
           PayMoneyList.map((val, index) => {
             return (
               <p className={styles.text}>
                 <input type='text' placeholder='名前' onChange={(e) => { val.name = e.target.value }}></input>
-                <input type='number' placeholder='金額' onChange={(e) => { val.num = Number(e.target.value) }}></input>
+                <input type='number' placeholder='金額' onChange={(e) => { if(Number(e.target.value) != NaN)val.num = Number(e.target.value) }}></input>
               </p>
             )
           })
@@ -118,7 +120,7 @@ function F_calc() {
             return (
               <p className={styles.text}>
                 <input type='text' placeholder='名前' onChange={(e) => { val.name = e.target.value }}></input>
-                <input type='number' placeholder='金額' onChange={(e) => { val.num = Number(e.target.value) }}></input>
+                <input type='number' placeholder='金額' onChange={(e) => { if(Number(e.target.value) != NaN)val.num = Number(e.target.value) }}></input>
               </p>
             )
           })

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,6 +10,7 @@ import { Equip_State, Greek_Character, StyledContent, StyledOverlay, isModal } f
 import { Box, Switch } from '@mui/material';
 import styled from '@emotion/styled';
 import PopUp from './PopUp';
+import { tentState } from './Equip_table_list';
 
 const rows = [
   { name: "日", value: [0] },
@@ -28,13 +29,14 @@ const rows = [
   { name: "その他α", value: [0, 0, 0] }];
 
 
-
 function Tent_Table(props) {
 
   const information = useRef(null);
   const [clickCount, SetClickCount] = useState(0);
   const [selectedElement, SetSelectedElement] = useState(['']);
-  const [Equips, SetEquips] = useState([
+  const tent_state = useContext(tentState)
+  console.log(tent_state)
+  const initial_Equips = [
     {
       name: "7天",
       type: [
@@ -75,7 +77,7 @@ function Tent_Table(props) {
     }
 
   ]
-  )
+  const [Equips, SetEquips] = useState(tent_state == undefined ? initial_Equips : tent_state)
 
   const handleToggleChange = (num, ind, index, e) => {
     SetEquips((prev) => {
@@ -94,7 +96,7 @@ function Tent_Table(props) {
                 {val.type.map((value, index) => {
                   return (<TableCell align='left' colSpan={4}>{value.symbol}
                     {
-                      props.CreateOption == true ?
+                      props.CreateOption == true && value.selected.length > 1?
                         <Switch onChange={(e) => {
                           const array = new Array(value.selected.length)
                           for (let i = 0; i < value.selected.length; i++) {
