@@ -35,7 +35,6 @@ function Tent_Table(props) {
   const [clickCount, SetClickCount] = useState(0);
   const [selectedElement, SetSelectedElement] = useState(['']);
   const tent_state = useContext(tentState)
-  console.log(tent_state)
   const initial_Equips = [
     {
       name: "7天",
@@ -189,7 +188,6 @@ function Tent_Table(props) {
       name: name
     };
     information.current = info;
-    console.log(clickCount);
     if (clickCount == 1 || clickCount == 0) {
       document.addEventListener("click", closeModal);
       event.stopPropagation();

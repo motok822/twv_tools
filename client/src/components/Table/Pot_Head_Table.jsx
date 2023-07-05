@@ -77,7 +77,6 @@ function Pot_Head_Table(props) {
       ]
     }
   ]
-  console.log(pot_head_state)
   const [Equips, SetEquips] = useState(pot_head_state == undefined ? initial_Equips : pot_head_state)
 
   const handleToggleChange = (num, ind, index, e) => {
@@ -216,7 +215,6 @@ function Pot_Head_Table(props) {
     let elm = e.target;
     let flag = 0;
     while (elm != null) {
-      console.log(elm);
       if (elm.className != undefined && elm.className.startsWith("PopUp")) {
         flag = 1;
         break;
@@ -247,7 +245,6 @@ function Pot_Head_Table(props) {
     } else info.place = ""
 
     information.current = info;
-    console.log(clickCount);
     if (clickCount == 1 || clickCount == 0) {
       document.addEventListener("click", closeModal);
       event.stopPropagation();

@@ -10,6 +10,7 @@ import F_calc from './components/F/F_calc';
 import Create_equip from './components/Create/Create_equip';
 import React from 'react'
 import Select_equip from './components/Create/Select_equip';
+import Distribute_equip from './components/Create/Distribute_equip';
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route path={"/Table"} element={<Equip_table/>} />
             <Route path={"/Create"} element={<Create_equip/>} />
             <Route path={"/Create/SelectEquip"} element={<Select_equip/>}/>
+            <Route path={"/Create/DistributeEquip"} element={<Distribute_equip/>}/>
             <Route path={"/Other"} element={<Other/>} />
         </Routes>
       </HashRouter>

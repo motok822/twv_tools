@@ -124,7 +124,6 @@ function Beacon_Table(props) {
       name: name
     };
     information.current = info;
-    console.log(clickCount);
     if (clickCount == 1 || clickCount == 0) {
       document.addEventListener("click", closeModal);
       event.stopPropagation();

@@ -1,0 +1,26 @@
+.Home {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.menu {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.main {
+	flex: 1;
+}
+
+@keyframes border_anim {
+	0% {
+		width: 0%;
+	}
+
+	100% {
+		width: 100%;
+	}
+}

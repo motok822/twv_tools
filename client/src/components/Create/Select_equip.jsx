@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Header from '../Header';
 import Footer from '../Footer';
 import styles from '../styles/Select_equip.module.css'
@@ -168,6 +168,17 @@ function Select_equip() {
       }
     ]
   })
+
+  const navigate = useNavigate()
+
+  const JumpToNext = () => {
+    navigate("/Create/DistributeEquip", {
+      state: {
+        Equips_state: EquipsState 
+      }
+    })
+  }
+
   return (
     <div className={styles.Home}>
       <Header />
@@ -213,6 +224,9 @@ function Select_equip() {
         <EquipsContext.Provider value={EquipsState}>
           <Equip_table_list CreateOption={true} />
         </EquipsContext.Provider>
+        <button className={styles.button} onClick={JumpToNext}>
+          次へ
+        </button>
       </main>
       <Footer />
     </div>

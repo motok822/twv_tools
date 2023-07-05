@@ -28,3 +28,9 @@
     font-weight: normal;
     margin-left: 2rem;
 }
+.button{
+    margin-top: 2rem;
+    margin-left: 45%;
+    font-size: 1.2rem;
+    padding: 0.2rem 1rem;
+}
