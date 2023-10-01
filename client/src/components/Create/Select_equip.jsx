@@ -34,13 +34,7 @@ function Select_equip() {
           { symbol: "ε", selected: [0, 0, 0] },
         ]
       },
-      {
-        name: "6天",
-        type: [
-          { symbol: "α", selected: [0, 0, 0] },
-          { symbol: "β", selected: [0, 0, 0] },
-        ]
-      },
+
       {
         name: "12天",
         type: [
@@ -224,6 +218,48 @@ function Select_equip() {
         <EquipsContext.Provider value={EquipsState}>
           <Equip_table_list CreateOption={true} />
         </EquipsContext.Provider>
+        <div>
+          <p className={styles.Text}>その他</p>
+          
+          <table border="1" className={styles.table}>
+            <tbody>
+              <tr>
+                <td>F装</td>
+                <input type='number' className={styles.NumberInput}></input>
+                <td>W装</td>
+                <input type='number' className={styles.NumberInput}></input>
+              </tr>
+              <tr>
+                <td>ペグ</td>
+                <input type='number' className={styles.NumberInput}></input>
+                <td>大缶</td>
+                <input type='number' className={styles.NumberInput}></input>
+              </tr>
+              <tr>
+                <td>小缶(L缶除く)</td>
+                <input type='number' className={styles.NumberInput}></input>
+                <td>共ポリ</td>
+                <input type='number' className={styles.NumberInput}></input>
+              </tr>
+              <tr>
+                <td>お玉</td>
+                <input type='number' className={styles.NumberInput}></input>
+                <td>しゃもじ</td>
+                <input type='number' className={styles.NumberInput}></input>
+              </tr>
+              <tr>
+                <td>熊スプレー</td>
+                <input type='number' className={styles.NumberInput}></input>
+                <td>浄水器</td>
+                <input type='number' className={styles.NumberInput}></input>
+              </tr>
+              <tr>
+                <td>替えフィルター</td>
+                <input type='number' className={styles.NumberInput}></input>
+              </tr>
+            </tbody>
+          </table>
+        </div>
         <button className={styles.button} onClick={JumpToNext}>
           次へ
         </button>

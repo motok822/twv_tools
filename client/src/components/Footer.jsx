@@ -8,7 +8,8 @@ const StyledTypography = styled(Typography)(() => ({
   padding: "10px 0px"
 }))
 const StyledA = styled("a")(() => ({
-  color:"white"
+  color:"white",
+  textDecoration: "none",
 }))
 function Footer() {
   return (

@@ -34,3 +34,9 @@
     font-size: 1.2rem;
     padding: 0.2rem 1rem;
 }
+
+.NumberInput{
+    width: 50px;
+    text-align: left;
+    padding: 10px 10px;
+}

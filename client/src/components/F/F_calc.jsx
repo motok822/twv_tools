@@ -109,7 +109,12 @@ function F_calc() {
             return (
               <p className={styles.text}>
                 <input type='text' placeholder='名前' onChange={(e) => { val.name = e.target.value }}></input>
-                <input type='number' placeholder='金額' onChange={(e) => { if(Number(e.target.value) != NaN)val.num = Number(e.target.value) }}></input>
+                <input type='number' placeholder='金額' onChange={(e) => { 
+                if(Number(e.target.value) != NaN && Number(e.target.value) >= 0){
+                  val.num = Number(e.target.value)
+                 }else{
+                  e.target.value = NaN
+                 } }}></input>
               </p>
             )
           })
@@ -120,7 +125,13 @@ function F_calc() {
             return (
               <p className={styles.text}>
                 <input type='text' placeholder='名前' onChange={(e) => { val.name = e.target.value }}></input>
-                <input type='number' placeholder='金額' onChange={(e) => { if(Number(e.target.value) != NaN)val.num = Number(e.target.value) }}></input>
+                <input type='number' placeholder='金額' onChange={(e) => { 
+                if(Number(e.target.value) != NaN && Number(e.target.value) >= 0){
+                  val.num = Number(e.target.value)
+                }else{
+                  e.target.value = NaN
+                }
+                  }}></input>
               </p>
             )
           })
