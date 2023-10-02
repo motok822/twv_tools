@@ -103,6 +103,63 @@ func("RegisterEquipInfo",info).then((data)=>{console.log(data)})
 		editor3.getSession().setMode("ace/mode/javascript");
   </script>	
 	
-	<button onclick=eval(editor.getValue()+editor3.getValue())>Exec
+	<button onclick=eval(editor.getValue()+editor3.getValue())>Exec</button>
+	
+	<div>GetEquipTree</div>
+	
+	<div id="editor4" style="height: 200px">//Please Login First
+func("GetEquipTree",{}).then((data)=>{console.log(data);ResultStr=data
+const arr=ResultStr.split(",")
+var Result=new Array()
+for(i=0;i&lt arr.length;) {
+    Result.push({})
+    v=i/3
+    Result[v].ID=Number(arr[i++])
+    if (arr[i]=="") {
+        Result[v].ParentID=null
+        i++
+    }else{
+        Result[v].ParentID=Number(arr[i++])
+    }
+    Result[v].Name=arr[i++]
+    
+}
+console.log(Result)
+})
+	
+	</div>
+  
+	<script>
+    var editor4 = ace.edit("editor4");
+		editor4.getSession().setMode("ace/mode/javascript");
+  </script>	
+	
+	<button onclick=eval(editor.getValue()+editor4.getValue())>Exec</button>
+	
+	
+	<div>GetEquipList</div>
+	
+	<div id="editor5" style="height: 200px">//Please Login First
+var StartTime=new Date("2022-08-18 14:58:00")
+var EndTime=new Date("2023-05-13 14:58:00")
+import GetEquipByTime fron "./javascript/GetEquipByTime.js"
+GetEquipByTime(StartTime,EndTime).then((Result)=>{
+	equip
+
+})
+
+	</div>
+  
+	<script>
+    var editor5 = ace.edit("editor5");
+		editor5.getSession().setMode("ace/mode/javascript");
+  </script>	
+	
+	<button onclick=eval(editor.getValue()+editor5.getValue())>Exec</button>
+	
+	
+	
+	
+	
 </body>
 </html>

@@ -20,11 +20,20 @@ create table USERLIST (
 	id integer NOT NULL AUTO_INCREMENT,
 	username varchar(100) NOT NULL UNIQUE,
 	password_hash varchar(512) NOT NULL,
+	familyname varchar(100),
+	firstname varchar(100),
+	grade INTEGER NOT NULL,
+	belong varchar(100),
+	sex varchar(100),
+	birth DATETIME,
 	PRIMARY KEY (id)
 )
 AUTO_INCREMENT=0;
 
-/*id 0 for "not found" aka guest user*/
+/*id 0 for "not found" aka guest user
+
+grade -1:undefined
+*/
 
 
 
@@ -33,6 +42,7 @@ create table AUTH_DEFAULT_USER (
 	content varchar(100) NOT NULL,
 	userid INTEGER UNIQUE,
 	groupname varchar(100) UNIQUE,
+	
 	PRIMARY KEY (id)
 );
 /*

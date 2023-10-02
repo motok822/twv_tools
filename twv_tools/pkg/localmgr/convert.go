@@ -18,9 +18,9 @@ func init(){
 
 
 func ConvertPath(filename string) (string,error){
-	log.Print(public_path_abs)
 	filename=public_path_relative+filename
 	filename,err:=filepath.Abs(public_path_relative+filename)
+	log.Print(filename)
 	if err!= nil {
 		return filename,err
 	}

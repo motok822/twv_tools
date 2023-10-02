@@ -44,7 +44,7 @@ func (sqllist *sql_list) Cookie() interface {Session() TokenHandler;ATA() TokenH
 }
 
 
-func (sqllist *sql_list) User() interface{Add(string,string) uint64;Delete(uint64);GetUserID(string) uint64;Confirm(uint64,string) bool}{
+func (sqllist *sql_list) User() interface{Add(UserInfo,string) int64;Delete(int64);GetUserID(string) int64;Confirm(int64,string) bool;GetAllUser() ([]*UserInfo,error);GetGroupContent(string) ([]int64,[]string,error);}{
 	return sqllist.user
 }
 
@@ -53,7 +53,7 @@ func (sqllist *sql_list) Table() interface{Get(string) (string,error);Add(string
 	return sqllist.table
 }
 
-func (sqllist *sql_list) Plans() interface{IndexOfFYear(uint64) ([]uint64,error);Plan(uint64) (*PlanInfo,error)}{
+func (sqllist *sql_list) Plans() interface{IndexOfFYear(int64) ([]int64,error);Plan(int64) (*PlanInfo,error);GetPlanByTime(time.Time,time.Time) ([]*PlanInfo,error)}{
 	return sqllist.plans
 }
 

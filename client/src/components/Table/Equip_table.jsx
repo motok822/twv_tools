@@ -11,7 +11,10 @@ import styled from '@emotion/styled';
 import Equip_table_list from './Equip_table_list';
 
 const Greek_Character = ["α", "β", "γ", "δ", "ε", "ζ", "η"];
-
+const Reserved = 0;
+const Komaba = 1;
+const Hongou = 2;
+const NotReserved = 3;
 
 
 function Equip_table() {
@@ -32,3 +35,7 @@ function Equip_table() {
 
 export { Equip_table }
 export { Greek_Character }
+export {Komaba}
+export {Hongou}
+export {Reserved}
+export {NotReserved}

@@ -5,7 +5,7 @@ package sql_list
 
 import (
 	"database/sql"
-	_ "log"
+	"log"
 	"strings"
 	"fmt"
 	"errors"
@@ -98,8 +98,8 @@ func (info *authinfo) setbin(authtype int64,status uint8){
 	info.auths[authtype]=status
 }
 
-func (info *authinfo) setbin_all(status uint64){
-	var pow uint64= 1
+func (info *authinfo) setbin_all(status int64){
+	var pow int64= 1
 	for i,_:= range info.auths {
 		info.auths[i]=uint8(status%(pow*3)/pow)
 		pow*=3
@@ -136,11 +136,11 @@ func (info *authinfo) getbin(authtype int64) uint8{
 	return info.auths[authtype]
 }
 
-func (info *authinfo) getbin_all() uint64{
-	var pow uint64 =1
-	var result uint64 =0
+func (info *authinfo) getbin_all() int64{
+	var pow int64 =1
+	var result int64 =0
 	for _,v:=range info.auths {
-		result+=pow*uint64(v)
+		result+=pow*int64(v)
 		pow*=3
 	}
 	return result
@@ -156,22 +156,22 @@ func (info *authinfo) Clone() *authinfo {
 
 func newauthinfos() *authinfos{
 	var infos authinfos
-	infos.users=make(map[uint64] *authinfo)
+	infos.users=make(map[int64] *authinfo)
 	infos.groups=make(map[string] *authinfo)
 	infos.default_set=newauthinfo()
 	return &infos
 }
 type authinfos struct{
-	users map[uint64] *authinfo
+	users map[int64] *authinfo
 	groups map[string] *authinfo
 	default_set *authinfo
 	original *authinfos
 }
 
-func (infos *authinfos) User(userid uint64) AuthInfo{
+func (infos *authinfos) User(userid int64) AuthInfo{
 	return infos.user(userid)
 }
-func (infos *authinfos) user(userid uint64) *authinfo{
+func (infos *authinfos) user(userid int64) *authinfo{
 	val,ok:=infos.users[userid]
 	if !ok {
 		val=newauthinfo()
@@ -253,7 +253,7 @@ func (handler *authhandler) Pull() (AuthInfos,error){
 	var content string
 	var userid sql.NullInt64
 	var groupname sql.NullString
-	var authority uint64
+	var authority int64
 	for rows.Next() {
 		err := rows.Scan(&content,&userid,&groupname,&authority)
 		if err != nil {
@@ -267,7 +267,7 @@ func (handler *authhandler) Pull() (AuthInfos,error){
 			if !userid.Valid {
 				continue
 			}
-			infos.user(uint64(userid.Int64)).setbin_all(authority)
+			infos.user(int64(userid.Int64)).setbin_all(authority)
 			break
 		case "GROUP":
 			if !groupname.Valid {
@@ -341,7 +341,7 @@ func (handler *authhandler) push(infos *authinfos) error {
 	var content string
 	var userid sql.NullInt64
 	var groupname sql.NullString
-	var authority uint64
+	var authority int64
 	content="USER"
 	for i,v:=range infos.users {
 		if val,ok:=infos.original.users[i];ok {
@@ -435,16 +435,16 @@ func (handler *authhandler) Parent() (AuthHandler,error) {
 
 func newauthlist() *authlist {
 	var list authlist
-	list.users=make([]uint64,0,100)
+	list.users=make([]int64,0,100)
 	list.groups=make([]string,0,100)
 	return &list
 }
 type authlist struct{
-	users []uint64
+	users []int64
 	groups []string
 	original *authlist
 }
-func (list *authlist) Users() []uint64{
+func (list *authlist) Users() []int64{
 	return list.users
 }
 func (list *authlist) Groups() []string {
@@ -482,6 +482,7 @@ func (lists *authlists) Pull() (AuthList,error){
 	if err != nil {
 		return list,err
 	}
+	log.Print(tablename)
 	rows, err := lists.sqllist.database.Query("SELECT content,userid,groupname FROM "+tablename)
 	if err != nil {
 		return list,err
@@ -499,7 +500,7 @@ func (lists *authlists) Pull() (AuthList,error){
 			list.groups=append(list.groups,groupname.String)
 		}
 		if content=="USER" && userid.Valid {
-			list.users=append(list.users,uint64(userid.Int64))
+			list.users=append(list.users,int64(userid.Int64))
 		}
 	}
 	
@@ -642,6 +643,10 @@ func (lists *authlists) push(list *authlist) error{
 
 
 func (lists *authlists) Create() error {
+	plist,err:=lists.Pull()
+	if err!=nil {
+		return err
+	}
 	tablename,err:=lists.sqllist.Table().Get(lists.dest)
 	if err==nil {
 		return errors.New("authlist already exists")
@@ -651,7 +656,11 @@ func (lists *authlists) Create() error {
 	}
 	_,err=lists.sqllist.database.Exec("create table "+tablename+
 	" (id integer NOT NULL AUTO_INCREMENT,content varchar(100) NOT NULL,userid INTEGER UNIQUE,groupname varchar(100) UNIQUE,PRIMARY KEY (id));")
-	return err
+	if err!=nil {
+		lists.sqllist.Table().Delete(tablename)
+		return err
+	}
+	return lists.Push(plist)
 }
 
 func (lists *authlists) New() AuthList {
@@ -682,7 +691,7 @@ type authmanager struct {
 	sqllist *sql_list
 }
 
-func (manager *authmanager) User(userid uint64) AuthLists{
+func (manager *authmanager) User(userid int64) AuthLists{
 	lists:=newauthlists("/system/AUTH/USERS/"+fmt.Sprintf("%d",userid),manager.sqllist)
 	return lists
 }

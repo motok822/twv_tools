@@ -56,3 +56,20 @@ create table ata_set_func (
 
 insert into ata_set_func (content,userid,authority) VALUES ("USER",1,1);
 insert into ata_set_func (content,authority) VALUES ("DEFAULT",81);
+
+
+
+
+insert into FILEINDEX (tableid,tablename) VALUES ("/system/AUTH/FUNCS/User_GetUsers","User_GetUsers");
+
+create table User_GetUsers (
+	id integer NOT NULL AUTO_INCREMENT,
+	content varchar(100) NOT NULL,
+	userid INTEGER UNIQUE,
+	groupname varchar(100) UNIQUE,
+	authority integer NOT NULL,
+	PRIMARY KEY (id)
+);
+
+insert into User_GetUsers (content,userid,authority) VALUES ("USER",1,1);
+insert into User_GetUsers (content,groupname,authority) VALUES ("GROUP","USERS",81);

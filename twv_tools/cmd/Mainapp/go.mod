@@ -19,6 +19,7 @@ require (
 require (
 	github.com/windows-server-2003/twv_tools/pkg/http_tools v0.0.0-00010101000000-000000000000 // indirect
 	github.com/windows-server-2003/twv_tools/pkg/localmgr v0.0.0-00010101000000-000000000000 // indirect
+	golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df // indirect
 )
 
 replace github.com/windows-server-2003/twv_tools/pkg/http_engine => ../../pkg/http_engine

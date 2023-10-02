@@ -9,6 +9,8 @@ import Beacon_Table from './Beacon_Table';
 import { AppBar, Box, Button, Toolbar, Typography, css } from '@mui/material';
 import styled from '@emotion/styled';
 import { EquipsContext } from '../Create/Select_equip';
+import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
+import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 
 export const tentState = createContext()
 export const pot_headState = createContext()
@@ -30,6 +32,24 @@ function Equip_table_list(props) {
     active3Ref.current = active3;
     active4Ref.current = active4;
     const EquipsState = useContext(EquipsContext)
+
+    
+    useEffect(() => {
+     Fetch_Tent_Table();
+    }, [])
+    const Fetch_Tent_Table = async()=>{
+        let BMgr = new BasicAPIManager();
+        let AMgr = new AdvancedAPIManager();
+
+        console.log(await BMgr.User.GetUsers())
+        console.log(await BMgr.EquipClass.GetAll())
+        console.log(await BMgr.EquipInfo.GetOneYear())
+        console.log(await BMgr.Plans.GetOneYear())
+        console.log("plan map")
+        const PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
+        console.log(PlanMapOneYear)
+
+    }
 
     const RLfunction = useCallback((event) => {
         const keyCode = event.keyCode;

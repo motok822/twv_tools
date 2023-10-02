@@ -9,9 +9,10 @@ import Paper from '@mui/material/Paper';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 import { beaconState } from './Equip_table_list';
+import { Hongou, Komaba, Reserved } from './Equip_table';
 
 const rows = [
-  { name: "日", value: [0] },
+  { name: "山行", value: [0] },
   { name: "A", value: [0] },
   { name: "B", value: [0] },
   { name: "E", value: [0] },
@@ -117,7 +118,7 @@ function Beacon_Table(props) {
     document.removeEventListener("click", closeModal)
   }
 
-  function Change_State(name, place, event, selected) {
+  function Change_State(place, name, event, selected) {
     const info = {
       place: place,
       color: "",
@@ -151,13 +152,13 @@ function Beacon_Table(props) {
       color: "",
       name: name
     };
-    if (place === 0) {
+    if (place === Reserved) {
       info.place = "貸出中"
       info.color = "gray"
-    } else if (place === 1) {
+    } else if (place === Komaba) {
       info.place = "駒場"
       info.color = "blue"
-    } else if (place === 2) {
+    } else if (place === Hongou) {
       info.place = "本郷"
       info.color = "red"
     } else info.place = ""
@@ -189,7 +190,7 @@ function Beacon_Table(props) {
               <TableCell colSpan={20}>ビーコン</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>日</TableCell>
+              <TableCell>山行</TableCell>
               <TableCell></TableCell>
               {Table_Header()}
             </TableRow>
@@ -197,7 +198,7 @@ function Beacon_Table(props) {
           <TableBody>
             {rows.map((row) => (
               row.value.map((val, index) => {
-                return row.name == "日" ?
+                return row.name == "山行" ?
                   (
                     <>
                       <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>

@@ -58,13 +58,15 @@
 }
 
 .CardList{
-	margin: 200px 20% 0 20%;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 	gap: 24px 6%;
 	align-items: start;
 }
-
+.SiteMenu{
+	margin: 200px 20% 100px 20%;
+	text-align: center;
+}
 .title h1{
 	font-weight: lighter;
 }

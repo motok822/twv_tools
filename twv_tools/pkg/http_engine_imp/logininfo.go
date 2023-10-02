@@ -22,6 +22,7 @@ const SLI_NAME="STAY_LOGGED_IN"//Stay Logged In
 func (engine *httpengine) getLoginInfo() bool{//whether redirected or not
 	if v,err:=engine.r.Cookie(SESSIONID_NAME);err!=nil{
 		//session id not set
+		log.Print("session id not set")
 		if w,err:=engine.r.Cookie(SLI_NAME);err!=nil||(w.Value!="true"&&w.Value!="True"&&w.Value!="TRUE"){
 			//guest
 			_,err=engine.Exec("Login",struct{Username string;Password string;ATA bool}{"Guest","anything",false})
@@ -39,6 +40,7 @@ func (engine *httpengine) getLoginInfo() bool{//whether redirected or not
 		
 	}else{
 		//sessionid set
+		log.Print("sessionid set")
 		userid,err:=engine.sqllist.Cookie().Session().GetUserID(v.Value)
 		if err!=nil {
 			//incorrect sessionid!

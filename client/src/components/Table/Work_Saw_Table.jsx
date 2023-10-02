@@ -6,13 +6,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Greek_Character } from './Equip_table';
+import { Greek_Character, Hongou, Komaba, Reserved } from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 import { work_sawState } from './Equip_table_list';
 
 const rows = [
-  { name: "日", value: [0] },
+  { name: "山行", value: [0] },
   { name: "L装α", value: [0] },
   { name: "L装β", value: [0] },
   { name: "ヘルボα", value: [0] },
@@ -152,7 +152,7 @@ function Work_Saw_Table(props) {
     document.removeEventListener("click", closeModal)
   }
 
-  function Change_State(name, place, event, selected) {
+  function Change_State(place, name, event, selected) {
     const info = {
       place: place,
       color: "",
@@ -187,13 +187,13 @@ function Work_Saw_Table(props) {
       color: "",
       name: name
     };
-    if (place === 0) {
+    if (place === Reserved) {
       info.place = "貸出中"
       info.color = "gray"
-    } else if (place === 1) {
+    } else if (place === Komaba) {
       info.place = "駒場"
       info.color = "blue"
-    } else if (place === 2) {
+    } else if (place === Hongou) {
       info.place = "本郷"
       info.color = "red"
     } else info.place = ""
@@ -230,7 +230,7 @@ function Work_Saw_Table(props) {
               <TableCell colSpan={3}>スノーソー</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>日</TableCell>
+              <TableCell>山行</TableCell>
               <TableCell></TableCell>
               {Table_Header()}
             </TableRow>
@@ -238,7 +238,7 @@ function Work_Saw_Table(props) {
           <TableBody>
             {rows.map((row) => (
               row.value.map((val, index) => {
-                if (row.name === '日' || row.name === 'L装β' || row.name === 'ヘルボδ' || row.name === 'エキボγ' || row.name === '藪ノコξ' || row.name === 'なたβ' || row.name === 'スノーソーξ') {
+                if (row.name === '山行' || row.name === 'L装β' || row.name === 'ヘルボδ' || row.name === 'エキボγ' || row.name === '藪ノコξ' || row.name === 'なたβ' || row.name === 'スノーソーξ') {
                   return (
                     <>
                       <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>

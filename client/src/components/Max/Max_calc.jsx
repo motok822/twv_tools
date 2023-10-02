@@ -8,7 +8,7 @@ function Max_calc() {
     <div className={styles.Home}>
     <Header></Header>
     <main className={styles.main}>
-      <div>Max_calc</div>
+      <div>ちょい待ち</div>
     </main>
     <Footer></Footer>
     </div>

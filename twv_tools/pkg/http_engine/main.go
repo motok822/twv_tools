@@ -13,8 +13,7 @@ type EngineFunc func ([]byte,HTTPEngine) (any,error)
 
 
 type HTTPEngine interface {
-	Register(EngineFunc,string)
-	ServeHTTP(http.ResponseWriter,*http.Request)
+	ServeHTTP()
 	Run(string) (any,error)
 	Exec(string,any) (any,error)
 	X() *HTTPEngineX
@@ -24,6 +23,11 @@ type HTTPEngineX struct {
 	W http.ResponseWriter
 	R *http.Request
 	SQLList sql_list.SQLList
-	CurrentUserID uint64
+	CurrentUserID int64
 	ParseURL *url.URL
+}
+
+type HTTPServer interface {
+	ServeHTTP(http.ResponseWriter,*http.Request)
+	Register(EngineFunc,string)
 }

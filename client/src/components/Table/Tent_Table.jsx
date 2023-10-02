@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,14 +6,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Equip_State, Greek_Character, StyledContent, StyledOverlay, isModal } from './Equip_table';
+import { Equip_State, Greek_Character, Hongou, Komaba, NotReserved, Reserved, StyledContent, StyledOverlay, isModal } from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import styled from '@emotion/styled';
 import PopUp from './PopUp';
 import { tentState } from './Equip_table_list';
 
 const rows = [
-  { name: "日", value: [0] },
+  [{ name: "山行", value: [0] },
   { name: "7天α", value: [0, 0, 0] },
   { name: "7天β", value: [0, 0, 0] },
   { name: "7天γ", value: [0, 0, 0] },
@@ -26,8 +26,8 @@ const rows = [
   { name: "6天α", value: [0, 0, 0] },
   { name: "6天β", value: [0, 0, 0] },
   { name: "12天α", value: [0, 0, 0] },
-  { name: "その他α", value: [0, 0, 0] }];
-
+  { name: "その他α", value: [0, 0, 0] }]
+];
 
 function Tent_Table(props) {
 
@@ -74,7 +74,6 @@ function Tent_Table(props) {
         { symbol: "α", selected: [0, 0, 0] },
       ]
     }
-
   ]
   const [Equips, SetEquips] = useState(tent_state == undefined ? initial_Equips : tent_state)
 
@@ -181,7 +180,7 @@ function Tent_Table(props) {
     document.removeEventListener("click", closeModal)
   }
 
-  function Change_State(name, place, event, selected) {
+  function Change_State(place, name, event, selected) {
     const info = {
       place: place,
       color: "",
@@ -215,16 +214,19 @@ function Tent_Table(props) {
       color: "",
       name: name
     };
-    if (place === 0) {
+    if (place === Reserved) {
       info.place = "貸出中"
       info.color = "gray"
-    } else if (place === 1) {
+    } else if (place === Komaba) {
       info.place = "駒場"
       info.color = "blue"
-    } else if (place === 2) {
+    } else if (place === Hongou) {
       info.place = "本郷"
       info.color = "red"
-    } else info.place = ""
+    } else {
+      info.place = ""
+      info.color = "gray"
+    }
 
     if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態
       return (
@@ -256,7 +258,7 @@ function Tent_Table(props) {
               <TableCell align='left' colSpan={4}>その他</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell align='center' colSpan={1} >日</TableCell>
+              <TableCell align='center' colSpan={1} >山行</TableCell>
               <TableCell></TableCell>
               {Table_Header()}
             </TableRow>
@@ -268,19 +270,19 @@ function Tent_Table(props) {
           </TableHead>
           <TableBody>
             <TableRow>
-              {rows.map((row) => (
+              {rows[0].map((row) => (
                 row.value.map((val, index) => {
                   if (index == row.value.length - 1) {
                     return (
                       <>
-                        <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>
-                          {Equip_State(1, "加茂", row.name + index.toString())}
+                        <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(Komaba, "加茂", e, row.name + index.toString()) }}>
+                          {Equip_State(Komaba, "加茂", row.name + index.toString())}
                         </TableCell>
                         <TableCell></TableCell>  {/* これは横のスペース */}
                       </>)
                   } else {
-                    return (<TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>
-                      {Equip_State(0, "加茂", row.name + index.toString())}
+                    return (<TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(NotReserved, "", e, row.name + index.toString()) }}>
+                      {Equip_State(NotReserved, "", row.name + index.toString())}
                     </TableCell>)
                   }
                 })

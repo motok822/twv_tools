@@ -38,7 +38,7 @@ func Login(arg_byte []byte,engine http_engine.HTTPEngine) (any,error){
 	return engine.Run("ATA_Set")
 }
 
-func login(userid uint64,engine http_engine.HTTPEngine) (any,error){
+func login(userid int64,engine http_engine.HTTPEngine) (any,error){
 	token,expire,err:=engine.X().SQLList.Cookie().Session().Add(userid)
 	if err!=nil {
 		return nil,errors.New("Failed to allocate sessionid")
@@ -106,7 +106,7 @@ func ATA_Set(arg []byte,engine http_engine.HTTPEngine) (any,error) {
 	return struct{Status string}{"succeed"},nil
 }
 
-func ATA_set(userid uint64,engine http_engine.HTTPEngine) error{
+func ATA_set(userid int64,engine http_engine.HTTPEngine) error{
 	token,expire,err:=engine.X().SQLList.Cookie().ATA().Add(userid)
 	if err!=nil {
 		return err

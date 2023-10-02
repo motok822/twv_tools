@@ -160,6 +160,52 @@ function Select_equip() {
           { symbol: "に", selected: [0] },
         ]
       }
+    ],
+    other: [
+      {
+        name: "F装",
+        num: 1,
+      },
+      {
+        name: "W装",
+        num: 1,
+      },
+      {
+        name: "ペグ",
+        num: 1,
+      },
+      {
+        name: "大缶",
+        num: 1,
+      },
+      {
+        name: "小缶",
+        num: 1,
+      },
+      {
+        name: "共ポリ",
+        num: 1,
+      },
+      {
+        name: "お玉",
+        num: 1,
+      },
+      {
+        name: "しゃもじ",
+        num: 1,
+      },
+      {
+        name: "熊スプレー",
+        num: 1,
+      },
+      {
+        name: "浄水器",
+        num: 1,
+      },
+      {
+        name: "替えフィルター",
+        num: 1,
+      },
     ]
   })
 
@@ -168,7 +214,7 @@ function Select_equip() {
   const JumpToNext = () => {
     navigate("/Create/DistributeEquip", {
       state: {
-        Equips_state: EquipsState 
+        Equips_state: EquipsState
       }
     })
   }
@@ -220,7 +266,7 @@ function Select_equip() {
         </EquipsContext.Provider>
         <div>
           <p className={styles.Text}>その他</p>
-          
+
           <table border="1" className={styles.table}>
             <tbody>
               <tr>

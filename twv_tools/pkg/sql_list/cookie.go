@@ -29,10 +29,10 @@ type tokenhandler struct{
 	sqllist *sql_list
 	dest string
 	duration time.Duration
-	refresh_counter uint64
+	refresh_counter int64
 }
 
-func (handler *tokenhandler) Add(userid uint64) (string,time.Time,error){
+func (handler *tokenhandler) Add(userid int64) (string,time.Time,error){
 	var token string
 	expiration:=time.Now().Add(handler.duration)
 	tablename,err:=handler.sqllist.Table().Get(handler.dest)
@@ -74,8 +74,8 @@ func (handler *tokenhandler) Delete(token string){
 
 
 
-func (handler *tokenhandler) GetUserID(token string) (uint64,error){
-	var userid uint64=0
+func (handler *tokenhandler) GetUserID(token string) (int64,error){
+	var userid int64=0
 	var expiration time.Time
 	tablename,err:=handler.sqllist.Table().Get(handler.dest)
 	if err!=nil {

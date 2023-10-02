@@ -20,10 +20,12 @@ type SQLList interface {
 	
 	
 	User() interface{
-		Add(string,string) uint64
-		Delete(uint64)
-		GetUserID(string) uint64
-		Confirm(uint64,string) bool
+		Add(UserInfo,string) int64
+		Delete(int64)
+		GetUserID(string) int64
+		Confirm(int64,string) bool
+		GetAllUser() ([]*UserInfo,error)
+		GetGroupContent(string) ([]int64,[]string,error)//misplace??
 	}
 	
 	Table() interface{
@@ -32,8 +34,9 @@ type SQLList interface {
 		Delete(string) error
 	}
 	Plans() interface{
-		IndexOfFYear(uint64) ([]uint64,error)
-		Plan(uint64) (*PlanInfo,error)
+		IndexOfFYear(int64) ([]int64,error)
+		Plan(int64) (*PlanInfo,error)
+		GetPlanByTime(time.Time,time.Time) ([]*PlanInfo,error)
 	}
 	Equip() interface {
 		Infos() interface{
@@ -51,7 +54,7 @@ type Auth interface {
 	File(string) AuthHandler
 	Func(string) AuthHandler
 	
-	User(uint64) AuthLists
+	User(int64) AuthLists
 	Group(string) AuthLists
 	
 }
@@ -64,7 +67,7 @@ type AuthInfo interface {
 
 
 type AuthInfos interface {
-	User(uint64) AuthInfo
+	User(int64) AuthInfo
 	Group(string) AuthInfo
 	Default() AuthInfo
 }
@@ -78,7 +81,7 @@ type AuthHandler interface {
 	//New() AuthInfos
 }
 type AuthList interface {
-	Users() []uint64
+	Users() []int64
 	Groups() []string
 }
 type AuthLists interface {
@@ -90,27 +93,29 @@ type AuthLists interface {
 
 
 type TokenHandler interface {
-	Add(uint64) (string,time.Time,error)
+	Add(int64) (string,time.Time,error)
 	Delete(string)
-	GetUserID(string) (uint64,error)
+	GetUserID(string) (int64,error)
 }
 
 type PlanInfo struct {
-	ID uint64
-	FYear uint64
+	ID int64
+	Name string
+	FYear int64
 	PlanType string
 	PlanNum sql.NullInt64
 	ReserveStart sql.NullTime
 	ReserveEnd sql.NullTime
 	ClimeStart sql.NullTime
 	ClimeEnd sql.NullTime
+	LastUpdate time.Time
 	Members sql.NullString
 }
 
 type EquipInfo struct{
-	ID uint64//when 0, it means new equip info. we need to allocate ID
-	UserID uint64
-	EquipID uint64
+	ID int64//when 0, it means new equip info. we need to allocate ID
+	UserID int64
+	EquipID int64
 	Act string//"MOVE","RESERVE"
 	T1 time.Time
 	T2 sql.NullTime
@@ -119,7 +124,19 @@ type EquipInfo struct{
 }
 
 type EquipClass struct{
-	ID uint64
+	ID int64
 	ParentID sql.NullInt64
 	Name string
+}
+
+type UserInfo struct{
+	ID int64
+	UserName string
+	Password_Hash string
+	FamilyName sql.NullString
+	FirstName sql.NullString
+	Grade int64
+	Belong sql.NullString
+	Sex sql.NullString
+	Birth sql.NullTime
 }

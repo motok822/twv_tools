@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Greek_Character, StyledContent, StyledOverlay } from './Equip_table';
+import { Greek_Character, Hongou, Komaba, Reserved, StyledContent, StyledOverlay } from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 import { pot_headState } from './Equip_table_list';
@@ -15,7 +15,7 @@ const Head_Character = ["α", "β", "γ", "δ", "ε", "η", "θ", "λ", "μ", "�
 
 
 const rows = [
-  { name: "日", value: [0] },
+  { name: "山行", value: [0] },
   { name: "コッヘルα", value: [0, 0, 0] },
   { name: "コッヘルβ", value: [0, 0, 0] },
   { name: "コッヘルγ", value: [0, 0, 0] },
@@ -227,23 +227,12 @@ function Pot_Head_Table(props) {
     document.removeEventListener("click", closeModal)
   }
 
-  function Change_State(name, place, event, selected) {
+  function Change_State(place, name, event, selected) {
     const info = {
       place: place,
       color: "",
       name: name
     };
-    if (place === 0) {
-      info.place = "貸出中"
-      info.color = "gray"
-    } else if (place === 1) {
-      info.place = "駒場"
-      info.color = "blue"
-    } else if (place === 2) {
-      info.place = "本郷"
-      info.color = "red"
-    } else info.place = ""
-
     information.current = info;
     if (clickCount == 1 || clickCount == 0) {
       document.addEventListener("click", closeModal);
@@ -272,13 +261,13 @@ function Pot_Head_Table(props) {
       color: "",
       name: name
     };
-    if (place === 0) {
+    if (place === Reserved) {
       info.place = "貸出中"
       info.color = "gray"
-    } else if (place === 1) {
+    } else if (place === Komaba) {
       info.place = "駒場"
       info.color = "blue"
-    } else if (place === 2) {
+    } else if (place === Hongou) {
       info.place = "本郷"
       info.color = "red"
     } else info.place = ""
@@ -310,7 +299,7 @@ function Pot_Head_Table(props) {
               <TableCell align='left' colSpan={20}>ヘッド</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell align='center' colSpan={1} >日</TableCell>
+              <TableCell align='center' colSpan={1} >山行</TableCell>
               <TableCell></TableCell>
               {Pot_Header()}
             </TableRow>
@@ -325,13 +314,13 @@ function Pot_Head_Table(props) {
                 if (index == row.value.length - 1) {
                   return (
                     <>
-                      <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>
+                      <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(Komaba, "加茂", e, row.name + index.toString()) }}>
                         {Equip_State(1, "加茂", row.name + index.toString())}
                       </TableCell>
                       <TableCell></TableCell>  {/* これは横のスペース */}
                     </>)
                 } else {
-                  return (<TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>
+                  return (<TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(Komaba, "加茂", e, row.name + index.toString()) }}>
                     {Equip_State(0, "加茂", row.name + index.toString())}
                   </TableCell>)
                 }

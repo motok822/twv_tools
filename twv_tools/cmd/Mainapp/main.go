@@ -47,13 +47,13 @@ func main(){
 	//sm := http.NewServeMux()
 	//sm.HandleFunc("/func/",func_runnner)
 	sqllist:=sql_list.NewSQLList(db)
-	httpengine:=http_engine_imp.NewHTTPEngine("https://localhost",sqllist)
-	functions.Initialize(httpengine)
+	myserver:=http_engine_imp.NewHTTPServer(sqllist)
+	functions.Initialize(myserver)
 	
 	my_serv := &http.Server{
 		Addr:           ":443",
 		ReadTimeout:    10 * time.Second,
-		Handler:        httpengine,
+		Handler:        myserver,
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
