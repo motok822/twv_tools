@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,6 +9,9 @@ import Paper from '@mui/material/Paper';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 import { work_sawState } from './Equip_table_list';
+import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
+import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
+import { ParsePlanMap } from './ParsePlanMap';
 
 
 const Reserved = 0;
@@ -16,40 +19,58 @@ const Komaba = 1;
 const Hongou = 2;
 const NotReserved = 3;
 
-const rows = [
-  { name: "山行", value: [0] },
-  { name: "L装α", value: [0] },
-  { name: "L装β", value: [0] },
-  { name: "ヘルボα", value: [0] },
-  { name: "ヘルボβ", value: [0] },
-  { name: "ヘルボγ", value: [0] },
-  { name: "ヘルボδ", value: [0] },
-  { name: "エキボα", value: [0] },
-  { name: "エキボβ", value: [0] },
-  { name: "エキボγ", value: [0] },
-  { name: "藪ノコα", value: [0] },
-  { name: "藪ノコβ", value: [0] },
-  { name: "藪ノコγ", value: [0] },
-  { name: "藪ノコδ", value: [0] },
-  { name: "藪ノコε", value: [0] },
-  { name: "藪ノコξ", value: [0] },
-  { name: "なたα", value: [0] },
-  { name: "なたβ", value: [0] },
-  { name: "スノーソーα", value: [0] },
-  { name: "スノーソーβ", value: [0] },
-  { name: "スノーソーγ", value: [0] },
-  { name: "スノーソーδ", value: [0] },
-  { name: "スノーソーε", value: [0] },
-  { name: "スノーソーξ", value: [0] },
-];
+const EquipTemplate = [
+  { Group: "", Family: "", Name: "山行ID", state: NotReserved, last: 1, value: "0" },
+  { Group: "", Family: "", Name: "山行名", state: NotReserved, last: 1, value: "サンプル" },
+  { Group: "L装", Family: "", Name: "α", state: NotReserved, last: 0, value: "" },
+  { Group: "L装", Family: "", Name: "β", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘルボ", Family: "", Name: "α", state: NotReserved, last: 0, value: "" },
+  { Group: "ヘルボ", Family: "", Name: "β", state: NotReserved, last: 0, value: "" },  
+  { Group: "ヘルボ", Family: "", Name: "γ", state: NotReserved, last: 0, value: "" },
+  { Group: "ヘルボ", Family: "", Name: "δ", state: NotReserved, last: 1, value: "" },  
+  { Group: "エキボ", Family: "", Name: "α", state: NotReserved, last: 0, value: "" },
+  { Group: "エキボ", Family: "", Name: "β", state: NotReserved, last: 0, value: "" },  
+  { Group: "エキボ", Family: "", Name: "γ", state: NotReserved, last: 1, value: "" },
+  { Group: "藪ノコ", Family: "", Name: "α", state: NotReserved, last: 0, value: "" },  
+  { Group: "藪ノコ", Family: "", Name: "β", state: NotReserved, last: 0, value: "" },  
+  { Group: "藪ノコ", Family: "", Name: "γ", state: NotReserved, last: 0, value: "" },  
+  { Group: "藪ノコ", Family: "", Name: "δ", state: NotReserved, last: 0, value: "" },  
+  { Group: "藪ノコ", Family: "", Name: "ε", state: NotReserved, last: 0, value: "" },  
+  { Group: "藪ノコ", Family: "", Name: "ζ", state: NotReserved, last: 1, value: "" },    
+  { Group: "なた", Family: "", Name: "α", state: NotReserved, last: 0, value: "" },
+  { Group: "なた", Family: "", Name: "β", state: NotReserved, last: 1, value: "" },
+  { Group: "スノーソー", Family: "", Name: "α", state: NotReserved, last: 0, value: "" },  
+  { Group: "スノーソー", Family: "", Name: "β", state: NotReserved, last: 0, value: "" },  
+  { Group: "スノーソー", Family: "", Name: "γ", state: NotReserved, last: 0, value: "" },  
+  { Group: "スノーソー", Family: "", Name: "δ", state: NotReserved, last: 0, value: "" },  
+  { Group: "スノーソー", Family: "", Name: "ε", state: NotReserved, last: 0, value: "" },  
+  { Group: "スノーソー", Family: "", Name: "ζ", state: NotReserved, last: 1, value: "" },    
+]
+
 
 function Work_Saw_Table(props) {
-
-
   const [clickCount, SetClickCount] = useState(0);
   const [selectedElement, SetSelectedElement] = useState(['']);
   const information = useRef(null);
   const work_saw_state = useContext(work_sawState)
+  const [rows, SetRows] = useState([[...EquipTemplate]])
+  let PlanMapOneYear = null
+  useEffect(() => {
+    Fetch_Tent_Table();
+  }, [])
+  const Fetch_Tent_Table = async () => {
+    let BMgr = new BasicAPIManager();
+    let AMgr = new AdvancedAPIManager();
+
+    console.log(await BMgr.User.GetUsers())
+    console.log(await BMgr.EquipClass.GetAll())
+    console.log(await BMgr.EquipInfo.GetOneYear())
+    console.log(await BMgr.Plans.GetOneYear())
+    console.log("plan map")
+    PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
+    console.log(PlanMapOneYear)
+    SetRows(ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear))
+  }
   const initial_Equips = [
     {
       name: "L装",
@@ -201,7 +222,10 @@ function Work_Saw_Table(props) {
     } else if (place === Hongou) {
       info.place = "本郷"
       info.color = "red"
-    } else info.place = ""
+    } else {
+      info.place = ""
+      info.color = "gray"
+    }
 
     if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態
       return (
@@ -226,7 +250,7 @@ function Work_Saw_Table(props) {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell colSpan={2}></TableCell>
+              <TableCell colSpan={4}></TableCell>
               <TableCell colSpan={3}>L装</TableCell>
               <TableCell colSpan={5}>ヘルボ</TableCell>
               <TableCell colSpan={4}>エキボ</TableCell>
@@ -235,29 +259,51 @@ function Work_Saw_Table(props) {
               <TableCell colSpan={3}>スノーソー</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell>山行</TableCell>
+              <TableCell>山行ID</TableCell>
+              <TableCell></TableCell>
+              <TableCell>山行名</TableCell>
               <TableCell></TableCell>
               {Table_Header()}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              row.value.map((val, index) => {
-                if (row.name === '山行' || row.name === 'L装β' || row.name === 'ヘルボδ' || row.name === 'エキボγ' || row.name === '藪ノコξ' || row.name === 'なたβ' || row.name === 'スノーソーξ') {
+          {
+                rows.map((rowsi, index) => {
                   return (
-                    <>
-                      <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>
-                        {Equip_State(1, "加茂", row.name + index.toString())}
-                      </TableCell>
-                      <TableCell></TableCell>  {/* これは横のスペース */}
-                    </>)
-                } else {
-                  return (<TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(1, "加茂", e, row.name + index.toString()) }}>
-                    {Equip_State(0, "加茂", row.name + index.toString())}
-                  </TableCell>)
-                }
-              })
-            ))}
+                    <TableRow>
+                      {
+                        rowsi.map((row) => {
+                          const CellFullName = row.Group + row.Family + row.Name + index.toString()
+                          if (row.Name == "山行ID" || row.Name == "山行名") {
+                            return (
+                              <>
+                                <TableCell align='right' key={CellFullName} >
+                                  {Equip_State(row.state, row.value, CellFullName)}
+                                </TableCell>
+                                <TableCell></TableCell>
+                              </>
+                            )
+                          } else if (row.last == 1) {
+                            return (
+                              <>
+                                <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName) }}>
+                                  {Equip_State(row.state, row.value, CellFullName)}
+                                </TableCell>
+                                <TableCell></TableCell>
+                              </>)
+                          } else {
+                            return (
+                              <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName) }}>
+                                {Equip_State(row.state, row.value, CellFullName)}
+                              </TableCell>
+                            )
+                          }
+                        })
+                      }
+                    </TableRow>
+                  )
+                })
+              }
           </TableBody>
         </Table>
       </TableContainer>

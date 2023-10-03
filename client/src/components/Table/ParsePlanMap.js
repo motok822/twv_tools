@@ -63,17 +63,18 @@ function ParsePlanMap(rows, EquipTemplate, PlanMap){
     }
     for(let j = 0;j < PlanMap.planmap[EquipId[0]].length; j++){
         res[j][0].value = PlanMap.plans[j].ID
+        res[j][1].value = PlanMap.plans[j].Name
     }
     for(let i = 0;i < EquipId.length;i++){
         for(let j = 0;j < PlanMap.planmap[EquipId[i]].length; j++){
             if(PlanMap.planmap[EquipId[i]][j].MoveDest == "本郷"){  
-                res[j][i+1].state = Hongou                         //山行のカラムがあるので+1
+                res[j][i+2].state = Hongou                         //山行のカラムがあるので+2
             }else if(PlanMap.planmap[EquipId[i]][j].MoveDest == "駒場"){
-                res[j][i+1].state = Komaba 
+                res[j][i+2].state = Komaba 
             }else if(PlanMap.planmap[EquipId[i]][j].MoveDest == "予約"){
-                res[j][i+1].state = Reserved
+                res[j][i+2].state = Reserved
             }else{
-                res[j][i+1].state = NotReserved
+                res[j][i+2].state = NotReserved
             }
         }
     }

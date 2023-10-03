@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,6 +10,9 @@ import { Greek_Character, StyledContent, StyledOverlay } from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 import { pot_headState } from './Equip_table_list';
+import { ParsePlanMap } from './ParsePlanMap';
+import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
+import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 
 const Head_Character = ["α", "β", "γ", "δ", "ε", "η", "θ", "λ", "μ", "π", "ρ", "σ", "φ", "ω"];
 
@@ -19,29 +22,39 @@ const Komaba = 1;
 const Hongou = 2;
 const NotReserved = 3;
 
-const rows = [
-  { name: "山行", value: [0] },
-  { name: "コッヘルα", value: [0, 0, 0] },
-  { name: "コッヘルβ", value: [0, 0, 0] },
-  { name: "コッヘルγ", value: [0, 0, 0] },
-  { name: "コッヘルδ", value: [0, 0] },
-  { name: "コッヘルε", value: [0] },
-  { name: "ξ", value: [0] },
-  { name: "ヘッドα", value: [0] },
-  { name: "ヘッドβ", value: [0] },
-  { name: "ヘッドγ", value: [0] },
-  { name: "ヘッドδ", value: [0] },
-  { name: "ヘッドε", value: [0] },
-  { name: "ヘッドη", value: [0] },
-  { name: "ヘッドθ", value: [0] },
-  { name: "ヘッドλ", value: [0] },
-  { name: "ヘッドμ", value: [0] },
-  { name: "ヘッドπ", value: [0] },
-  { name: "ヘッドρ", value: [0] },
-  { name: "ヘッドσ", value: [0] },
-  { name: "ヘッドφ", value: [0] },
-  { name: "ヘッドω", value: [0] }
+const EquipTemplate = [
+  { Group: "", Family: "", Name: "山行ID", state: NotReserved, last: 1, value: "0" },
+  { Group: "", Family: "", Name: "山行名", state: NotReserved, last: 1, value: "サンプル" },
+  { Group: "コッヘル", Family: "α", Name: "特大", state: NotReserved, last: 0, value: "" },
+  { Group: "コッヘル", Family: "α", Name: "大", state: NotReserved, last: 0, value: "" },
+  { Group: "コッヘル", Family: "α", Name: "中", state: NotReserved, last: 1, value: "" },
+  { Group: "コッヘル", Family: "β", Name: "特大", state: NotReserved, last: 0, value: "" },
+  { Group: "コッヘル", Family: "β", Name: "大", state: NotReserved, last: 0, value: "" },
+  { Group: "コッヘル", Family: "β", Name: "中", state: NotReserved, last: 1, value: "" },
+  { Group: "コッヘル", Family: "γ", Name: "特大", state: NotReserved, last: 0, value: "" },
+  { Group: "コッヘル", Family: "γ", Name: "大", state: NotReserved, last: 0, value: "" },
+  { Group: "コッヘル", Family: "γ", Name: "中", state: NotReserved, last: 1, value: "" },
+  { Group: "コッヘル", Family: "δ", Name: "大", state: NotReserved, last: 0, value: "" },
+  { Group: "コッヘル", Family: "δ", Name: "中", state: NotReserved, last: 1, value: "" },
+  { Group: "コッヘル", Family: "ε", Name: "大", state: NotReserved, last: 1, value: "" },
+  { Group: "コッヘル", Family: "ζ", Name: "大", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "α", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "β", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "γ", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "δ", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "ε", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "η", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "Θ", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "λ", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "μ", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "π", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "ρ", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "σ", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "φ", state: NotReserved, last: 1, value: "" },
+  { Group: "ヘッド", Family: "", Name: "ω", state: NotReserved, last: 1, value: "" },
+  
 ]
+
 
 function Pot_Head_Table(props) {
 
@@ -49,6 +62,24 @@ function Pot_Head_Table(props) {
   const [selectedElement, SetSelectedElement] = useState(['']);
   const information = useRef(null);
   const pot_head_state = useContext(pot_headState)
+  const [rows, SetRows] = useState([[...EquipTemplate]])
+  let PlanMapOneYear = null
+  useEffect(() => {
+    Fetch_Tent_Table();
+  }, [])
+  const Fetch_Tent_Table = async () => {
+    let BMgr = new BasicAPIManager();
+    let AMgr = new AdvancedAPIManager();
+
+    console.log(await BMgr.User.GetUsers())
+    console.log(await BMgr.EquipClass.GetAll())
+    console.log(await BMgr.EquipInfo.GetOneYear())
+    console.log(await BMgr.Plans.GetOneYear())
+    console.log("plan map")
+    PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
+    console.log(PlanMapOneYear)
+    SetRows(ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear))
+  }
   const initial_Equips = [
     {
       name: "コッヘル",
@@ -136,7 +167,7 @@ function Pot_Head_Table(props) {
                   if (value.selected.length == 3) {
                     return (
                       <>
-                        <TableCell align='center'>中
+                        <TableCell align='center'>特大
                           {
                             props.CreateOption == true ?
                               <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
@@ -150,7 +181,7 @@ function Pot_Head_Table(props) {
                               : ""
                           }
                         </TableCell>
-                        <TableCell align='center'>特大
+                        <TableCell align='center'>中
                           {
                             props.CreateOption == true ?
                               <Switch size="small" checked={value.selected[2]} onChange={(e) => handleToggleChange(2, ind, index, e)} />
@@ -163,14 +194,14 @@ function Pot_Head_Table(props) {
                   } else if (value.selected.length == 2) {
                     return (
                       <>
-                        <TableCell align='center'>中
+                        <TableCell align='center'>大
                           {
                             props.CreateOption == true ?
                               <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
                               : ""
                           }
                         </TableCell>
-                        <TableCell align='center'>大
+                        <TableCell align='center'>中
                           {
                             props.CreateOption == true ?
                               <Switch size="small" checked={value.selected[1]} onChange={(e) => handleToggleChange(1, ind, index, e)} />
@@ -275,7 +306,10 @@ function Pot_Head_Table(props) {
     } else if (place === Hongou) {
       info.place = "本郷"
       info.color = "red"
-    } else info.place = ""
+    } else {
+      info.place = ""
+      info.color = "gray"
+    }
 
     if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態
       return (
@@ -304,33 +338,56 @@ function Pot_Head_Table(props) {
               <TableCell align='left' colSpan={20}>ヘッド</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell align='center' colSpan={1} >山行</TableCell>
+              <TableCell align='center' colSpan={1} >山行ID</TableCell>
+              <TableCell></TableCell>
+              <TableCell align='center' colSpan={1} >山行名</TableCell>
               <TableCell></TableCell>
               {Pot_Header()}
             </TableRow>
             <TableRow>
               <TableCell align="center" colSpan={2}></TableCell>
+              <TableCell align="center" colSpan={2}></TableCell>
               {Pot_Header_Element()}
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              row.value.map((val, index) => {
-                if (index == row.value.length - 1) {
+          {
+                rows.map((rowsi, index) => {
                   return (
-                    <>
-                      <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(Komaba, "加茂", e, row.name + index.toString()) }}>
-                        {Equip_State(1, "加茂", row.name + index.toString())}
-                      </TableCell>
-                      <TableCell></TableCell>  {/* これは横のスペース */}
-                    </>)
-                } else {
-                  return (<TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(Komaba, "加茂", e, row.name + index.toString()) }}>
-                    {Equip_State(0, "加茂", row.name + index.toString())}
-                  </TableCell>)
-                }
-              })
-            ))}
+                    <TableRow>
+                      {
+                        rowsi.map((row) => {
+                          const CellFullName = row.Group + row.Family + row.Name + index.toString()
+                          if (row.Name == "山行ID" || row.Name == "山行名") {
+                            return (
+                              <>
+                                <TableCell align='right' key={CellFullName} >
+                                  {Equip_State(row.state, row.value, CellFullName)}
+                                </TableCell>
+                                <TableCell></TableCell>
+                              </>
+                            )
+                          } else if (row.last == 1) {
+                            return (
+                              <>
+                                <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName) }}>
+                                  {Equip_State(row.state, row.value, CellFullName)}
+                                </TableCell>
+                                <TableCell></TableCell>
+                              </>)
+                          } else {
+                            return (
+                              <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName) }}>
+                                {Equip_State(row.state, row.value, CellFullName)}
+                              </TableCell>
+                            )
+                          }
+                        })
+                      }
+                    </TableRow>
+                  )
+                })
+              }
           </TableBody>
         </Table>
       </TableContainer>

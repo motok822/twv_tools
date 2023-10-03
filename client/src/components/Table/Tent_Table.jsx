@@ -21,10 +21,11 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate =
-  [{ Group: "", Family: "", Name: "山行", state: NotReserved, last: 1, value: "0" },
-  { Group: "7天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "加茂" },
-  { Group: "7天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "加茂" },
-  { Group: "7天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "加茂" },
+  [{ Group: "", Family: "", Name: "山行ID", state: NotReserved, last: 1, value: "0" },
+  { Group: "", Family: "", Name: "山行名", state: NotReserved, last: 1, value: "サンプル" },
+  { Group: "7天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "" },
+  { Group: "7天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "" },
+  { Group: "7天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "" },
   { Group: "7天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "" },
   { Group: "7天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "" },
   { Group: "7天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "" },
@@ -34,9 +35,9 @@ const EquipTemplate =
   { Group: "7天", Family: "δ", Name: "本体", state: NotReserved, last: 0, value: "" },
   { Group: "7天", Family: "δ", Name: "フライ", state: NotReserved, last: 0, value: "" },
   { Group: "7天", Family: "δ", Name: "ポール", state: NotReserved, last: 1, value: "" },
-  { Group: "45天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "加茂" },
-  { Group: "45天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "加茂" },
-  { Group: "45天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "加茂" },
+  { Group: "45天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "" },
+  { Group: "45天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "" },
+  { Group: "45天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "" },
   { Group: "45天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "" },
   { Group: "45天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "" },
   { Group: "45天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "" },
@@ -294,19 +295,22 @@ function Tent_Table(props) {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow >
-              <TableCell align="center" colSpan={2} style={{ borderBottom: "none" }}></TableCell>
+              <TableCell align="center" colSpan={4} style={{ borderBottom: "none" }}></TableCell>
               <TableCell align='left' colSpan={16}>7天</TableCell>
               <TableCell align='left' colSpan={20}>45天</TableCell>
               <TableCell align='left' colSpan={8}>6天</TableCell>
               <TableCell align='left' colSpan={4}>12天</TableCell>
-              <TableCell align='left' colSpan={4}>その他</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell align='center' colSpan={1} >山行</TableCell>
+              <TableCell align='center' colSpan={1} >山行ID</TableCell>
+              <TableCell></TableCell>
+              <TableCell align='center' colSpan={1} >山行名</TableCell>
               <TableCell></TableCell>
               {Table_Header()}
             </TableRow>
             <TableRow>
+              <TableCell align='center'></TableCell>
+              <TableCell></TableCell>
               <TableCell align='center'></TableCell>
               <TableCell></TableCell>
               {Table_Header_Element()}
@@ -319,8 +323,8 @@ function Tent_Table(props) {
                     <TableRow>
                       {
                         rowsi.map((row) => {
-                          const CellFullName = row.Group + row.Family + row.name + index.toString()
-                          if (row.name == "山行") {
+                          const CellFullName = row.Group + row.Family + row.Name + index.toString()
+                          if (row.Name == "山行ID" || row.Name == "山行名") {
                             return (
                               <>
                                 <TableCell align='right' key={CellFullName} >
