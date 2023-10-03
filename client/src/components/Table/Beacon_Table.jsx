@@ -9,7 +9,11 @@ import Paper from '@mui/material/Paper';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 import { beaconState } from './Equip_table_list';
-import { Hongou, Komaba, Reserved } from './Equip_table';
+
+const Reserved = 0;
+const Komaba = 1;
+const Hongou = 2;
+const NotReserved = 3;
 
 const rows = [
   { name: "山行", value: [0] },

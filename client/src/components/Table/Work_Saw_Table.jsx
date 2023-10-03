@@ -6,10 +6,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Greek_Character, Hongou, Komaba, Reserved } from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 import { work_sawState } from './Equip_table_list';
+
+
+const Reserved = 0;
+const Komaba = 1;
+const Hongou = 2;
+const NotReserved = 3;
 
 const rows = [
   { name: "山行", value: [0] },

@@ -33,23 +33,6 @@ function Equip_table_list(props) {
     active4Ref.current = active4;
     const EquipsState = useContext(EquipsContext)
 
-    
-    useEffect(() => {
-     Fetch_Tent_Table();
-    }, [])
-    const Fetch_Tent_Table = async()=>{
-        let BMgr = new BasicAPIManager();
-        let AMgr = new AdvancedAPIManager();
-
-        console.log(await BMgr.User.GetUsers())
-        console.log(await BMgr.EquipClass.GetAll())
-        console.log(await BMgr.EquipInfo.GetOneYear())
-        console.log(await BMgr.Plans.GetOneYear())
-        console.log("plan map")
-        const PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
-        console.log(PlanMapOneYear)
-
-    }
 
     const RLfunction = useCallback((event) => {
         const keyCode = event.keyCode;

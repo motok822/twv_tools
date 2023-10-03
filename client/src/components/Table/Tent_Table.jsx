@@ -6,28 +6,59 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Equip_State, Greek_Character, Hongou, Komaba, NotReserved, Reserved, StyledContent, StyledOverlay, isModal } from './Equip_table';
+import { Equip_State, Greek_Character, StyledContent, StyledOverlay, isModal } from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import styled from '@emotion/styled';
 import PopUp from './PopUp';
 import { tentState } from './Equip_table_list';
+import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
+import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
+import { ParsePlanMap } from './ParsePlanMap';
 
-const rows = [
-  [{ name: "山行", value: [0] },
-  { name: "7天α", value: [0, 0, 0] },
-  { name: "7天β", value: [0, 0, 0] },
-  { name: "7天γ", value: [0, 0, 0] },
-  { name: "7天δ", value: [0, 0, 0] },
-  { name: "45天α", value: [0, 0, 0] },
-  { name: "45天β", value: [0, 0, 0] },
-  { name: "45天γ", value: [0, 0, 0] },
-  { name: "45天δ", value: [0, 0, 0] },
-  { name: "45天ε", value: [0, 0, 0] },
-  { name: "6天α", value: [0, 0, 0] },
-  { name: "6天β", value: [0, 0, 0] },
-  { name: "12天α", value: [0, 0, 0] },
-  { name: "その他α", value: [0, 0, 0] }]
-];
+const Reserved = 0;
+const Komaba = 1;
+const Hongou = 2;
+const NotReserved = 3;
+
+const EquipTemplate =
+  [{ Group: "", Family: "", Name: "山行", state: NotReserved, last: 1, value: "0" },
+  { Group: "7天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "加茂" },
+  { Group: "7天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "加茂" },
+  { Group: "7天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "加茂" },
+  { Group: "7天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "" },
+  { Group: "7天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "" },
+  { Group: "7天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "" },
+  { Group: "7天", Family: "γ", Name: "本体", state: NotReserved, last: 0, value: "" },
+  { Group: "7天", Family: "γ", Name: "フライ", state: NotReserved, last: 0, value: "" },
+  { Group: "7天", Family: "γ", Name: "ポール", state: NotReserved, last: 1, value: "" },
+  { Group: "7天", Family: "δ", Name: "本体", state: NotReserved, last: 0, value: "" },
+  { Group: "7天", Family: "δ", Name: "フライ", state: NotReserved, last: 0, value: "" },
+  { Group: "7天", Family: "δ", Name: "ポール", state: NotReserved, last: 1, value: "" },
+  { Group: "45天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "加茂" },
+  { Group: "45天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "加茂" },
+  { Group: "45天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "加茂" },
+  { Group: "45天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "" },
+  { Group: "45天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "" },
+  { Group: "45天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "" },
+  { Group: "45天", Family: "γ", Name: "本体", state: NotReserved, last: 0, value: "" },
+  { Group: "45天", Family: "γ", Name: "フライ", state: NotReserved, last: 0, value: "" },
+  { Group: "45天", Family: "γ", Name: "ポール", state: NotReserved, last: 1, value: "" },
+  { Group: "45天", Family: "δ", Name: "本体", state: NotReserved, last: 0, value: "" },
+  { Group: "45天", Family: "δ", Name: "フライ", state: NotReserved, last: 0, value: "" },
+  { Group: "45天", Family: "δ", Name: "ポール", state: NotReserved, last: 1, value: "" },
+  { Group: "45天", Family: "ε", Name: "本体", state: NotReserved, last: 0, value: "" },
+  { Group: "45天", Family: "ε", Name: "フライ", state: NotReserved, last: 0, value: "" },
+  { Group: "45天", Family: "ε", Name: "ポール", state: NotReserved, last: 1, value: "" },
+  { Group: "6天", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "" },
+  { Group: "6天", Family: "α", Name: "フライ", state: NotReserved, last: 0, value: "" },
+  { Group: "6天", Family: "α", Name: "ポール", state: NotReserved, last: 1, value: "" },
+  { Group: "6天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "" },
+  { Group: "6天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "" },
+  { Group: "6天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "" },
+  { Group: "12天", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "" },
+  { Group: "12天", Family: "α", Name: "フライ", state: NotReserved, last: 0, value: "" },
+  { Group: "12天", Family: "α", Name: "ポール", state: NotReserved, last: 1, value: "" },];
+
 
 function Tent_Table(props) {
 
@@ -35,6 +66,25 @@ function Tent_Table(props) {
   const [clickCount, SetClickCount] = useState(0);
   const [selectedElement, SetSelectedElement] = useState(['']);
   const tent_state = useContext(tentState)
+  const [rows, SetRows] = useState([[...EquipTemplate]])
+  let PlanMapOneYear = null;
+  useEffect(() => {
+    Fetch_Tent_Table();
+  }, [])
+  const Fetch_Tent_Table = async () => {
+    let BMgr = new BasicAPIManager();
+    let AMgr = new AdvancedAPIManager();
+
+    console.log(await BMgr.User.GetUsers())
+    console.log(await BMgr.EquipClass.GetAll())
+    console.log(await BMgr.EquipInfo.GetOneYear())
+    console.log(await BMgr.Plans.GetOneYear())
+    console.log("plan map")
+    PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
+    console.log(PlanMapOneYear)
+    SetRows(ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear))
+  }
+
   const initial_Equips = [
     {
       name: "7天",
@@ -68,12 +118,6 @@ function Tent_Table(props) {
         { symbol: "α", selected: [0, 0, 0] },
       ]
     },
-    {
-      name: "その他",
-      type: [
-        { symbol: "α", selected: [0, 0, 0] },
-      ]
-    }
   ]
   const [Equips, SetEquips] = useState(tent_state == undefined ? initial_Equips : tent_state)
 
@@ -94,7 +138,7 @@ function Tent_Table(props) {
                 {val.type.map((value, index) => {
                   return (<TableCell align='left' colSpan={4}>{value.symbol}
                     {
-                      props.CreateOption == true && value.selected.length > 1?
+                      props.CreateOption == true && value.selected.length > 1 ?
                         <Switch onChange={(e) => {
                           const array = new Array(value.selected.length)
                           for (let i = 0; i < value.selected.length; i++) {
@@ -146,7 +190,7 @@ function Tent_Table(props) {
                       <TableCell align='right'>
                         フライ
                         {
-                          props.CreateOption == true ? 
+                          props.CreateOption == true ?
                             <Switch size="small" checked={value.selected[2]} onChange={(e) => handleToggleChange(2, ind, index, e)} />
                             : ""
                         }
@@ -269,25 +313,43 @@ function Tent_Table(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              {rows[0].map((row) => (
-                row.value.map((val, index) => {
-                  if (index == row.value.length - 1) {
-                    return (
-                      <>
-                        <TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(Komaba, "加茂", e, row.name + index.toString()) }}>
-                          {Equip_State(Komaba, "加茂", row.name + index.toString())}
-                        </TableCell>
-                        <TableCell></TableCell>  {/* これは横のスペース */}
-                      </>)
-                  } else {
-                    return (<TableCell align='right' key={row.name + index.toString()} onClick={(e) => { Change_State(NotReserved, "", e, row.name + index.toString()) }}>
-                      {Equip_State(NotReserved, "", row.name + index.toString())}
-                    </TableCell>)
-                  }
+              {
+                rows.map((rowsi, index) => {
+                  return (
+                    <TableRow>
+                      {
+                        rowsi.map((row) => {
+                          const CellFullName = row.Group + row.Family + row.name + index.toString()
+                          if (row.name == "山行") {
+                            return (
+                              <>
+                                <TableCell align='right' key={CellFullName} >
+                                  {Equip_State(row.state, row.value, CellFullName)}
+                                </TableCell>
+                                <TableCell></TableCell>
+                              </>
+                            )
+                          } else if (row.last == 1) {
+                            return (
+                              <>
+                                <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName) }}>
+                                  {Equip_State(row.state, row.value, CellFullName)}
+                                </TableCell>
+                                <TableCell></TableCell>
+                              </>)
+                          } else {
+                            return (
+                              <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName) }}>
+                                {Equip_State(row.state, row.value, CellFullName)}
+                              </TableCell>
+                            )
+                          }
+                        })
+                      }
+                    </TableRow>
+                  )
                 })
-              ))}
-            </TableRow>
+              }
           </TableBody>
         </Table>
       </TableContainer>

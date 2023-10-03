@@ -35,7 +35,3 @@ function Equip_table() {
 
 export { Equip_table }
 export { Greek_Character }
-export {Komaba}
-export {Hongou}
-export {Reserved}
-export {NotReserved}

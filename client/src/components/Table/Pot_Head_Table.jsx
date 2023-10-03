@@ -6,13 +6,18 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Greek_Character, Hongou, Komaba, Reserved, StyledContent, StyledOverlay } from './Equip_table';
+import { Greek_Character, StyledContent, StyledOverlay } from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 import { pot_headState } from './Equip_table_list';
 
 const Head_Character = ["α", "β", "γ", "δ", "ε", "η", "θ", "λ", "μ", "π", "ρ", "σ", "φ", "ω"];
 
+
+const Reserved = 0;
+const Komaba = 1;
+const Hongou = 2;
+const NotReserved = 3;
 
 const rows = [
   { name: "山行", value: [0] },
