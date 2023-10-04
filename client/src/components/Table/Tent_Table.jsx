@@ -14,6 +14,7 @@ import { tentState } from './Equip_table_list';
 import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ParsePlanMap } from './ParsePlanMap';
+import ShowOnTable from './ShowOnTable';
 
 const Reserved = 0;
 const Komaba = 1;
@@ -21,51 +22,48 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate =
-  [{ Group: "", Family: "", Name: "山行ID", state: NotReserved, last: 1, value: "0" },
-  { Group: "", Family: "", Name: "山行名", state: NotReserved, last: 1, value: "サンプル" },
-  { Group: "7天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "" },
-  { Group: "7天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "" },
-  { Group: "7天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "" },
-  { Group: "7天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "" },
-  { Group: "7天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "" },
-  { Group: "7天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "" },
-  { Group: "7天", Family: "γ", Name: "本体", state: NotReserved, last: 0, value: "" },
-  { Group: "7天", Family: "γ", Name: "フライ", state: NotReserved, last: 0, value: "" },
-  { Group: "7天", Family: "γ", Name: "ポール", state: NotReserved, last: 1, value: "" },
-  { Group: "7天", Family: "δ", Name: "本体", state: NotReserved, last: 0, value: "" },
-  { Group: "7天", Family: "δ", Name: "フライ", state: NotReserved, last: 0, value: "" },
-  { Group: "7天", Family: "δ", Name: "ポール", state: NotReserved, last: 1, value: "" },
-  { Group: "45天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "" },
-  { Group: "45天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "" },
-  { Group: "45天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "" },
-  { Group: "45天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "" },
-  { Group: "45天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "" },
-  { Group: "45天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "" },
-  { Group: "45天", Family: "γ", Name: "本体", state: NotReserved, last: 0, value: "" },
-  { Group: "45天", Family: "γ", Name: "フライ", state: NotReserved, last: 0, value: "" },
-  { Group: "45天", Family: "γ", Name: "ポール", state: NotReserved, last: 1, value: "" },
-  { Group: "45天", Family: "δ", Name: "本体", state: NotReserved, last: 0, value: "" },
-  { Group: "45天", Family: "δ", Name: "フライ", state: NotReserved, last: 0, value: "" },
-  { Group: "45天", Family: "δ", Name: "ポール", state: NotReserved, last: 1, value: "" },
-  { Group: "45天", Family: "ε", Name: "本体", state: NotReserved, last: 0, value: "" },
-  { Group: "45天", Family: "ε", Name: "フライ", state: NotReserved, last: 0, value: "" },
-  { Group: "45天", Family: "ε", Name: "ポール", state: NotReserved, last: 1, value: "" },
-  { Group: "6天", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "" },
-  { Group: "6天", Family: "α", Name: "フライ", state: NotReserved, last: 0, value: "" },
-  { Group: "6天", Family: "α", Name: "ポール", state: NotReserved, last: 1, value: "" },
-  { Group: "6天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "" },
-  { Group: "6天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "" },
-  { Group: "6天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "" },
-  { Group: "12天", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "" },
-  { Group: "12天", Family: "α", Name: "フライ", state: NotReserved, last: 0, value: "" },
-  { Group: "12天", Family: "α", Name: "ポール", state: NotReserved, last: 1, value: "" },];
+  [{ Group: "", Family: "", Name: "山行ID", state: NotReserved, last: 1, value: "0", ID: 0 },
+  { Group: "", Family: "", Name: "山行名", state: NotReserved, last: 1, value: "サンプル", ID: 0 },
+  { Group: "7天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "" , ID: 0},
+  { Group: "7天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "" , ID: 0},
+  { Group: "7天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "" , ID: 0},
+  { Group: "7天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "" , ID: 0},
+  { Group: "7天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "" , ID: 0},
+  { Group: "7天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "" , ID: 0},
+  { Group: "7天", Family: "γ", Name: "本体", state: NotReserved, last: 0, value: "" , ID: 0},
+  { Group: "7天", Family: "γ", Name: "フライ", state: NotReserved, last: 0, value: "" , ID: 0},
+  { Group: "7天", Family: "γ", Name: "ポール", state: NotReserved, last: 1, value: "" , ID: 0},
+  { Group: "7天", Family: "δ", Name: "本体", state: NotReserved, last: 0, value: "" , ID: 0},
+  { Group: "7天", Family: "δ", Name: "フライ", state: NotReserved, last: 0, value: "" , ID: 0},
+  { Group: "7天", Family: "δ", Name: "ポール", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "45天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "", ID: 0 },
+  { Group: "45天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "", ID: 0 },
+  { Group: "45天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "", ID: 0 },
+  { Group: "45天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "45天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "45天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "45天", Family: "γ", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "45天", Family: "γ", Name: "フライ", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "45天", Family: "γ", Name: "ポール", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "45天", Family: "δ", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "45天", Family: "δ", Name: "フライ", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "45天", Family: "δ", Name: "ポール", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "45天", Family: "ε", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "45天", Family: "ε", Name: "フライ", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "45天", Family: "ε", Name: "ポール", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "6天", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "6天", Family: "α", Name: "フライ", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "6天", Family: "α", Name: "ポール", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "6天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "6天", Family: "β", Name: "フライ", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "6天", Family: "β", Name: "ポール", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "12天", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "12天", Family: "α", Name: "フライ", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "12天", Family: "α", Name: "ポール", state: NotReserved, last: 1, value: "", ID: 0 },];
 
 
 function Tent_Table(props) {
 
-  const information = useRef(null);
-  const [clickCount, SetClickCount] = useState(0);
-  const [selectedElement, SetSelectedElement] = useState(['']);
   const tent_state = useContext(tentState)
   const [rows, SetRows] = useState([[...EquipTemplate]])
   let PlanMapOneYear = null;
@@ -120,7 +118,7 @@ function Tent_Table(props) {
       ]
     },
   ]
-  const [Equips, SetEquips] = useState(tent_state == undefined ? initial_Equips : tent_state)
+  const [Equips, SetEquips] = useState(tent_state == undefined ? initial_Equips : tent_state)  //E表作成の時に使う
 
   const handleToggleChange = (num, ind, index, e) => {
     SetEquips((prev) => {
@@ -209,88 +207,8 @@ function Tent_Table(props) {
     )
   }
 
-  const closeModal = (e) => {
-    let elm = e.target;
-    let flag = 0;
-    while (elm != null) {
-      if (elm.className != undefined && elm.className.startsWith("PopUp")) {
-        flag = 1;
-        break;
-      }
-      elm = elm.parentNode;
-    }
-    if (flag == 1) return;
-    SetClickCount(0);
-    SetSelectedElement(['']);
-    document.removeEventListener("click", closeModal)
-  }
-
-  function Change_State(place, name, event, selected) {
-    const info = {
-      place: place,
-      color: "",
-      name: name
-    };
-    information.current = info;
-    if (clickCount == 1 || clickCount == 0) {
-      document.addEventListener("click", closeModal);
-      event.stopPropagation();
-    }
-    if (IsElementIn(selectedElement, selected)) {
-      SetClickCount((pre) => (pre + 1) % 3);
-    } else {
-      SetClickCount(1);
-      SetSelectedElement([...selectedElement, selected]);
-    }
-  }
-
-  const IsElementIn = (array, element) => {
-    let flag = 0;
-    array.map((val, ind) => {
-      if (val == element) flag = 1;
-    })
-    if (flag == 1) return true;
-    else return false;
-  }
-
-  const Equip_State = (place, name, selected) => {
-    const info = {
-      place: place,
-      color: "",
-      name: name
-    };
-    if (place === Reserved) {
-      info.place = "貸出中"
-      info.color = "gray"
-    } else if (place === Komaba) {
-      info.place = "駒場"
-      info.color = "blue"
-    } else if (place === Hongou) {
-      info.place = "本郷"
-      info.color = "red"
-    } else {
-      info.place = ""
-      info.color = "gray"
-    }
-
-    if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態
-      return (
-        <Box style={{ cursor: "default" }}>
-          <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
-        </Box>
-      );
-    } else if (IsElementIn(selectedElement, selected)) {                  //クリック一回or二回 選ばれたセルのみ拡張 
-      return (
-        <Box style={{ cursor: "default" }}>
-          <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
-          <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.place}</Box>
-        </Box>
-      );
-    }
-  }
   return (
     <>
-      {clickCount === 2 ? <PopUp information={information.current} /> : <></>}
       <TableContainer component={Paper}>
         <Table aria-label="simple table">
           <TableHead>
@@ -316,45 +234,9 @@ function Tent_Table(props) {
               {Table_Header_Element()}
             </TableRow>
           </TableHead>
-          <TableBody>
-              {
-                rows.map((rowsi, index) => {
-                  return (
-                    <TableRow>
-                      {
-                        rowsi.map((row) => {
-                          const CellFullName = row.Group + row.Family + row.Name + index.toString()
-                          if (row.Name == "山行ID" || row.Name == "山行名") {
-                            return (
-                              <>
-                                <TableCell align='right' key={CellFullName} >
-                                  {Equip_State(row.state, row.value, CellFullName)}
-                                </TableCell>
-                                <TableCell></TableCell>
-                              </>
-                            )
-                          } else if (row.last == 1) {
-                            return (
-                              <>
-                                <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName) }}>
-                                  {Equip_State(row.state, row.value, CellFullName)}
-                                </TableCell>
-                                <TableCell></TableCell>
-                              </>)
-                          } else {
-                            return (
-                              <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName) }}>
-                                {Equip_State(row.state, row.value, CellFullName)}
-                              </TableCell>
-                            )
-                          }
-                        })
-                      }
-                    </TableRow>
-                  )
-                })
-              }
-          </TableBody>
+
+          <ShowOnTable rows={rows}></ShowOnTable>
+
         </Table>
       </TableContainer>
     </>
@@ -363,3 +245,13 @@ function Tent_Table(props) {
 
 
 export default Tent_Table
+
+/*
+To do
+テーブルの部分の抽象化をもうちょい頑張る
+新しいequip情報をサーバーに送るやつを作る
+E表作成のトグルスイッチがポップアップ画面にも浮き出るのを直す
+E表作成を終わらせる
+反省点
+もっと抽象化しておくべきだった（正直今からじゃ無理かな）
+*/

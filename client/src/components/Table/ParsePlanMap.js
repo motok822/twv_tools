@@ -67,6 +67,7 @@ function ParsePlanMap(rows, EquipTemplate, PlanMap){
     }
     for(let i = 0;i < EquipId.length;i++){
         for(let j = 0;j < PlanMap.planmap[EquipId[i]].length; j++){
+            res[j][i+2].ID = PlanMap.planmap[EquipId[i]][j].ID
             if(PlanMap.planmap[EquipId[i]][j].MoveDest == "本郷"){  
                 res[j][i+2].state = Hongou                         //山行のカラムがあるので+2
             }else if(PlanMap.planmap[EquipId[i]][j].MoveDest == "駒場"){

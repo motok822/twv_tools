@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled';
-import { FormControl, InputLabel, MenuItem, NativeSelect, Select } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, NativeSelect, Select } from '@mui/material';
 
 const StyledOverlay = styled("div")(() => ({
   position: "fixed",
@@ -23,24 +23,35 @@ const StyledContent = styled("div")(() => ({
 }));
 
 
+
 function PopUp(props) {
+  const [NewInfo, SetNewInfo] = useState({Name: "", Place: "", planID: 0, equipID: 0})
+  const handlePlaceChange = (e) => {
+    SetNewInfo({Name: NewInfo.Name, Place: e.target.selectedIndex, planID: NewInfo.planID, equipID: NewInfo.equipID})
+    props.rows[NewInfo.planID][NewInfo.equipID].state = e.target.selectedIndex
+  }
+  const handleNameChange = (e) =>{
+    SetNewInfo({Name: e.target.value, Place: NewInfo.Place, planID: NewInfo.planID, equipID: NewInfo.equipID})
+    props.rows[NewInfo.planID][NewInfo.equipID].value = e.target.value
+  }
   const information = useRef(null);
   information.current = props.information;
   useEffect(() => {
     const place_option_elm = document.getElementById("place_option");
-    console.log(information.current.place)
     place_option_elm.options[information.current.place].selected = true;
+    SetNewInfo({Name: information.current.name, Place: information.current.place, planID: information.current.planID, equipID: information.current.equipID})
   },[])
+
   return (
     <StyledOverlay>
       <StyledContent className='PopUp'>
-        <select id='place_option'>
+        <select id='place_option' onClick={(e) => handlePlaceChange(e)}>
           <option>貸し出し中</option>
           <option>駒場</option>
           <option>本郷</option>
           <option>使用しない</option>
         </select>
-        <p><input type='text' value={information.current.name}></input></p>
+        <p><input type='text' value={NewInfo.Name} onChange={(e) => handleNameChange(e)} ></input></p>
       </StyledContent>
     </StyledOverlay>
   )

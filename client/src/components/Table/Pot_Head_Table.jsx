@@ -13,6 +13,7 @@ import { pot_headState } from './Equip_table_list';
 import { ParsePlanMap } from './ParsePlanMap';
 import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
+import ShowOnTable from './ShowOnTable';
 
 const Head_Character = ["α", "β", "γ", "δ", "ε", "η", "θ", "λ", "μ", "π", "ρ", "σ", "φ", "ω"];
 
@@ -57,10 +58,6 @@ const EquipTemplate = [
 
 
 function Pot_Head_Table(props) {
-
-  const [clickCount, SetClickCount] = useState(0);
-  const [selectedElement, SetSelectedElement] = useState(['']);
-  const information = useRef(null);
   const pot_head_state = useContext(pot_headState)
   const [rows, SetRows] = useState([[...EquipTemplate]])
   let PlanMapOneYear = null
@@ -247,93 +244,13 @@ function Pot_Head_Table(props) {
     )
   }
 
-  const closeModal = (e) => {
-    let elm = e.target;
-    let flag = 0;
-    while (elm != null) {
-      if (elm.className != undefined && elm.className.startsWith("PopUp")) {
-        flag = 1;
-        break;
-      }
-      elm = elm.parentNode;
-    }
-    if (flag == 1) return;
-    SetClickCount(0);
-    SetSelectedElement(['']);
-    document.removeEventListener("click", closeModal)
-  }
-
-  function Change_State(place, name, event, selected) {
-    const info = {
-      place: place,
-      color: "",
-      name: name
-    };
-    information.current = info;
-    if (clickCount == 1 || clickCount == 0) {
-      document.addEventListener("click", closeModal);
-      event.stopPropagation();
-    }
-    if (IsElementIn(selectedElement, selected)) {
-      SetClickCount((pre) => (pre + 1) % 3);
-    } else {
-      SetClickCount(1);
-      SetSelectedElement([...selectedElement, selected]);
-    }
-  }
-
-  const IsElementIn = (array, element) => {
-    let flag = 0;
-    array.map((val, ind) => {
-      if (val == element) flag = 1;
-    })
-    if (flag == 1) return true;
-    else return false;
-  }
-
-  const Equip_State = (place, name, selected) => {
-    const info = {
-      place: place,
-      color: "",
-      name: name
-    };
-    if (place === Reserved) {
-      info.place = "貸出中"
-      info.color = "gray"
-    } else if (place === Komaba) {
-      info.place = "駒場"
-      info.color = "blue"
-    } else if (place === Hongou) {
-      info.place = "本郷"
-      info.color = "red"
-    } else {
-      info.place = ""
-      info.color = "gray"
-    }
-
-    if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態
-      return (
-        <Box style={{ cursor: "default" }}>
-          <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
-        </Box>
-      );
-    } else if (IsElementIn(selectedElement, selected)) {                  //クリック一回or二回 選ばれたセルのみ拡張 
-      return (
-        <Box style={{ cursor: "default" }}>
-          <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
-          <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.place}</Box>
-        </Box>
-      );
-    }
-  }
   return (
     <>
-      {clickCount == 2 ? <PopUp information={information.current} /> : <></>}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="center" colSpan={2} style={{ borderBottom: "none" }}></TableCell>
+              <TableCell align="center" colSpan={4} style={{ borderBottom: "none" }}></TableCell>
               <TableCell align='left' colSpan={18}>コッヘル</TableCell>
               <TableCell align='left' colSpan={20}>ヘッド</TableCell>
             </TableRow>
@@ -350,45 +267,9 @@ function Pot_Head_Table(props) {
               {Pot_Header_Element()}
             </TableRow>
           </TableHead>
-          <TableBody>
-          {
-                rows.map((rowsi, index) => {
-                  return (
-                    <TableRow>
-                      {
-                        rowsi.map((row) => {
-                          const CellFullName = row.Group + row.Family + row.Name + index.toString()
-                          if (row.Name == "山行ID" || row.Name == "山行名") {
-                            return (
-                              <>
-                                <TableCell align='right' key={CellFullName} >
-                                  {Equip_State(row.state, row.value, CellFullName)}
-                                </TableCell>
-                                <TableCell></TableCell>
-                              </>
-                            )
-                          } else if (row.last == 1) {
-                            return (
-                              <>
-                                <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName) }}>
-                                  {Equip_State(row.state, row.value, CellFullName)}
-                                </TableCell>
-                                <TableCell></TableCell>
-                              </>)
-                          } else {
-                            return (
-                              <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName) }}>
-                                {Equip_State(row.state, row.value, CellFullName)}
-                              </TableCell>
-                            )
-                          }
-                        })
-                      }
-                    </TableRow>
-                  )
-                })
-              }
-          </TableBody>
+
+          <ShowOnTable rows={rows}></ShowOnTable>
+
         </Table>
       </TableContainer>
     </>
