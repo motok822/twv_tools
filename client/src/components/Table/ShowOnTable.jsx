@@ -32,13 +32,14 @@ function ShowOnTable(props) {
         document.removeEventListener("click", closeModal)
     }
 
-    function Change_State(place, name, event, selected, equipID, planID) {
+    function Change_State(place, name, event, selected, EquipID, PlanID, ID) {
         const info = {
             place: place,
             color: "",
             name: name,
-            equipID: equipID,
-            planID: planID
+            EquipID: EquipID,
+            PlanID: PlanID,
+            ID: ID
         };
         information.current = info;
         if (clickCount == 1 || clickCount == 0) {
@@ -78,7 +79,7 @@ function ShowOnTable(props) {
             info.color = "red"
         } else {
             info.place = ""
-            info.color = "gray"
+            info.color = "black"
         }
 
         if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態
@@ -102,12 +103,12 @@ function ShowOnTable(props) {
             {clickCount === 2 ? <PopUp information={information.current} rows={rows} /> : <></>}
             <TableBody>
                 {
-                    rows.map((rowsi, planID) => {
+                    rows.map((rowsi, PlanID) => {
                         return (
                             <TableRow>
                                 {
-                                    rowsi.map((row, equipID) => {
-                                        const CellFullName = row.Group + row.Family + row.Name + planID.toString()
+                                    rowsi.map((row, EquipID) => {
+                                        const CellFullName = row.Group + row.Family + row.Name + PlanID.toString()
                                         if (row.Name == "山行ID" || row.Name == "山行名") {
                                             return (
                                                 <>
@@ -120,14 +121,14 @@ function ShowOnTable(props) {
                                         } else if (row.last == 1) {
                                             return (
                                                 <>
-                                                    <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName, equipID, planID) }}>
+                                                    <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName, EquipID, PlanID, row.ID) }}>
                                                         {Equip_State(row.state, row.value, CellFullName)}
                                                     </TableCell>
                                                     <TableCell></TableCell>
                                                 </>)
                                         } else {
                                             return (
-                                                <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName, equipID, planID) }}>
+                                                <TableCell align='right' key={CellFullName} onClick={(e) => { Change_State(row.state, row.value, e, CellFullName, EquipID, PlanID, row.ID) }}>
                                                     {Equip_State(row.state, row.value, CellFullName)}
                                                 </TableCell>
                                             )

@@ -22,8 +22,8 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate =
-  [{ Group: "", Family: "", Name: "山行ID", state: NotReserved, last: 1, value: "0", ID: 0 },
-  { Group: "", Family: "", Name: "山行名", state: NotReserved, last: 1, value: "サンプル", ID: 0 },
+  [{ Group: "", Family: "", Name: "山行ID", state: Reserved, last: 1, value: "0", ID: 0 },
+  { Group: "", Family: "", Name: "山行名", state: Reserved, last: 1, value: "サンプル", ID: 0 },
   { Group: "7天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "" , ID: 0},
   { Group: "7天", Family: "α", Name: "フライ", state: Hongou, last: 0, value: "" , ID: 0},
   { Group: "7天", Family: "α", Name: "ポール", state: Hongou, last: 1, value: "" , ID: 0},
@@ -81,7 +81,9 @@ function Tent_Table(props) {
     console.log("plan map")
     PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
     console.log(PlanMapOneYear)
-    SetRows(ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear))
+    const res = ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear)
+    console.log(res)
+    SetRows(res)
   }
 
   const initial_Equips = [

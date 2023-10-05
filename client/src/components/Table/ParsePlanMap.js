@@ -56,7 +56,6 @@ function ParsePlanMap(rows, EquipTemplate, PlanMap){
             } 
         }
     }
-    EquipId.sort()
     for(let i = 0;i < PlanMap.planmap[0].length;i++){
         let nextRow = EquipTemplate.map((obj) => Object.assign({}, obj))
         res = [...res, nextRow]
@@ -65,9 +64,10 @@ function ParsePlanMap(rows, EquipTemplate, PlanMap){
         res[j][0].value = PlanMap.plans[j].ID
         res[j][1].value = PlanMap.plans[j].Name
     }
-    for(let i = 0;i < EquipId.length;i++){
-        for(let j = 0;j < PlanMap.planmap[EquipId[i]].length; j++){
-            res[j][i+2].ID = PlanMap.planmap[EquipId[i]][j].ID
+    for(let i = 0;i < EquipId.length;i++){    //Equip
+        for(let j = 0;j < PlanMap.planmap[EquipId[i]].length; j++){  //planの個数
+            console.log(PlanMap.planmap[EquipId[i]][j])
+            res[j][i+2].ID = PlanMap.planmap[EquipId[i]][j].EquipID
             if(PlanMap.planmap[EquipId[i]][j].MoveDest == "本郷"){  
                 res[j][i+2].state = Hongou                         //山行のカラムがあるので+2
             }else if(PlanMap.planmap[EquipId[i]][j].MoveDest == "駒場"){
@@ -80,7 +80,7 @@ function ParsePlanMap(rows, EquipTemplate, PlanMap){
         }
     }
     rows = [rows[0], ...res]
-    rows.reverse()
+    // rows.reverse()
     return rows
 }
 export {ParsePlanMap}

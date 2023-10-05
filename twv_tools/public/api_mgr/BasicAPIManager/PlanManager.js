@@ -21,19 +21,19 @@ class PlanManager {
 	}
 	SortPlans(plans){
 		var sorted=new Array()
-		if(!plans.length>0){
+		if(!(plans.length>0)){
 			return sorted
 		}
 		sorted.push(plans[0])
 		for(var i=1;i<plans.length;i++){
-			var upper=i-1
+			var upper=i
 			var lower=0
 			while(upper!=lower){
 				var test=Math.floor((upper+lower)/2)
 				if(ComparePlans(plans[i],plans[test])){
 					upper=test
 				}else{
-					lower=test
+					lower=test+1
 				}
 			}
 			sorted.splice(lower,0,plans[i])
