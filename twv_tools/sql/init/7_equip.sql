@@ -24,7 +24,8 @@ create table EQUIP_CLASS_INDEX (
 
 insert into EQUIP_CLASS_INDEX (ID,ParentID,Name) VALUES (1,NULL,"ROOT");
 
-insert into EQUIP_CLASS_INDEX (ID,ParentID,Name) VALUES (3,1,"7天");
+insert into EQUIP_CLASS_INDEX (ID,ParentID,Name) VALUES (2,1,"テント");
+insert into EQUIP_CLASS_INDEX (ID,ParentID,Name) VALUES (3,2,"7天");
 insert into EQUIP_CLASS_INDEX (ID,ParentID,Name) VALUES (4,3,"α");
 insert into EQUIP_CLASS_INDEX (ID,ParentID,Name) VALUES (5,4,"本体");
 insert into EQUIP_CLASS_INDEX (ID,ParentID,Name) VALUES (6,4,"ポール");

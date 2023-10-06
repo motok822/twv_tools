@@ -44,22 +44,25 @@ class EquipMapManager {
 			}else{
 				if(planmap[i][j].Act=="RESERVE"&&v.Act=="MOVE"){
 					planmap[i][j]=v
-					break
+					continue
 				}
 				if(planmap[i][j].Act=="MOVE"&&v.Act=="RESERVE"){
-					break
+					continue
 				}
 				if(planmap[i][j].Act=="RESERVE"&&v.Act=="RESERVE"){
 					if(planmap[i][j].T1.getTime()<v.T1.getTime()){
 						planmap[i][j]=v
 					}
-					break
+					continue
 				}
 				if(planmap[i][j].Act=="MOVE"&&v.Act=="MOVE"){
+					console.log("flag")
+					console.log(planmap[i][j])
+					console.log(v)
 					if(planmap[i][j].T1.getTime()<v.T1.getTime()){
 						planmap[i][j]=v
 					}
-					break
+					continue
 				}
 			}
 		}

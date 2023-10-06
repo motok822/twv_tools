@@ -75,7 +75,7 @@ func (infos *equipinfos) Pull(start time.Time,end time.Time) ([]*EquipInfo,error
 	if err != nil {
 		return lists,err
 	}
-	rows, err := infos.sqllist.database.Query("SELECT ID,UserID,EquipID,Act,T1,T2,MoveDest,PlanID FROM "+tablename +" WHERE (? < T2 AND T1< ?)",start,end)
+	rows, err := infos.sqllist.database.Query("SELECT ID,UserID,EquipID,Act,T1,T2,MoveDest,PlanID FROM "+tablename +" WHERE (? < T1 AND T1< ?) OR (? < T2 AND T1< ?)",start,end,start,end)
 	if err != nil {
 		return lists,err
 	}

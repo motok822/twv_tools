@@ -92,10 +92,13 @@ class EquipClassManager {
 			}else{
 				if(info_gpr!=null){
 					info.Group=infos_raw[info_gpr].Name
+					info.Type=""
 					info.Family=infos_raw[info_pr].Name
 				}else{
 					if(info_pr!=null){
 						info.Group=infos_raw[info_pr].Name
+						info.Type=""
+						info.Family=""
 					}
 				}
 			}
@@ -123,7 +126,9 @@ function ParseEquipClass(str){
         infos[v].ParentID=Number(arr[i++])
     }
     infos[v].Name=arr[i++]
-    
+		if(infos[v].Name==null){
+			infos[v].Name=""
+		}
 	}
 	return infos
 }

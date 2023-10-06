@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Swiper demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+  <!-- Link Swiper's CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+	<link rel="stylesheet" href="login.css" type="text/css">
+
+  <!-- Demo styles -->
+  
+</head>
+
+<body>
+  <!-- Swiper -->
+
+  <div class="swiper mySwiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"> 
+				<div>
+					<div class="two alt-two">
+						<h1>Alternate
+							<span>Example Tagline Text</span>
+						</h1>
+					</div>
+		<label class="input_box_label" type="text">Email</label>
+					<input class="input_box" for="Username"/>
+        </div>
+			</div>
+      <div class="swiper-slide">Slide 2</div>
+      <div class="swiper-slide">Slide 3</div>
+      <div class="swiper-slide">Slide 4</div>
+      <div class="swiper-slide">Slide 5</div>
+      <div class="swiper-slide">Slide 6</div>
+      <div class="swiper-slide">Slide 7</div>
+      <div class="swiper-slide">Slide 8</div>
+      <div class="swiper-slide">Slide 9</div>
+    </div>
+  </div>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+  <!-- Initialize Swiper -->
+  <script>
+		let currentURL=new URL(location.href)
+		let loadpage=0
+		if(currentURL.searchParams.get("mode")!=null){
+			switch(currentURL.searchParams.get("mode")){
+			case "login":
+				loadpage=0;
+				break;
+			case "register":
+				loadpage=2;
+				break;
+			case "unauthorized":
+				loadpage=4;
+			}
+		}
+    var swiper = new Swiper(".mySwiper", {
+      effect: "cards",
+      grabCursor: true,
+			initialSlide :0,
+			allowSlideNext: true,
+			allowSlidePrev: true,
+    });
+  </script>
+</body>
+
+</html>

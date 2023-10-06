@@ -72,6 +72,8 @@ function PopUp(props) {
     console.log("EquipInfoTemplate")
     console.log(EquipInfoTemplate)
     console.log(await BMgr.EquipInfo.RegisterInfos(NewEquipRequest)) 
+    console.log("EquipInfo")
+    console.log(await BMgr.EquipInfo.GetOneYear())
   }
   return (
     <StyledOverlay>
