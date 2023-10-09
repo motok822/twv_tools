@@ -9,21 +9,37 @@ import Beacon_Table from './Beacon_Table';
 import { AppBar, Box, Button, Toolbar, Typography, css } from '@mui/material';
 import styled from '@emotion/styled';
 import Equip_table_list from './Equip_table_list';
+import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
+import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 
 const Greek_Character = ["α", "β", "γ", "δ", "ε", "ζ", "η"];
-const Reserved = 0;
-const Komaba = 1;
-const Hongou = 2;
-const NotReserved = 3;
 
 
 function Equip_table() {
+  const [PlanMapOneYear, SetPlanMapOneYear] = useState(null)
+  useEffect(() => {
+    Fetch_Table();
+  }, [])
+  const Fetch_Table = async () => {
+    let BMgr = new BasicAPIManager();
+    let AMgr = new AdvancedAPIManager();
+
+    console.log(await BMgr.User.GetUsers())
+    console.log(await BMgr.EquipClass.GetAll())
+    console.log(await BMgr.EquipInfo.GetOneYear())
+    console.log(await BMgr.Plans.GetOneYear())
+    console.log("plan map")
+    SetPlanMapOneYear(await AMgr.EquipMap.GetPlanMapOneYear())
+  }
+
   return (
     <div className={styles.Home}>
       <Header></Header>
       <main className={styles.main}>
         <p className={styles.title}>装備管理システム</p>
-        <Equip_table_list/>
+        {
+          PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear}/>
+        }
       </main >
       <Footer></Footer>
     </div >

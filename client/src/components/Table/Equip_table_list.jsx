@@ -114,25 +114,25 @@ function Equip_table_list(props) {
                 case 1:
                     return (
                         <tentState.Provider value={EquipsState.tent}>
-                            <Tent_Table CreateOption={props.CreateOption}></Tent_Table>
+                            <Tent_Table CreateOption={props.CreateOption} PlanMapOneYear={props.PlanMapOneYear}></Tent_Table>
                         </tentState.Provider>
                     );
                 case 2:
                     return (
                         <pot_headState.Provider value={EquipsState.pot_head}>
-                            <Pot_Head_Table CreateOption={props.CreateOption}></Pot_Head_Table>
+                            <Pot_Head_Table CreateOption={props.CreateOption} PlanMapOneYear={props.PlanMapOneYear}></Pot_Head_Table>
                         </pot_headState.Provider>
                     );
                 case 3:
                     return (
                         <work_sawState.Provider value={EquipsState.work_saw}>
-                            <Work_Saw_Table CreateOption={props.CreateOption}></Work_Saw_Table>
+                            <Work_Saw_Table CreateOption={props.CreateOption} PlanMapOneYear={props.PlanMapOneYear}></Work_Saw_Table>
                         </work_sawState.Provider>
                     );
                 case 4:
                     return (
                         <beaconState.Provider value={EquipsState.beacon}>
-                            <Beacon_Table CreateOption={props.CreateOption}></Beacon_Table>
+                            <Beacon_Table CreateOption={props.CreateOption} PlanMapOneYear={props.PlanMapOneYear}></Beacon_Table>
                         </beaconState.Provider>
                     );
                 default:
@@ -143,13 +143,13 @@ function Equip_table_list(props) {
                 case 0:
                     return;
                 case 1:
-                    return (<Tent_Table></Tent_Table>);
+                    return (<Tent_Table PlanMapOneYear={props.PlanMapOneYear}></Tent_Table>);
                 case 2:
-                    return (<Pot_Head_Table></Pot_Head_Table>);
+                    return (<Pot_Head_Table PlanMapOneYear={props.PlanMapOneYear}></Pot_Head_Table>);
                 case 3:
-                    return (<Work_Saw_Table></Work_Saw_Table>);
+                    return (<Work_Saw_Table PlanMapOneYear={props.PlanMapOneYear}></Work_Saw_Table>);
                 case 4:
-                    return (<Beacon_Table></Beacon_Table>);
+                    return (<Beacon_Table PlanMapOneYear={props.PlanMapOneYear}></Beacon_Table>);
                 default:
                     return;
             }

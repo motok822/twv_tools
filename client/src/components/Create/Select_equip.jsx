@@ -7,6 +7,7 @@ import { Equip_table } from '../Table/Equip_table';
 import Equip_table_list from '../Table/Equip_table_list';
 
 export const EquipsContext = createContext()
+let EquipInfoTemplate={ID:null,UserID:2,EquipID:7,Act:"DELETE",T1:new Date("2022-08-18 14:58:00"),T2:null,MoveDest:"temp",PlanID:0}
 
 function Select_equip() {
   const location = useLocation();
@@ -16,148 +17,161 @@ function Select_equip() {
   const [EquipsState, SetEquips] = useState({
     tent: [
       {
-        name: "7天",
-        type: [
-          { symbol: "α", selected: [0, 0, 0] },
-          { symbol: "β", selected: [0, 0, 0] },
-          { symbol: "γ", selected: [0, 0, 0] },
-          { symbol: "δ", selected: [0, 0, 0] },
+        Group: "テント",
+        Type: "7天",
+        List: [
+          { Family: "α", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
+          { Family: "β", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
+          { Family: "γ", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
+          { Family: "δ", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
         ]
       },
       {
-        name: "45天",
-        type: [
-          { symbol: "α", selected: [0, 0, 0] },
-          { symbol: "β", selected: [0, 0, 0] },
-          { symbol: "γ", selected: [0, 0, 0] },
-          { symbol: "δ", selected: [0, 0, 0] },
-          { symbol: "ε", selected: [0, 0, 0] },
-        ]
-      },
-
-      {
-        name: "12天",
-        type: [
-          { symbol: "α", selected: [0, 0, 0] },
+        Group: "45天",
+        Type: "",
+        List: [
+          { Family: "α", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
+          { Family: "β", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
+          { Family: "γ", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
+          { Family: "δ", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
+          { Family: "ε", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
         ]
       },
       {
-        name: "その他",
-        type: [
-          { symbol: "α", selected: [0, 0, 0] },
+        Group: "6天",
+        Type: "",
+        List: [
+          { Family: "α", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
+          { Family: "β", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
         ]
-      }
-
+      },
+      {
+        Group: "12天",
+        Type: "",
+        List: [
+          { Family: "α", selected: [{ Name: "本体", flag: 0 }, { Name: "フライ", flag: 0 }, { Name: "ポール", flag: 0 }] },
+        ]
+      },
     ],
-    pot_head: [{
-      name: "コッヘル",
-      type: [
-        { symbol: "α", selected: [0, 0, 0] },
-        { symbol: "β", selected: [0, 0, 0] },
-        { symbol: "γ", selected: [0, 0, 0] },
-        { symbol: "δ", selected: [0, 0] },
-        { symbol: "ε", selected: [0] },
-        { symbol: "ξ", selected: [0] },
+    pot_head: [
+    {
+      Group: "コッヘル",
+      Type: "",
+      List: [
+        { Family: "α", selected: [{Name: "特大", flag: 0}, {Name: "大", flag: 0}, {Name: "中", flag: 0}] },
+        { Family: "β", selected: [{Name: "特大", flag: 0}, {Name: "大", flag: 0}, {Name: "中", flag: 0}] },
+        { Family: "γ", selected: [{Name: "特大", flag: 0}, {Name: "大", flag: 0}, {Name: "中", flag: 0}] },
+        { Family: "δ", selected: [{Name: "大", flag: 0}, {Name: "中", flag: 0}] },
+        { Family: "ε", selected: [{Name: "中", flag: 0}] },
+        { Family: "ξ", selected: [{Name: "中", flag: 0}] },
 
       ]
     },
     {
-      name: "ヘッド",
-      type: [
-        { symbol: "α", selected: [0] },
-        { symbol: "β", selected: [0] },
-        { symbol: "γ", selected: [0] },
-        { symbol: "δ", selected: [0] },
-        { symbol: "ε", selected: [0] },
-        { symbol: "η", selected: [0] },
-        { symbol: "Θ", selected: [0] },
-        { symbol: "λ", selected: [0] },
-        { symbol: "μ", selected: [0] },
-        { symbol: "π", selected: [0] },
-        { symbol: "ρ", selected: [0] },
-        { symbol: "σ", selected: [0] },
-        { symbol: "φ", selected: [0] },
-        { symbol: "ω", selected: [0] },
+      Group: "ヘッド",
+      Type: "",
+      List: [
+        { Family: "", selected: [{Name: "α", flag: 0}] },
+        { Family: "", selected: [{Name: "β", flag: 0}] },
+        { Family: "", selected: [{Name: "γ", flag: 0}] },
+        { Family: "", selected: [{Name: "δ", flag: 0}] },
+        { Family: "", selected: [{Name: "ε", flag: 0}] },
+        { Family: "", selected: [{Name: "η", flag: 0}] },
+        { Family: "", selected: [{Name: "Θ", flag: 0}] },
+        { Family: "", selected: [{Name: "λ", flag: 0}] },
+        { Family: "", selected: [{Name: "μ", flag: 0}] },
+        { Family: "", selected: [{Name: "π", flag: 0}] },
+        { Family: "", selected: [{Name: "ρ", flag: 0}] },
+        { Family: "", selected: [{Name: "σ", flag: 0}] },
+        { Family: "", selected: [{Name: "φ", flag: 0}] },
+        { Family: "", selected: [{Name: "ω", flag: 0}] },
       ]
     }],
     work_saw: [
       {
-        name: "L装",
-        type: [
-          { symbol: "α", selected: [0] },
-          { symbol: "β", selected: [0] },
+        Group: "L装", 
+        Type: "",
+        List: [
+          { Family: "", selected: [{Name: "α", flag: 0}] },
+          { Family: "", selected: [{Name: "β", flag: 0}] },
         ]
       },
       {
-        name: "ヘルボ",
-        type: [
-          { symbol: "α", selected: [0] },
-          { symbol: "β", selected: [0] },
-          { symbol: "γ", selected: [0] },
-          { symbol: "δ", selected: [0] },
+        Group: "ヘルボ",
+        Type: "",
+        List: [
+          { Family: "", selected: [{Name: "α", flag: 0}] },
+          { Family: "", selected: [{Name: "β", flag: 0}] },
+          { Family: "", selected: [{Name: "γ", flag: 0}] },
+          { Family: "", selected: [{Name: "δ", flag: 0}] },
         ]
       },
       {
-        name: "エキボ",
+        Group: "エキボ",
+        Type: "",
         type: [
-          { symbol: "α", selected: [0] },
-          { symbol: "β", selected: [0] },
-          { symbol: "γ", selected: [0] },
+          { Family: "", selected: [{Name: "α", flag: 0}] },
+          { Family: "", selected: [{Name: "β", flag: 0}] },
+          { Family: "", selected: [{Name: "γ", flag: 0}] },
         ]
       },
       {
-        name: "藪ノコ",
+        Group: "藪ノコ",
+        Type: "",
         type: [
-          { symbol: "α", selected: [0] },
-          { symbol: "β", selected: [0] },
-          { symbol: "γ", selected: [0] },
-          { symbol: "δ", selected: [0] },
-          { symbol: "ε", selected: [0] },
-          { symbol: "ξ", selected: [0] },
+          { Family: "", selected: [{Name: "α", flag: 0}] },
+          { Family: "", selected: [{Name: "β", flag: 0}] },
+          { Family: "", selected: [{Name: "γ", flag: 0}] },
+          { Family: "", selected: [{Name: "δ", flag: 0}] },
+          { Family: "", selected: [{Name: "ε", flag: 0}] },
+          { Family: "", selected: [{Name: "ζ", flag: 0}] },
         ]
       },
       {
-        name: "なた",
+        Group: "なた",
+        Type: "",
         type: [
-          { symbol: "α", selected: [0] },
-          { symbol: "β", selected: [0] },
+          { Family: "", selected: [{Name: "α", flag: 0}] },
+          { Family: "", selected: [{Name: "β", flag: 0}] },
         ]
       },
       {
-        name: "スノーソー",
+        Group: "スノーソー",
+        Type: "",
         type: [
-          { symbol: "α", selected: [0] },
-          { symbol: "β", selected: [0] },
-          { symbol: "γ", selected: [0] },
-          { symbol: "δ", selected: [0] },
-          { symbol: "ε", selected: [0] },
-          { symbol: "ξ", selected: [0] },
+          { Family: "", selected: [{Name: "α", flag: 0}] },
+          { Family: "", selected: [{Name: "β", flag: 0}] },
+          { Family: "", selected: [{Name: "γ", flag: 0}] },
+          { Family: "", selected: [{Name: "δ", flag: 0}] },
+          { Family: "", selected: [{Name: "ε", flag: 0}] },
+          { Family: "", selected: [{Name: "ζ", flag: 0}] },
         ]
       },
     ],
     beacon: [
       {
-        name: "ビーコン",
-        type: [
-          { symbol: "A", selected: [0] },
-          { symbol: "B", selected: [0] },
-          { symbol: "E", selected: [0] },
-          { symbol: "F", selected: [0] },
-          { symbol: "G", selected: [0] },
-          { symbol: "H", selected: [0] },
-          { symbol: "M", selected: [0] },
-          { symbol: "O", selected: [0] },
-          { symbol: "Q", selected: [0] },
-          { symbol: "S", selected: [0] },
-          { symbol: "X", selected: [0] },
-          { symbol: "Y", selected: [0] },
-          { symbol: "Z", selected: [0] },
-          { symbol: "新arva", selected: [0] },
-          { symbol: "甲", selected: [0] },
-          { symbol: "乙", selected: [0] },
-          { symbol: "い", selected: [0] },
-          { symbol: "ろ", selected: [0] },
-          { symbol: "に", selected: [0] },
+        Group: "ビーコン", 
+        Type: "",
+        List: [
+          { Family: "", selected: [{Name: "A", flag: 0}] },
+          { Family: "", selected: [{Name: "B", flag: 0}] },
+          { Family: "", selected: [{Name: "E", flag: 0}] },
+          { Family: "", selected: [{Name: "F", flag: 0}] },
+          { Family: "", selected: [{Name: "G", flag: 0}] },
+          { Family: "", selected: [{Name: "H", flag: 0}] },
+          { Family: "", selected: [{Name: "M", flag: 0}] },
+          { Family: "", selected: [{Name: "O", flag: 0}] },
+          { Family: "", selected: [{Name: "Q", flag: 0}] },
+          { Family: "", selected: [{Name: "S", flag: 0}] },
+          { Family: "", selected: [{Name: "X", flag: 0}] },
+          { Family: "", selected: [{Name: "Y", flag: 0}] },
+          { Family: "", selected: [{Name: "Z", flag: 0}] },
+          { Family: "", selected: [{Name: "新arva", flag: 0}] },
+          { Family: "", selected: [{Name: "甲", flag: 0}] },
+          { Family: "", selected: [{Name: "乙", flag: 0}] },
+          { Family: "", selected: [{Name: "い", flag: 0}] },
+          { Family: "", selected: [{Name: "ろ", flag: 0}] },
+          { Family: "", selected: [{Name: "に", flag: 0}] },
         ]
       }
     ],
@@ -210,14 +224,30 @@ function Select_equip() {
   })
 
   const navigate = useNavigate()
-
   const JumpToNext = () => {
+    console.log(EquipsState)
     navigate("/Create/DistributeEquip", {
       state: {
         Equips_state: EquipsState
       }
     })
   }
+  // const SendInfoToServer = async() => {
+  //   let NewEquipRequest = new Array()
+  //   EquipInfoTemplate.T1 = new Date()
+  //   let dt = new Date()
+  //   dt.setDate(dt.getDate() + 7)
+  //   EquipInfoTemplate.T2 = dt
+  //   EquipInfoTemplate.Act = "RESERVE"
+  //   EquipInfoTemplate.PlanID = NewInfo.PlanID
+  //   EquipInfoTemplate.EquipID = NewInfo.ID
+  //   NewEquipRequest.push(EquipInfoTemplate)
+  //   console.log("EquipInfoTemplate")
+  //   console.log(EquipInfoTemplate)
+  //   console.log(await BMgr.EquipInfo.RegisterInfos(NewEquipRequest)) 
+  //   console.log("EquipInfo")
+  //   console.log(await BMgr.EquipInfo.GetOneYear())
+  // }
 
   return (
     <div className={styles.Home}>
@@ -315,4 +345,4 @@ function Select_equip() {
   )
 }
 
-export default Select_equip
+export default Select_equip 

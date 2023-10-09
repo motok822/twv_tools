@@ -20,18 +20,24 @@ function Create_equip() {
   const [AdditionalEquip, SetAdditionalEquip] = useState("防寒着　熊鈴")
   const navigate = useNavigate()
   const JumpToNext = () => {
-    navigate("/Create/SelectEquip", {state: {
-      activefood: ActiveFood,
-      emergencyfood: EmergencyFood,
-      sparefood: SpareFood,
-      water: Water,
-      rice: Rice,
-      climbingtype: ClimbingType,
-      climbingid: ClimbingId,
-      climbingname: ClimbingName,
-      climbingyear: ClimbingYear,
-      additionalequip: AdditionalEquip,
-    }})
+    if(ClimbingName == ""){
+      alert("山行名を入力してください")
+    }else if(ClimbingId == 0){
+      alert("山行IDを入力してください")
+    }else{
+      navigate("/Create/SelectEquip", {state: {
+        activefood: ActiveFood,
+        emergencyfood: EmergencyFood,
+        sparefood: SpareFood,
+        water: Water,
+        rice: Rice,
+        climbingtype: ClimbingType,
+        climbingid: ClimbingId,
+        climbingname: ClimbingName,
+        climbingyear: ClimbingYear,
+        additionalequip: AdditionalEquip,
+      }})
+    }
   }
   const ForShortClimbing = (type) => {
     SetClimbingType(type)
@@ -63,7 +69,7 @@ function Create_equip() {
               </tr>
               <tr>
                 <td>企画名</td>
-                <input type='text' onChange={(e) => { SetClimbingName(e.target.value) }}></input>
+                <input type='text' required onChange={(e) => { SetClimbingName(e.target.value) }}></input>
               </tr>
               <tr>
                 <td>山行形態</td>

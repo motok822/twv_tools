@@ -51,45 +51,45 @@ function Beacon_Table(props) {
   const beacon_state = useContext(beaconState)
   const [rows, SetRows] = useState([[...EquipTemplate]])
   let PlanMapOneYear = null
+  
   useEffect(() => {
-    Fetch_Tent_Table();
+    Parse_Table();
   }, [])
-  const Fetch_Tent_Table = async () => {
-    let BMgr = new BasicAPIManager();
-    let AMgr = new AdvancedAPIManager();
-
-    console.log(await BMgr.User.GetUsers())
-    console.log(await BMgr.EquipClass.GetAll())
-    console.log(await BMgr.EquipInfo.GetOneYear())
-    console.log(await BMgr.Plans.GetOneYear())
-    console.log("plan map")
-    PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
-    console.log(PlanMapOneYear)
-    SetRows(ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear))
+  const Parse_Table = () => {
+    PlanMapOneYear = props.PlanMapOneYear
   }
+  useEffect(() => {
+    if(PlanMapOneYear != null){
+      const res = ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear)
+      console.log(res)
+      SetRows(res)  
+    }
+  }, ParsePlanMap)
+
   const initial_Equips = [
     {
-      name: "ビーコン",
-      type: [
-        { symbol: "A", selected: [0] },
-        { symbol: "B", selected: [0] },
-        { symbol: "E", selected: [0] },
-        { symbol: "F", selected: [0] },
-        { symbol: "G", selected: [0] },
-        { symbol: "H", selected: [0] },
-        { symbol: "M", selected: [0] },
-        { symbol: "O", selected: [0] },
-        { symbol: "Q", selected: [0] },
-        { symbol: "S", selected: [0] },
-        { symbol: "X", selected: [0] },
-        { symbol: "Y", selected: [0] },
-        { symbol: "Z", selected: [0] },
-        { symbol: "新arva", selected: [0] },
-        { symbol: "甲", selected: [0] },
-        { symbol: "乙", selected: [0] },
-        { symbol: "い", selected: [0] },
-        { symbol: "ろ", selected: [0] },
-        { symbol: "に", selected: [0] },
+      Group: "ビーコン", 
+      Type: "",
+      List: [
+        { Family: "", selected: [{Name: "A", flag: 0}] },
+        { Family: "", selected: [{Name: "B", flag: 0}] },
+        { Family: "", selected: [{Name: "E", flag: 0}] },
+        { Family: "", selected: [{Name: "F", flag: 0}] },
+        { Family: "", selected: [{Name: "G", flag: 0}] },
+        { Family: "", selected: [{Name: "H", flag: 0}] },
+        { Family: "", selected: [{Name: "M", flag: 0}] },
+        { Family: "", selected: [{Name: "O", flag: 0}] },
+        { Family: "", selected: [{Name: "Q", flag: 0}] },
+        { Family: "", selected: [{Name: "S", flag: 0}] },
+        { Family: "", selected: [{Name: "X", flag: 0}] },
+        { Family: "", selected: [{Name: "Y", flag: 0}] },
+        { Family: "", selected: [{Name: "Z", flag: 0}] },
+        { Family: "", selected: [{Name: "新arva", flag: 0}] },
+        { Family: "", selected: [{Name: "甲", flag: 0}] },
+        { Family: "", selected: [{Name: "乙", flag: 0}] },
+        { Family: "", selected: [{Name: "い", flag: 0}] },
+        { Family: "", selected: [{Name: "ろ", flag: 0}] },
+        { Family: "", selected: [{Name: "に", flag: 0}] },
       ]
     }
   ]

@@ -31,7 +31,6 @@ function ShowOnTable(props) {
         SetSelectedElement(['']);
         document.removeEventListener("click", closeModal)
     }
-
     function Change_State(place, name, event, selected, EquipID, PlanID, ID) {
         const info = {
             place: place,
@@ -47,7 +46,7 @@ function ShowOnTable(props) {
             event.stopPropagation();
         }
         if (IsElementIn(selectedElement, selected)) {
-            SetClickCount((pre) => (pre + 1) % 3);
+            SetClickCount((pre) => (pre+1) % 3);
         } else {
             SetClickCount(1);
             SetSelectedElement([...selectedElement, selected]);
@@ -100,7 +99,7 @@ function ShowOnTable(props) {
 
     return (
         <>
-            {clickCount === 2 ? <PopUp information={information.current} rows={rows} /> : <></>}
+            {clickCount == 2 ? <PopUp information={information.current} rows={rows} /> : <></>}
             <TableBody>
                 {
                     rows.map((rowsi, PlanID) => {

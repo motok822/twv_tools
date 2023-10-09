@@ -13,6 +13,7 @@ import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ParsePlanMap } from './ParsePlanMap';
 import ShowOnTable from './ShowOnTable';
+import Table_Header_Element from './Table_Header_Element';
 
 
 const Reserved = 0;
@@ -54,73 +55,77 @@ function Work_Saw_Table(props) {
   const [rows, SetRows] = useState([[...EquipTemplate]])
   let PlanMapOneYear = null
   useEffect(() => {
-    Fetch_Tent_Table();
+    Parse_Table();
   }, [])
-  const Fetch_Tent_Table = async () => {
-    let BMgr = new BasicAPIManager();
-    let AMgr = new AdvancedAPIManager();
-
-    console.log(await BMgr.User.GetUsers())
-    console.log(await BMgr.EquipClass.GetAll())
-    console.log(await BMgr.EquipInfo.GetOneYear())
-    console.log(await BMgr.Plans.GetOneYear())
-    console.log("plan map")
-    PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
-    console.log(PlanMapOneYear)
-    SetRows(ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear))
+  const Parse_Table = () => {
+    PlanMapOneYear = props.PlanMapOneYear
   }
+  useEffect(() => {
+    if(PlanMapOneYear != null){
+      const res = ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear)
+      console.log(res)
+      SetRows(res)  
+    }
+  }, ParsePlanMap)
+
   const initial_Equips = [
     {
-      name: "L装",
-      type: [
-        { symbol: "α", selected: [0] },
-        { symbol: "β", selected: [0] },
+      Group: "L装", 
+      Type: "",
+      List: [
+        { Family: "", selected: [{Name: "α", flag: 0}] },
+        { Family: "", selected: [{Name: "β", flag: 0}] },
       ]
     },
     {
-      name: "ヘルボ",
-      type: [
-        { symbol: "α", selected: [0] },
-        { symbol: "β", selected: [0] },
-        { symbol: "γ", selected: [0] },
-        { symbol: "δ", selected: [0] },
+      Group: "ヘルボ",
+      Type: "",
+      List: [
+        { Family: "", selected: [{Name: "α", flag: 0}] },
+        { Family: "", selected: [{Name: "β", flag: 0}] },
+        { Family: "", selected: [{Name: "γ", flag: 0}] },
+        { Family: "", selected: [{Name: "δ", flag: 0}] },
       ]
     },
     {
-      name: "エキボ",
+      Group: "エキボ",
+      Type: "",
       type: [
-        { symbol: "α", selected: [0] },
-        { symbol: "β", selected: [0] },
-        { symbol: "γ", selected: [0] },
+        { Family: "", selected: [{Name: "α", flag: 0}] },
+        { Family: "", selected: [{Name: "β", flag: 0}] },
+        { Family: "", selected: [{Name: "γ", flag: 0}] },
       ]
     },
     {
-      name: "藪ノコ",
+      Group: "藪ノコ",
+      Type: "",
       type: [
-        { symbol: "α", selected: [0] },
-        { symbol: "β", selected: [0] },
-        { symbol: "γ", selected: [0] },
-        { symbol: "δ", selected: [0] },
-        { symbol: "ε", selected: [0] },
-        { symbol: "ξ", selected: [0] },
+        { Family: "", selected: [{Name: "α", flag: 0}] },
+        { Family: "", selected: [{Name: "β", flag: 0}] },
+        { Family: "", selected: [{Name: "γ", flag: 0}] },
+        { Family: "", selected: [{Name: "δ", flag: 0}] },
+        { Family: "", selected: [{Name: "ε", flag: 0}] },
+        { Family: "", selected: [{Name: "ζ", flag: 0}] },
       ]
     },
     {
-      name: "なた",
+      Group: "なた",
+      Type: "",
       type: [
-        { symbol: "α", selected: [0] },
-        { symbol: "β", selected: [0] },
+        { Family: "", selected: [{Name: "α", flag: 0}] },
+        { Family: "", selected: [{Name: "β", flag: 0}] },
       ]
     },
     {
-      name: "スノーソー",
+      Group: "スノーソー",
+      Type: "",
       type: [
-        { symbol: "α", selected: [0] },
-        { symbol: "β", selected: [0] },
-        { symbol: "γ", selected: [0] },
-        { symbol: "δ", selected: [0] },
-        { symbol: "ε", selected: [0] },
-        { symbol: "ξ", selected: [0] },
+        { Family: "", selected: [{Name: "α", flag: 0}] },
+        { Family: "", selected: [{Name: "β", flag: 0}] },
+        { Family: "", selected: [{Name: "γ", flag: 0}] },
+        { Family: "", selected: [{Name: "δ", flag: 0}] },
+        { Family: "", selected: [{Name: "ε", flag: 0}] },
+        { Family: "", selected: [{Name: "ζ", flag: 0}] },
       ]
     },
   ]
@@ -168,19 +173,14 @@ function Work_Saw_Table(props) {
           <TableHead>
             <TableRow>
               <TableCell colSpan={4}></TableCell>
-              <TableCell colSpan={3}>L装</TableCell>
-              <TableCell colSpan={5}>ヘルボ</TableCell>
-              <TableCell colSpan={4}>エキボ</TableCell>
-              <TableCell colSpan={7}>薮ノコ</TableCell>
-              <TableCell colSpan={3}>なた</TableCell>
-              <TableCell colSpan={3}>スノーソー</TableCell>
+              <Table_Header Equips={Equips}></Table_Header>
             </TableRow>
             <TableRow>
               <TableCell>山行ID</TableCell>
               <TableCell></TableCell>
               <TableCell>山行名</TableCell>
               <TableCell></TableCell>
-              {Table_Header()}
+              <Table_Header_Element Equips={Equips}></Table_Header_Element>
             </TableRow>
           </TableHead>
           <ShowOnTable rows={rows}></ShowOnTable>
