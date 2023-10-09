@@ -90,7 +90,7 @@ function Work_Saw_Table(props) {
     {
       Group: "エキボ",
       Type: "",
-      type: [
+      List: [
         { Family: "", selected: [{Name: "α", flag: 0}] },
         { Family: "", selected: [{Name: "β", flag: 0}] },
         { Family: "", selected: [{Name: "γ", flag: 0}] },
@@ -99,7 +99,7 @@ function Work_Saw_Table(props) {
     {
       Group: "藪ノコ",
       Type: "",
-      type: [
+      List: [
         { Family: "", selected: [{Name: "α", flag: 0}] },
         { Family: "", selected: [{Name: "β", flag: 0}] },
         { Family: "", selected: [{Name: "γ", flag: 0}] },
@@ -111,7 +111,7 @@ function Work_Saw_Table(props) {
     {
       Group: "なた",
       Type: "",
-      type: [
+      List: [
         { Family: "", selected: [{Name: "α", flag: 0}] },
         { Family: "", selected: [{Name: "β", flag: 0}] },
       ]
@@ -119,7 +119,7 @@ function Work_Saw_Table(props) {
     {
       Group: "スノーソー",
       Type: "",
-      type: [
+      List: [
         { Family: "", selected: [{Name: "α", flag: 0}] },
         { Family: "", selected: [{Name: "β", flag: 0}] },
         { Family: "", selected: [{Name: "γ", flag: 0}] },
@@ -134,7 +134,7 @@ function Work_Saw_Table(props) {
   const handleToggleChange = (num, ind, index, e) => {
     SetEquips((prev) => {
       const arr = [...prev]
-      arr[ind].type[index].selected[num] = e.target.checked
+      arr[ind].type[index].selected[num].flag = e.target.checked
       return arr
     })
   }
@@ -146,13 +146,12 @@ function Work_Saw_Table(props) {
           return (
             <>
               {
-                val.type.map((value, index) => {
-
-                  return (<TableCell align='left' colSpan={value.selected.length}>{value.symbol}
+                val.List.map((value, index) => {
+                  return (<TableCell align='left' colSpan={value.selected.length}>{value.selected[0].Name}
 
                     {
                       props.CreateOption == true ?
-                        <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
+                        <Switch size="small" checked={value.selected[0].flag} onChange={(e) => handleToggleChange(0, ind, index, e)} />
                         : ""
                     }
                   </TableCell>)
@@ -173,14 +172,19 @@ function Work_Saw_Table(props) {
           <TableHead>
             <TableRow>
               <TableCell colSpan={4}></TableCell>
-              <Table_Header Equips={Equips}></Table_Header>
+              <TableCell colSpan={3}>L装</TableCell>
+              <TableCell colSpan={5}>ヘルボ</TableCell>
+              <TableCell colSpan={4}>エキボ</TableCell>
+              <TableCell colSpan={7}>薮ノコ</TableCell>
+              <TableCell colSpan={3}>なた</TableCell>
+              <TableCell colSpan={3}>スノーソー</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>山行ID</TableCell>
               <TableCell></TableCell>
               <TableCell>山行名</TableCell>
               <TableCell></TableCell>
-              <Table_Header_Element Equips={Equips}></Table_Header_Element>
+              {Table_Header()}
             </TableRow>
           </TableHead>
           <ShowOnTable rows={rows}></ShowOnTable>

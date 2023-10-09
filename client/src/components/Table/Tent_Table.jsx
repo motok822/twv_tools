@@ -150,7 +150,7 @@ function Tent_Table(props) {
               <TableCell></TableCell>
               <TableCell align='center'></TableCell>
               <TableCell></TableCell>
-              <Table_Header_Element Equips={Equips}></Table_Header_Element>
+              <Table_Header_Element Equips={Equips} CreateOption={props.CreateOption}></Table_Header_Element>
             </TableRow>
           </TableHead>
 

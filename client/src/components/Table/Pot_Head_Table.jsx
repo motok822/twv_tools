@@ -133,7 +133,7 @@ function Pot_Head_Table(props) {
             <TableRow>
               <TableCell align="center" colSpan={2}></TableCell>
               <TableCell align="center" colSpan={2}></TableCell>
-              <Table_Header_Element Equips={Equips}></Table_Header_Element>
+              <Table_Header_Element Equips={Equips} CreateOption={props.CreateOption}></Table_Header_Element>
             </TableRow>
           </TableHead>
           <ShowOnTable rows={rows}></ShowOnTable>

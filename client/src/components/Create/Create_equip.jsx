@@ -20,12 +20,26 @@ function Create_equip() {
   const [AdditionalEquip, SetAdditionalEquip] = useState("防寒着　熊鈴")
   const navigate = useNavigate()
   const JumpToNext = () => {
-    if(ClimbingName == ""){
-      alert("山行名を入力してください")
-    }else if(ClimbingId == 0){
-      alert("山行IDを入力してください")
-    }else{
-      navigate("/Create/SelectEquip", {state: {
+    // if(ClimbingName == ""){
+    //   alert("山行名を入力してください")
+    // }else if(ClimbingId == 0){
+    //   alert("山行IDを入力してください")
+    // }else{
+    //   navigate("/Create/SelectEquip", {state: {
+    //     activefood: ActiveFood,
+    //     emergencyfood: EmergencyFood,
+    //     sparefood: SpareFood,
+    //     water: Water,
+    //     rice: Rice,
+    //     climbingtype: ClimbingType,
+    //     climbingid: ClimbingId,
+    //     climbingname: ClimbingName,
+    //     climbingyear: ClimbingYear,
+    //     additionalequip: AdditionalEquip,
+    //   }})
+    // }
+    navigate("/Create/SelectEquip", {
+      state: {
         activefood: ActiveFood,
         emergencyfood: EmergencyFood,
         sparefood: SpareFood,
@@ -36,8 +50,8 @@ function Create_equip() {
         climbingname: ClimbingName,
         climbingyear: ClimbingYear,
         additionalequip: AdditionalEquip,
-      }})
-    }
+      }
+    })
   }
   const ForShortClimbing = (type) => {
     SetClimbingType(type)
@@ -114,7 +128,7 @@ function Create_equip() {
               </tr>
             </tbody>
           </table>
-          <button className={styles.NextBotton} onClick={() => {JumpToNext()}}  >
+          <button className={styles.NextBotton} onClick={() => { JumpToNext() }}  >
             次へ
           </button>
         </div>

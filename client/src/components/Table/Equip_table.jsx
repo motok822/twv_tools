@@ -8,9 +8,9 @@ import Work_Saw_Table from './Work_Saw_Table';
 import Beacon_Table from './Beacon_Table';
 import { AppBar, Box, Button, Toolbar, Typography, css } from '@mui/material';
 import styled from '@emotion/styled';
-import Equip_table_list from './Equip_table_list';
 import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
+import Equip_table_list from './Equip_table_List';
 
 const Greek_Character = ["α", "β", "γ", "δ", "ε", "ζ", "η"];
 

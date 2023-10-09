@@ -13,6 +13,7 @@ import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ParsePlanMap } from './ParsePlanMap';
 import ShowOnTable from './ShowOnTable';
+import Table_Header_Element from './Table_Header_Element';
 
 const Reserved = 0;
 const Komaba = 1;
@@ -20,27 +21,27 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate = [
-  { Group: "", Type: "",Family: "", Name: "山行ID", state: Reserved, last: 1, value: "0" , ID: 0},
-  { Group: "", Type: "",Family: "", Name: "山行名", state: Reserved, last: 1, value: "サンプル" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "A", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "B", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "E", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "F", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "G", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "H", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "M", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "O", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "Q", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "S", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "X", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "Y", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "Z", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "新arva", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "甲", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "乙", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "", Family: "", Name: "い", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "ろ", state: NotReserved, last: 0, value: "" , ID: 0},
-  { Group: "ビーコン", Type: "",Family: "", Name: "は", state: NotReserved, last: 0, value: "" , ID: 0},
+  { Group: "", Type: "", Family: "", Name: "山行ID", state: Reserved, last: 1, value: "0", ID: 0 },
+  { Group: "", Type: "", Family: "", Name: "山行名", state: Reserved, last: 1, value: "サンプル", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "A", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "B", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "E", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "F", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "G", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "H", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "M", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "O", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "Q", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "S", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "X", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "Y", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "Z", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "新arva", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "甲", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "乙", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "い", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "ろ", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "は", state: NotReserved, last: 0, value: "", ID: 0 },
 ]
 
 const Beacon_Character = ["A", "B", "E", "F", "G", "H", "M", "O", "Q", "S", "X", "Y", "Z", "新arva", "甲", "丙", "い", "ろ", "に"]
@@ -51,7 +52,7 @@ function Beacon_Table(props) {
   const beacon_state = useContext(beaconState)
   const [rows, SetRows] = useState([[...EquipTemplate]])
   let PlanMapOneYear = null
-  
+
   useEffect(() => {
     Parse_Table();
   }, [])
@@ -59,46 +60,45 @@ function Beacon_Table(props) {
     PlanMapOneYear = props.PlanMapOneYear
   }
   useEffect(() => {
-    if(PlanMapOneYear != null){
+    if (PlanMapOneYear != null) {
       const res = ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear)
       console.log(res)
-      SetRows(res)  
+      SetRows(res)
     }
   }, ParsePlanMap)
 
   const initial_Equips = [
     {
-      Group: "ビーコン", 
+      Group: "ビーコン",
       Type: "",
       List: [
-        { Family: "", selected: [{Name: "A", flag: 0}] },
-        { Family: "", selected: [{Name: "B", flag: 0}] },
-        { Family: "", selected: [{Name: "E", flag: 0}] },
-        { Family: "", selected: [{Name: "F", flag: 0}] },
-        { Family: "", selected: [{Name: "G", flag: 0}] },
-        { Family: "", selected: [{Name: "H", flag: 0}] },
-        { Family: "", selected: [{Name: "M", flag: 0}] },
-        { Family: "", selected: [{Name: "O", flag: 0}] },
-        { Family: "", selected: [{Name: "Q", flag: 0}] },
-        { Family: "", selected: [{Name: "S", flag: 0}] },
-        { Family: "", selected: [{Name: "X", flag: 0}] },
-        { Family: "", selected: [{Name: "Y", flag: 0}] },
-        { Family: "", selected: [{Name: "Z", flag: 0}] },
-        { Family: "", selected: [{Name: "新arva", flag: 0}] },
-        { Family: "", selected: [{Name: "甲", flag: 0}] },
-        { Family: "", selected: [{Name: "乙", flag: 0}] },
-        { Family: "", selected: [{Name: "い", flag: 0}] },
-        { Family: "", selected: [{Name: "ろ", flag: 0}] },
-        { Family: "", selected: [{Name: "に", flag: 0}] },
+        { Family: "", selected: [{ Name: "A", flag: 0 }] },
+        { Family: "", selected: [{ Name: "B", flag: 0 }] },
+        { Family: "", selected: [{ Name: "E", flag: 0 }] },
+        { Family: "", selected: [{ Name: "F", flag: 0 }] },
+        { Family: "", selected: [{ Name: "G", flag: 0 }] },
+        { Family: "", selected: [{ Name: "H", flag: 0 }] },
+        { Family: "", selected: [{ Name: "M", flag: 0 }] },
+        { Family: "", selected: [{ Name: "O", flag: 0 }] },
+        { Family: "", selected: [{ Name: "Q", flag: 0 }] },
+        { Family: "", selected: [{ Name: "S", flag: 0 }] },
+        { Family: "", selected: [{ Name: "X", flag: 0 }] },
+        { Family: "", selected: [{ Name: "Y", flag: 0 }] },
+        { Family: "", selected: [{ Name: "Z", flag: 0 }] },
+        { Family: "", selected: [{ Name: "新arva", flag: 0 }] },
+        { Family: "", selected: [{ Name: "甲", flag: 0 }] },
+        { Family: "", selected: [{ Name: "乙", flag: 0 }] },
+        { Family: "", selected: [{ Name: "い", flag: 0 }] },
+        { Family: "", selected: [{ Name: "ろ", flag: 0 }] },
+        { Family: "", selected: [{ Name: "に", flag: 0 }] },
       ]
     }
   ]
   const [Equips, SetEquips] = useState(beacon_state == undefined ? initial_Equips : beacon_state)
-
   const handleToggleChange = (num, ind, index, e) => {
     SetEquips((prev) => {
       const arr = [...prev]
-      arr[ind].type[index].selected[num] = e.target.checked
+      arr[ind].type[index].selected[num].flag = e.target.checked
       return arr
     })
   }
@@ -110,24 +110,25 @@ function Beacon_Table(props) {
           return (
             <>
               {
-                val.type.map((value, index) => {
-                  return (<TableCell align='left' colSpan={value.selected.length}>{value.symbol}
+                val.List.map((value, index) => {
+
+                  return (<TableCell align='left' colSpan={value.selected.length}>{value.selected[0].Name}
+
                     {
                       props.CreateOption == true ?
-                        <Switch size="small" checked={value.selected[0]} onChange={(e) => handleToggleChange(0, ind, index, e)} />
+                        <Switch size="small" checked={value.selected[0].flag} onChange={(e) => handleToggleChange(0, ind, index, e)} />
                         : ""
                     }
                   </TableCell>)
                 })
               }
+              <TableCell></TableCell>
             </>)
         })
         }
       </>
     )
   }
-
-
   return (
     <>
       <TableContainer component={Paper}>
@@ -145,7 +146,7 @@ function Beacon_Table(props) {
               {Table_Header()}
             </TableRow>
           </TableHead>
-          
+
           <ShowOnTable rows={rows}></ShowOnTable>
 
         </Table>

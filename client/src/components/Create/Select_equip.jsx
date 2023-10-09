@@ -109,7 +109,7 @@ function Select_equip() {
       {
         Group: "エキボ",
         Type: "",
-        type: [
+        List: [
           { Family: "", selected: [{Name: "α", flag: 0}] },
           { Family: "", selected: [{Name: "β", flag: 0}] },
           { Family: "", selected: [{Name: "γ", flag: 0}] },
@@ -118,7 +118,7 @@ function Select_equip() {
       {
         Group: "藪ノコ",
         Type: "",
-        type: [
+        List: [
           { Family: "", selected: [{Name: "α", flag: 0}] },
           { Family: "", selected: [{Name: "β", flag: 0}] },
           { Family: "", selected: [{Name: "γ", flag: 0}] },
@@ -130,7 +130,7 @@ function Select_equip() {
       {
         Group: "なた",
         Type: "",
-        type: [
+        List: [
           { Family: "", selected: [{Name: "α", flag: 0}] },
           { Family: "", selected: [{Name: "β", flag: 0}] },
         ]
@@ -138,7 +138,7 @@ function Select_equip() {
       {
         Group: "スノーソー",
         Type: "",
-        type: [
+        List: [
           { Family: "", selected: [{Name: "α", flag: 0}] },
           { Family: "", selected: [{Name: "β", flag: 0}] },
           { Family: "", selected: [{Name: "γ", flag: 0}] },
