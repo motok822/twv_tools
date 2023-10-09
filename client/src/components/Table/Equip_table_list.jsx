@@ -32,7 +32,10 @@ function Equip_table_list(props) {
     active3Ref.current = active3;
     active4Ref.current = active4;
     const EquipsState = useContext(EquipsContext)
-
+    useEffect( () => {
+        console.log("EquipsState")
+        console.log(EquipsState.pot_head)
+    },[])
 
     const RLfunction = useCallback((event) => {
         const keyCode = event.keyCode;

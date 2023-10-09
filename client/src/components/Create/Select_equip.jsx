@@ -4,7 +4,6 @@ import Header from '../Header';
 import Footer from '../Footer';
 import styles from '../styles/Select_equip.module.css'
 import { Equip_table } from '../Table/Equip_table';
-import Equip_table_list from '../Table/Equip_table_list';
 
 export const EquipsContext = createContext()
 let EquipInfoTemplate={ID:null,UserID:2,EquipID:7,Act:"DELETE",T1:new Date("2022-08-18 14:58:00"),T2:null,MoveDest:"temp",PlanID:0}
@@ -292,7 +291,7 @@ function Select_equip() {
         </table>
         <p className={styles.Text}>共装選択</p>
         <EquipsContext.Provider value={EquipsState}>
-          <Equip_table_list CreateOption={true} />
+          <Equip_table CreateOption={true} />
         </EquipsContext.Provider>
         <div>
           <p className={styles.Text}>その他</p>

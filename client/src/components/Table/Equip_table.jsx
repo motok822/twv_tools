@@ -15,7 +15,7 @@ import Equip_table_list from './Equip_table_List';
 const Greek_Character = ["α", "β", "γ", "δ", "ε", "ζ", "η"];
 
 
-function Equip_table() {
+function Equip_table(props) {
   const [PlanMapOneYear, SetPlanMapOneYear] = useState(null)
   useEffect(() => {
     Fetch_Table();
@@ -32,18 +32,28 @@ function Equip_table() {
     SetPlanMapOneYear(await AMgr.EquipMap.GetPlanMapOneYear())
   }
 
-  return (
-    <div className={styles.Home}>
-      <Header></Header>
-      <main className={styles.main}>
-        <p className={styles.title}>装備管理システム</p>
+  if (props.CreateOption == true) {
+    return (
+      <>
         {
-          PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear}/>
+          PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear} CreateOption={props.CreateOption}/>
         }
-      </main >
-      <Footer></Footer>
-    </div >
-  )
+      </>
+    )
+  } else {
+    return (
+      <div className={styles.Home}>
+        <Header></Header>
+        <main className={styles.main}>
+          <p className={styles.title}>装備管理システム</p>
+          {
+            PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear} />
+          }
+        </main >
+        <Footer></Footer>
+      </div >
+    )
+  }
 }
 
 

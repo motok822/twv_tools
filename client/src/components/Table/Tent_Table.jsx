@@ -15,8 +15,6 @@ import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ParsePlanMap } from './ParsePlanMap';
 import ShowOnTable from './ShowOnTable';
-import Table_Header from './Table_Header';
-import Table_Header_Element from './Table_Header_Element';
 
 const Reserved = 0;
 const Komaba = 1;
@@ -124,7 +122,83 @@ function Tent_Table(props) {
     },
   ]
   const [Equips, SetEquips] = useState(tent_state == undefined ? initial_Equips : tent_state)  //E表作成の時に使う
-
+  const handleToggleChange = (num, ind, index, e) => {
+    SetEquips((prev) => {
+      const arr = [...prev]
+      arr[ind].List[index].selected[num].flag = e.target.checked
+      return arr
+    })
+  }
+  const Table_Header = () => {
+    return (
+      <>
+        {
+          Equips.map((val, ind) => {
+            return (
+              <>
+                {val.List.map((value, index) => {
+                  return (
+                    <TableCell align='left' colSpan={value.selected.length + 1}>{value.Family}
+                      {
+                        <Switch onChange={(e) => {
+                          const array = new Array(value.selected.length)
+                          for (let i = 0; i < value.selected.length; i++) {
+                            array[i] = value.selected[i]
+                            array[i].flag = e.target.checked
+                          }
+                          SetEquips((prev) => {
+                            const arr = [...prev]
+                            arr[ind].List[index].selected = array
+                            return arr
+                          })
+                        }} />
+                      }
+                    </TableCell>
+                  )
+                })
+                }
+              </>
+            )
+          })
+        }
+      </>
+    )
+  }
+  const Table_Header_Element = () => {
+    return (
+      <>
+        {
+          Equips.map((val, ind) => {
+            return (
+              <>
+                {val.List.map((value, index) => {
+                  return (
+                    <>
+                      {
+                        value.selected.map((v, i) => {
+                          return (
+                            <TableCell align='right'>
+                              {v.Name}
+                              {
+                                props.CreateOption == true ?
+                                  <Switch size="small" checked={value.selected[i].flag} onChange={(e) => handleToggleChange(i, ind, index, e)} />
+                                  : ""
+                              }
+                            </TableCell>
+                          )
+                        })}
+                      <TableCell></TableCell>
+                    </>
+                  )
+                })
+                }
+              </>
+            )
+          })
+        }
+      </>
+    )
+  }
 
   return (
     <>
@@ -143,14 +217,14 @@ function Tent_Table(props) {
               <TableCell></TableCell>
               <TableCell align='center' colSpan={1} >山行名</TableCell>
               <TableCell></TableCell>
-              <Table_Header Equips={Equips}></Table_Header>
+              {Table_Header()}
             </TableRow>
             <TableRow>
               <TableCell align='center'></TableCell>
               <TableCell></TableCell>
               <TableCell align='center'></TableCell>
               <TableCell></TableCell>
-              <Table_Header_Element Equips={Equips} CreateOption={props.CreateOption}></Table_Header_Element>
+              {Table_Header_Element()}
             </TableRow>
           </TableHead>
 

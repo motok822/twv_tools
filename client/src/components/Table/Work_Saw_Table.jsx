@@ -8,12 +8,11 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
-import { work_sawState } from './Equip_table_list';
 import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ParsePlanMap } from './ParsePlanMap';
 import ShowOnTable from './ShowOnTable';
-import Table_Header_Element from './Table_Header_Element';
+import { work_sawState } from './Equip_table_List';
 
 
 const Reserved = 0;
@@ -134,7 +133,7 @@ function Work_Saw_Table(props) {
   const handleToggleChange = (num, ind, index, e) => {
     SetEquips((prev) => {
       const arr = [...prev]
-      arr[ind].type[index].selected[num].flag = e.target.checked
+      arr[ind].List[index].selected[num].flag = e.target.checked
       return arr
     })
   }
