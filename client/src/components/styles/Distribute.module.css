@@ -1,0 +1,28 @@
+.MoveItem {
+    border: 1px black solid;
+    background-color: gray;
+    border-radius: 10%;
+    color: white;
+    padding: 0 1rem;
+    box-shadow: 7px 10px 5px #cccccc;
+    position: absolute;
+    z-index: 10;
+    font-size: small;
+    height: 2rem;
+    line-height: 0.7rem;
+}
+.MemberItem{
+    border: 1px black solid;
+    background-color: rgb(241, 248, 221);
+    height: 10rem;
+    border-radius: 10%;
+    box-shadow: 7px 10px 5px #cccccc;
+}
+.MemberContainer{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 24px 6%;
+}
+.ItemContainer{
+    margin: 100px 0;
+}   

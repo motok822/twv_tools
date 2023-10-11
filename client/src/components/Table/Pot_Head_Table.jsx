@@ -13,8 +13,7 @@ import { ParsePlanMap } from './ParsePlanMap';
 import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import ShowOnTable from './ShowOnTable';
-import { pot_headState } from './Equip_table_List';
-
+import { pot_headState } from './Equip_table_list';
 const Head_Character = ["α", "β", "γ", "δ", "ε", "η", "θ", "λ", "μ", "π", "ρ", "σ", "φ", "ω"];
 
 
@@ -62,8 +61,6 @@ function Pot_Head_Table(props) {
   const [rows, SetRows] = useState([[...EquipTemplate]])
   let PlanMapOneYear = null
   useEffect(() => {
-    console.log("pot_head_state")
-    console.log(pot_head_state)
     Parse_Table();
   }, [])
   const Parse_Table = () => {

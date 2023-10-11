@@ -17,6 +17,8 @@ function Create_equip() {
   const [ClimbingId, SetClimbingId] = useState(0)
   const [ClimbingName, SetClimbingName] = useState("")
   const [ClimbingYear, SetClimbingYear] = useState(year)
+  const [T1, SetT1] = useState(null)
+  const [T2, SetT2] = useState(null)
   const [AdditionalEquip, SetAdditionalEquip] = useState("防寒着　熊鈴")
   const navigate = useNavigate()
   const JumpToNext = () => {
@@ -50,6 +52,8 @@ function Create_equip() {
         climbingname: ClimbingName,
         climbingyear: ClimbingYear,
         additionalequip: AdditionalEquip,
+        T1: T1,
+        T2: T2
       }
     })
   }
@@ -84,6 +88,12 @@ function Create_equip() {
               <tr>
                 <td>企画名</td>
                 <input type='text' required onChange={(e) => { SetClimbingName(e.target.value) }}></input>
+              </tr>
+              <tr>
+                <td>山行期間</td>
+                <input type='text' required onChange={(e) => { SetT1(e.target.value) }} placeholder='2023/5/3'></input>
+                <div>から</div>
+                <input type='text' required onChange={(e) => { SetT2(e.target.value) }} placeholder='2023/5/3'></input>
               </tr>
               <tr>
                 <td>山行形態</td>

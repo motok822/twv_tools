@@ -42,6 +42,7 @@ const EquipTemplate =
   { Group: "12天", Family: "α", name: "本体", state: NotReserved, last: 0, value: "" },
   { Group: "12天", Family: "α", name: "フライ", state: NotReserved, last: 0, value: "" },
   { Group: "12天", Family: "α", name: "ポール", state: NotReserved, last: 1, value: "" },];
+  {ID: 1, UserID: 3, EquipID: 5, Act: 'MOVE', T1: Fri Oct 06 2023 19:47:41 GMT+0900 (Japan Standard Time)
 */
 function ParsePlanMap(rows, EquipTemplate, PlanMap) {
     let EquipID = []

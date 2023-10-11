@@ -12,7 +12,7 @@ import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ParsePlanMap } from './ParsePlanMap';
 import ShowOnTable from './ShowOnTable';
-import { beaconState } from './Equip_table_List';
+import { beaconState } from './Equip_table_list';
 
 const Reserved = 0;
 const Komaba = 1;

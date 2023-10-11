@@ -36,7 +36,7 @@ function Equip_table(props) {
     return (
       <>
         {
-          PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear} CreateOption={props.CreateOption}/>
+          PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear} CreateOption={true}/>
         }
       </>
     )
@@ -47,7 +47,7 @@ function Equip_table(props) {
         <main className={styles.main}>
           <p className={styles.title}>装備管理システム</p>
           {
-            PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear} />
+            PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear} CreateOption={false}/>
           }
         </main >
         <Footer></Footer>

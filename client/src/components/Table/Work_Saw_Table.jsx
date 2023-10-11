@@ -12,7 +12,7 @@ import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ParsePlanMap } from './ParsePlanMap';
 import ShowOnTable from './ShowOnTable';
-import { work_sawState } from './Equip_table_List';
+import { work_sawState } from './Equip_table_list';
 
 
 const Reserved = 0;
