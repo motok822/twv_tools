@@ -14,6 +14,7 @@ import Distribute_equip from './components/Create/Distribute_equip';
 import Login from './components/Login/Login';
 import AuthGuard from './components/Login/AuthGuard';
 import FailedToLogin from './components/Login/FailedToLogin';
+import Show_Distribution_Res from './components/Create/Show_Distribution_Res';
 
 export const UserContext = createContext();
 
@@ -38,6 +39,7 @@ function App() {
             <Route path={"/Create"} element={<AuthGuard component={<Create_equip />} />} />
             <Route path={"/Create/SelectEquip"} element={<AuthGuard component={<Select_equip />} />} />
             <Route path={"/Create/DistributeEquip"} element={<AuthGuard component={<Distribute_equip />} />} />
+            <Route path={"/Create/ShowDistributionRes"} element={<AuthGuard component={<Show_Distribution_Res />} />} />
             <Route path={"/Other"} element={<AuthGuard component={<Other />} />}/>
             <Route path={"/Login"} element={<Login />} />
             <Route path={"/FailedToLogin"} element={<FailedToLogin />}/>

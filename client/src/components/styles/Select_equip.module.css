@@ -40,3 +40,11 @@
     text-align: left;
     padding: 10px 10px;
 }
+
+.GridTable{
+    display: flex;
+    flex-wrap: wrap;
+}
+.space{
+    width: 2rem;
+}

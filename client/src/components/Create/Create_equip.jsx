@@ -13,7 +13,7 @@ function Create_equip() {
   const [SpareFood, SetSpareFood] = useState(0)
   const [Water, SetWater] = useState(1)
   const [Rice, SetRice] = useState(1)
-  const [ClimbingType, SetClimbingType] = useState("夏山一般装")
+  const [ClimbingType, SetClimbingType] = useState(0)
   const [ClimbingId, SetClimbingId] = useState(0)
   const [ClimbingName, SetClimbingName] = useState("")
   const [ClimbingYear, SetClimbingYear] = useState(year)
@@ -42,23 +42,23 @@ function Create_equip() {
     // }
     navigate("/Create/SelectEquip", {
       state: {
-        activefood: ActiveFood,
-        emergencyfood: EmergencyFood,
-        sparefood: SpareFood,
-        water: Water,
-        rice: Rice,
-        climbingtype: ClimbingType,
-        climbingid: ClimbingId,
-        climbingname: ClimbingName,
-        climbingyear: ClimbingYear,
-        additionalequip: AdditionalEquip,
+        ActiveFood: ActiveFood,
+        EmergencyFood: EmergencyFood,
+        SpareFood: SpareFood,
+        Water: Water,
+        Rice: Rice,
+        ClimbingType: ClimbingType,
+        ClimbingId: ClimbingId,
+        ClimbingName: ClimbingName,
+        ClimbingYear: ClimbingYear,
+        AdditionalEquip: AdditionalEquip,
         T1: T1,
         T2: T2
       }
     })
   }
-  const ForShortClimbing = (type) => {
-    SetClimbingType(type)
+  const ForShortClimbing = (index, type) => {
+    SetClimbingType(index)
     if (type.endsWith("日帰り装")) {
       SetActiveFood(1)
       SetEmergencyFood(1)
@@ -98,7 +98,7 @@ function Create_equip() {
               <tr>
                 <td>山行形態</td>
                 <td>
-                  <select name="ClimbingType" onChange={(e) => { ForShortClimbing(e.target.value) }}>
+                  <select name="ClimbingType" onChange={(e) => { ForShortClimbing(e.target.selectedIndex, e.target.value) }}>
                     <option value="夏山一般装" >夏山一般装</option>
                     <option value="夏山日帰り装" >夏山日帰り装</option>
                     <option value="藪一般装">藪一般装</option>

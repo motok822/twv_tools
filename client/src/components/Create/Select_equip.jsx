@@ -9,7 +9,18 @@ import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 
 export const EquipsContext = createContext()
 let EquipInfoTemplate = { ID: null, UserID: 2, EquipID: 7, Act: "DELETE", T1: new Date("2022-08-18 14:58:00"), T2: null, MoveDest: "temp", PlanID: 0 }
-
+const ClimbingTypeName = [
+  "夏山一般装",
+  "夏山日帰り装",
+  "藪一般装",
+  "藪日帰り装",
+  "沢一般装",
+  "沢日帰り装",
+  "冬山般装",
+  "冬山日帰り装",
+  "山スキー般装",
+  "山スキ日帰り装"
+]
 function Select_equip() {
   const location = useLocation();
   const [ClimbingState, SetClimbingState] = useState(location.state)
@@ -179,47 +190,47 @@ function Select_equip() {
     other: [
       {
         name: "F装",
-        num: 1,
+        num: 0,
       },
       {
         name: "W装",
-        num: 1,
+        num: 0,
       },
       {
         name: "ペグ",
-        num: 1,
+        num: 0,
       },
       {
         name: "大缶",
-        num: 1,
+        num: 0,
       },
       {
         name: "小缶",
-        num: 1,
+        num: 0,
       },
       {
         name: "共ポリ",
-        num: 1,
+        num: 0,
       },
       {
         name: "お玉",
-        num: 1,
+        num: 0,
       },
       {
         name: "しゃもじ",
-        num: 1,
+        num: 0,
       },
       {
         name: "熊スプレー",
-        num: 1,
+        num: 0,
       },
       {
         name: "浄水器",
-        num: 1,
+        num: 0,
       },
       {
         name: "替えフィルター",
-        num: 1,
+        num: 0,
       },
     ]
   })
@@ -231,7 +242,8 @@ function Select_equip() {
     navigate("/Create/DistributeEquip", {
       state: {
         Equips_state: EquipsState,
-        Members: Members
+        Members: Members,
+        ClimbingType: ClimbingState.ClimbingType
       }
     })
   }
@@ -263,12 +275,12 @@ function Select_equip() {
   }
   const MakeRequest = (template) => {
     let Requests = new Array()
-    Object.keys(EquipsState).forEach(function (key){
-      if(key != "other"){
+    Object.keys(EquipsState).forEach(function (key) {
+      if (key != "other") {
         EquipsState[key].map((value) => {
           value.List.map((val) => {
             val.selected.map((v) => {
-              if(v.flag == 1){
+              if (v.flag == 1) {
                 const request = Object.assign({}, template)
                 request.EquipID = v.EquipID
                 Requests = [...Requests, request]
@@ -277,8 +289,14 @@ function Select_equip() {
           })
         })
       }
-    }) 
+    })
     return Requests
+  }
+  console.log(EquipsState.other)
+  const SetOtherEquip = (value, e) => {
+    value.num = Number(e.target.value)
+    if(value.num < 0)value.num = 0
+    console.log(EquipsState)
   }
   let PlanMapOneYear = null
   const SendInfoToServer = async () => {
@@ -290,7 +308,7 @@ function Select_equip() {
     EquipInfoTemplate.T1 = new Date(ClimbingState.T1)
     EquipInfoTemplate.T2 = new Date(ClimbingState.T2)
     EquipInfoTemplate.Act = "RESERVE"
-    EquipInfoTemplate.PlanID = ClimbingState.climbingid
+    EquipInfoTemplate.PlanID = ClimbingState.ClimbingId
     console.log(EquipsState)
     NewEquipRequest = MakeRequest(EquipInfoTemplate)
     console.log(await BMgr.EquipInfo.RegisterInfos(NewEquipRequest))
@@ -313,11 +331,11 @@ function Select_equip() {
           <tbody>
             <tr>
               <td className={styles.TableTitle}>山行企画名</td>
-              <td className={styles.TableContent}>{ClimbingState.climbingname}</td>
+              <td className={styles.TableContent}>{ClimbingState.ClimbingName}</td>
             </tr>
             <tr>
               <td className={styles.TableTitle}>山行形態</td>
-              <td className={styles.TableContent}>{ClimbingState.climbingtype}</td>
+              <td className={styles.TableContent}>{ClimbingTypeName[ClimbingState.ClimbingType]}</td>
             </tr>
             <tr>
               <td className={styles.TableTitle}>参加人数</td>
@@ -355,40 +373,20 @@ function Select_equip() {
 
           <table border="1" className={styles.table}>
             <tbody>
-              <tr>
-                <td>F装</td>
-                <input type='number' className={styles.NumberInput}></input>
-                <td>W装</td>
-                <input type='number' className={styles.NumberInput}></input>
-              </tr>
-              <tr>
-                <td>ペグ</td>
-                <input type='number' className={styles.NumberInput}></input>
-                <td>大缶</td>
-                <input type='number' className={styles.NumberInput}></input>
-              </tr>
-              <tr>
-                <td>小缶(L缶除く)</td>
-                <input type='number' className={styles.NumberInput}></input>
-                <td>共ポリ</td>
-                <input type='number' className={styles.NumberInput}></input>
-              </tr>
-              <tr>
-                <td>お玉</td>
-                <input type='number' className={styles.NumberInput}></input>
-                <td>しゃもじ</td>
-                <input type='number' className={styles.NumberInput}></input>
-              </tr>
-              <tr>
-                <td>熊スプレー</td>
-                <input type='number' className={styles.NumberInput}></input>
-                <td>浄水器</td>
-                <input type='number' className={styles.NumberInput}></input>
-              </tr>
-              <tr>
-                <td>替えフィルター</td>
-                <input type='number' className={styles.NumberInput}></input>
-              </tr>
+              <div className={styles.GridTable}> 
+              {
+                EquipsState.other.map((value) => {
+                  return (
+                    <>
+                    {console.log(value)}
+                      <td>{value.name}</td>
+                      <input type='number' className={styles.NumberInput} placeholder={value.num} onChange={(e) => SetOtherEquip(value, e)}></input>
+                      <div className={styles.space}></div>
+                    </>
+                  )
+                })
+              }
+              </div>
             </tbody>
           </table>
         </div>
