@@ -64,6 +64,8 @@ function PopUp(props) {
     SetNewInfo({ Name: information.current.name, Place: information.current.place, PlanID: information.current.PlanID, EquipID: information.current.EquipID, ID: information.current.ID })
   }, [])  //初期設定
   const ButtonClick = async () => {
+    props.ClosePopUp()
+    console.log(props.CloseClick)
     let BMgr = new BasicAPIManager()
     props.rows[NewInfo.PlanID][NewInfo.EquipID].state = NewInfo.Place
     props.rows[NewInfo.PlanID][NewInfo.EquipID].value = NewInfo.Name  //user名

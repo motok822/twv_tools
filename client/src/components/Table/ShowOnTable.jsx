@@ -15,6 +15,7 @@ function ShowOnTable(props) {
     const [clickCount, SetClickCount] = useState(0);
     const [selectedElement, SetSelectedElement] = useState(['']);
     const information = useRef(null);
+    const [CloseClick, SetCloseClick] = useState({flag: 0})
 
     const closeModal = (e) => {
         let elm = e.target;
@@ -96,10 +97,13 @@ function ShowOnTable(props) {
             );
         }
     }
-
+    const ClosePopUp = () => {
+        SetClickCount(0)
+        SetSelectedElement(['']);
+    }
     return (
         <>
-            {clickCount == 2 ? <PopUp information={information.current} rows={rows} /> : <></>}
+            {clickCount == 2 ? <PopUp information={information.current} rows={rows} ClosePopUp={ClosePopUp}/> : <></>}
             <TableBody>
                 {
                     rows.map((rowsi, PlanID) => {

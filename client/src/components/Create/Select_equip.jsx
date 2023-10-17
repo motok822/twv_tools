@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Header from '../Header';
 import Footer from '../Footer';
@@ -26,6 +26,22 @@ function Select_equip() {
   const [ClimbingState, SetClimbingState] = useState(location.state)
   const [MemberNum, SetMemberNum] = useState(5)
   const [Members, SetMembers] = useState(["1人目", "2人目", "3人目", "4人目", "5人目"])
+  useEffect(() => {
+    console.log("MemberNum", MemberNum)
+    console.log("Members", Members.length)
+    SetMembers((prev) => {
+      for(let i = 0;i < MemberNum;i++){
+        if(i >= Members.length){
+          console.log("MemberNum",  MemberNum)
+          prev = [...prev, String(i+1)+"人目"]
+        }else if(prev[i] == ""){
+          prev[i] = String(i+1) + "人目"
+        }
+      }
+      prev = prev.slice(0, MemberNum)
+      return prev
+    })
+  }, [MemberNum])
   const [EquipsState, SetEquips] = useState({
     tent: [
       {
@@ -238,7 +254,6 @@ function Select_equip() {
   const navigate = useNavigate()
   const JumpToNext = () => {
     SendInfoToServer()
-    console.log(EquipsState)
     navigate("/Create/DistributeEquip", {
       state: {
         Equips_state: EquipsState,
@@ -259,8 +274,6 @@ function Select_equip() {
     return null
   }
   const SetEquipIDs = () => {
-    console.log("PlanMapOneYear")
-    console.log(PlanMapOneYear)
     Object.keys(EquipsState).forEach(function (key) {
       if (key != "other") {
         EquipsState[key].map((value) => {
@@ -292,11 +305,9 @@ function Select_equip() {
     })
     return Requests
   }
-  console.log(EquipsState.other)
   const SetOtherEquip = (value, e) => {
     value.num = Number(e.target.value)
     if(value.num < 0)value.num = 0
-    console.log(EquipsState)
   }
   let PlanMapOneYear = null
   const SendInfoToServer = async () => {
@@ -342,22 +353,19 @@ function Select_equip() {
               <td className={styles.TableContent}><input type='number' value={MemberNum} onChange={
                 (e) => {
                   SetMemberNum(e.target.value);
-                  const array = new Array(Number(e.target.value))
-                  for (let i = 0; i < Number(e.target.value); i++) {
-                    array[i] = ""
-                  }
-                  console.log(array)
-                  SetMembers(array)
                 }}></input>人</td>
             </tr>
             <tr>
               <td className={styles.TableTitle}>参加メンバー</td>
               <td className={styles.TableContent}>
-                {Members.map((val) => {
+                {Members.map((val, ind) => {
                   return (
-                    <input type='text' onChange={(e) => {
-                      val = e.target.value
-                    }} value={val}></input>
+                    <input type='text' onChange={(e) =>{
+                      SetMembers((prev) => {
+                        prev[ind] = e.target.value
+                        return prev
+                      })
+                    }} placeholder={val}></input>
                   )
                 })}
               </td>
@@ -378,7 +386,6 @@ function Select_equip() {
                 EquipsState.other.map((value) => {
                   return (
                     <>
-                    {console.log(value)}
                       <td>{value.name}</td>
                       <input type='number' className={styles.NumberInput} placeholder={value.num} onChange={(e) => SetOtherEquip(value, e)}></input>
                       <div className={styles.space}></div>

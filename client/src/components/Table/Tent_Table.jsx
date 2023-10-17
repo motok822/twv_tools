@@ -140,6 +140,7 @@ function Tent_Table(props) {
                   return (
                     <TableCell align='left' colSpan={value.selected.length + 1}>{value.Family}
                       {
+                        props.CreateOption == true ? 
                         <Switch onChange={(e) => {
                           const array = new Array(value.selected.length)
                           for (let i = 0; i < value.selected.length; i++) {
@@ -151,7 +152,7 @@ function Tent_Table(props) {
                             arr[ind].List[index].selected = array
                             return arr
                           })
-                        }} />
+                        }} /> : <></>
                       }
                     </TableCell>
                   )
