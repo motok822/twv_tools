@@ -64,6 +64,7 @@ func (mgr *tablemanager) Add(tableid string) (string,error) {
 		if _,err:=mgr.gettableid(tablename);err == nil{
 			continue
 		}
+		break
 	}
 	if i==10 {
 		return tablename,errors.New("@function tablemanager.Set():failed to allocate tablename")
@@ -78,7 +79,9 @@ func (mgr *tablemanager) Add(tableid string) (string,error) {
 }
 
 func (mgr *tablemanager) Delete(tableid string) error {
-	if _,err:=mgr.Get(tableid);err!=nil {
+	var tablename string
+	var err error
+	if tablename,err=mgr.Get(tableid);err!=nil {
 		return errors.New("@function tablemanager.Delete():tableid doesn't exist")
 	}
 	stmtIns,err:=mgr.sqllist.database.Prepare("DROP FROM FILEINDEX where tableid = ?")
@@ -87,5 +90,11 @@ func (mgr *tablemanager) Delete(tableid string) error {
 	}
 	defer stmtIns.Close()
 	_,err = stmtIns.Exec(tableid)
+	stmtIns2,err:=mgr.sqllist.database.Prepare("DROP TABLE IF EXISTS ?")
+	if err != nil {
+		return err
+	}
+	defer stmtIns2.Close()
+	_,err = stmtIns2.Exec(tablename)
 	return err	
 }

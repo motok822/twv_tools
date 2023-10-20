@@ -96,7 +96,6 @@ function Distribute_equip() {
                 return prev
             })
         }
-        console.log("EquipList", EquipList)
     }
     const getPos = () => {
         for (let i = 0; i < location.state.Members.length; i++) {

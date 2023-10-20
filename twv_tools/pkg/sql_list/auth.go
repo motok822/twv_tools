@@ -5,7 +5,7 @@ package sql_list
 
 import (
 	"database/sql"
-	"log"
+	_ "log"
 	"strings"
 	"fmt"
 	"errors"
@@ -257,7 +257,7 @@ func (handler *authhandler) Pull() (AuthInfos,error){
 	for rows.Next() {
 		err := rows.Scan(&content,&userid,&groupname,&authority)
 		if err != nil {
-		return infos,err
+			return infos,err
 		}
 		switch(content){
 		case "DEFAULT":
@@ -308,7 +308,7 @@ func (handler *authhandler) push(infos *authinfos) error {
 		if err!=nil {
 			return err
 		}
-		err=handler.Push(infos.original)
+		tablename,err=handler.sqllist.Table().Get(handler.dest)
 		if err!=nil {
 			return err
 		}
@@ -322,7 +322,6 @@ func (handler *authhandler) push(infos *authinfos) error {
 			return errors.New("type assertion failed")
 		}
 		infos.original=val
-		
 	}
 	stmtIns,err:=handler.sqllist.database.Prepare(
 	"INSERT into "+tablename+
@@ -414,6 +413,10 @@ func (handler *authhandler) push(infos *authinfos) error {
 }
 
 func (handler *authhandler) Create() error {
+	pinfo,err:=handler.Pull()
+	if err!=nil {
+		return err
+	}
 	tablename,err:=handler.sqllist.Table().Get(handler.dest)
 	if err==nil {
 		return errors.New("authinfos already exists")
@@ -422,9 +425,25 @@ func (handler *authhandler) Create() error {
 		return err
 	}
 	_,err=handler.sqllist.database.Exec("create table "+tablename+
-	" (id integer NOT NULL AUTO_INCREMENT,content varchar(100) NOT NULL,userid INTEGER UNIQUE,groupname varchar(100) UNIQUE,authority integer NOT NULL,PRIMARY KEY (id);")
-	return err
+	" (id integer NOT NULL AUTO_INCREMENT,content varchar(100) NOT NULL,userid INTEGER UNIQUE,groupname varchar(100) UNIQUE,authority integer NOT NULL,PRIMARY KEY (id));")
+	if err!=nil {
+		handler.sqllist.Table().Delete(tablename)
+		return err
+	}
+	return handler.Push(pinfo)
 }
+
+
+
+func (handler *authhandler) Destroy() error {
+	_,err:=handler.sqllist.Table().Get(handler.dest)
+	if err!=nil {
+		return errors.New("authhandler not exists")
+	}
+	handler.sqllist.Table().Delete(handler.dest)
+	return nil
+}
+
 
 func (handler *authhandler) Parent() (AuthHandler,error) {
 	if handler.is_root {
@@ -444,11 +463,11 @@ type authlist struct{
 	groups []string
 	original *authlist
 }
-func (list *authlist) Users() []int64{
-	return list.users
+func (list *authlist) Users() *([]int64) {
+	return &(list.users)
 }
-func (list *authlist) Groups() []string {
-	return list.groups
+func (list *authlist) Groups() *([]string) {
+	return &(list.groups)
 }
 
 func (list *authlist) Clone() *authlist{
@@ -482,7 +501,6 @@ func (lists *authlists) Pull() (AuthList,error){
 	if err != nil {
 		return list,err
 	}
-	log.Print(tablename)
 	rows, err := lists.sqllist.database.Query("SELECT content,userid,groupname FROM "+tablename)
 	if err != nil {
 		return list,err
@@ -540,7 +558,7 @@ func (lists *authlists) push(list *authlist) error{
 		if err!=nil {
 			return err
 		}
-		err=lists.Push(list.original)
+		tablename,err=lists.sqllist.Table().Get(lists.dest)
 		if err!=nil {
 			return err
 		}
@@ -554,6 +572,7 @@ func (lists *authlists) push(list *authlist) error{
 			return errors.New("type assertion failed")
 		}
 		list.original=val
+		
 	}
 	
 	stmtIns,err:=lists.sqllist.database.Prepare(
@@ -643,10 +662,6 @@ func (lists *authlists) push(list *authlist) error{
 
 
 func (lists *authlists) Create() error {
-	plist,err:=lists.Pull()
-	if err!=nil {
-		return err
-	}
 	tablename,err:=lists.sqllist.Table().Get(lists.dest)
 	if err==nil {
 		return errors.New("authlist already exists")
@@ -660,7 +675,17 @@ func (lists *authlists) Create() error {
 		lists.sqllist.Table().Delete(tablename)
 		return err
 	}
-	return lists.Push(plist)
+	return nil
+}
+
+
+func (lists *authlists) Destroy() error {
+	_,err:=lists.sqllist.Table().Get(lists.dest)
+	if err!=nil {
+		return errors.New("authlist not exists")
+	}
+	lists.sqllist.Table().Delete(lists.dest)
+	return nil
 }
 
 func (lists *authlists) New() AuthList {

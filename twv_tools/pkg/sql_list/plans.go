@@ -4,7 +4,7 @@
 package sql_list
 
 import (
-	_ "database/sql"
+	"database/sql"
 	_ "crypto/sha512"
 	"log"
 	_ "fmt"
@@ -42,6 +42,50 @@ func (mgr *planmanager) Plan(planID int64) (*PlanInfo,error){
 		return &info,err
 	}
 	return &info,nil
+}
+/*
+type PlanInfo struct {
+	ID int64
+	Name string
+	FYear int64
+	PlanType string
+	PlanNum sql.NullInt64
+	ReserveStart sql.NullTime
+	ReserveEnd sql.NullTime
+	ClimeStart sql.NullTime
+	ClimeEnd sql.NullTime
+	LastUpdate time.Time
+	Members sql.NullString
+}
+*/
+func (mgr *planmanager) Update(info PlanInfo) error{
+	tablename,err:=mgr.sqllist.Table().Get("/system/PLAN/PLAN_INDEX")
+	if err!=nil {
+		return err
+	}
+	stmtIns,err:=mgr.sqllist.database.Prepare("INSERT into "+tablename+
+	" (ID,Name,FYear,PlanType,PlanNum,ReserveStart,ReserveEnd,ClimeStart,ClimeEnd,LastUpdate,Members) VALUES (?,?,?,?,?,?,?,?,?,NOW(),?);" )
+	if err!=nil {
+		return err
+	}
+	defer stmtIns.Close()
+	if info.ID!=0 {
+		if info.PlanType=="DELETE"||info.PlanType=="Delete"||info.PlanType=="delete" {
+			stmtIns2,err:=mgr.sqllist.database.Prepare("DELETE from "+tablename+
+			" where id = ?;" )
+			if err!=nil {
+				return err
+			}
+			_,err=stmtIns2.Exec(&info.ID)
+		}else{
+			_,err=stmtIns.Exec(&info.ID,&info.Name,&info.FYear,&info.PlanType,&info.PlanNum,&info.ReserveStart,&info.ReserveEnd,&info.ClimeStart,&info.ClimeEnd,&info.Members)
+		}
+	}else{
+		var tempid sql.NullInt64
+		tempid.Valid=false
+		_,err=stmtIns.Exec(&tempid,&info.Name,&info.FYear,&info.PlanType,&info.PlanNum,&info.ReserveStart,&info.ReserveEnd,&info.ClimeStart,&info.ClimeEnd,&info.Members)
+	}
+	return err
 }
 
 

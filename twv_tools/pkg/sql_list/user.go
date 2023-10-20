@@ -4,12 +4,13 @@
 package sql_list
 
 import (
-	_ "database/sql"
+	"database/sql"
 	"crypto/sha512"
 	"log"
 	"fmt"
 	_ "strings"
 	"golang.org/x/exp/slices"
+	"errors"
 )
 
 
@@ -29,28 +30,140 @@ type usermanager struct {
 }
 
 
-func (mgr *usermanager) Add(info UserInfo,password string) int64{
-	if mgr.GetUserID(info.UserName)!=0 {
+func (mgr *usermanager) Update(info UserInfo) int64{
+	if info.ID==0 {//create new
+		if !info.Password.Valid {
+			return 0
+		}
+		hash_data := sha512.Sum512([]byte(info.Password.String))
+		info.Password_Hash= fmt.Sprintf("%x",hash_data)
+	}else{
+		if mgr.GetUserID(info.UserName)!=info.ID {
+			return 0
+		}
+		var old_info *UserInfo=nil
+		all_info,err:=mgr.GetAllUser()
+		if err!= nil {
+			return 0
+		}
+		for _,v := range all_info {
+			if v.ID==info.ID {
+				old_info=v
+				break
+			}
+		}
+		if old_info==nil {
+			return 0
+		}
+		if info.Password.Valid {
+			hash_data := sha512.Sum512([]byte(info.Password.String))
+			info.Password_Hash= fmt.Sprintf("%x",hash_data)
+		}else{
+			info.Password_Hash=old_info.Password_Hash
+		}
+		if !info.FamilyName.Valid {
+			info.FamilyName.Valid=old_info.FamilyName.Valid
+			info.FamilyName.String=old_info.FamilyName.String
+		}
+		if !info.FirstName.Valid {
+			info.FirstName.Valid=old_info.FirstName.Valid
+			info.FirstName.String=old_info.FirstName.String
+		}
+		if !info.Belong.Valid {
+			info.Belong.Valid=old_info.Belong.Valid
+			info.Belong.String=old_info.Belong.String
+		}
+		if !info.Sex.Valid {
+			info.Sex.Valid=old_info.Sex.Valid
+			info.Sex.String=old_info.Sex.String
+		}
+		if !info.Birth.Valid {
+			info.Birth.Valid=old_info.Birth.Valid
+			info.Birth.Time=old_info.Birth.Time
+		}
+	}
+	//normality check
+	if info.UserName=="" {
 		return 0
 	}
+	
 	tablename,err:=mgr.sqllist.Table().Get(mgr.dest)
 	if err!=nil {
 		return 0
 	}
-	hash_data := sha512.Sum512([]byte(password))
-	info.Password_Hash= fmt.Sprintf("%x",hash_data)
 	stmtIns,err:=mgr.sqllist.database.Prepare("INSERT into "+tablename+
-	" (username,password_hash,familyname,firstname,grade,belong,sex,birth) VALUES (?,?,?,?,?,?,?,?);" )
-	defer stmtIns.Close()
+	" (id,username,password_hash,familyname,firstname,grade,belong,sex,birth) VALUES (?,?,?,?,?,?,?,?,?);" )
 	if err!=nil {
 		return 0
 	}
-	_,err=stmtIns.Exec(&info.UserName,&info.Password_Hash,&info.FamilyName,&info.FirstName,&info.Grade,&info.Belong,&info.Sex,&info.Birth)
+	defer stmtIns.Close()
+	if info.ID!=0 {
+		_,err=stmtIns.Exec(&info.ID,&info.UserName,&info.Password_Hash,&info.FamilyName,&info.FirstName,&info.Grade,&info.Belong,&info.Sex,&info.Birth)
+	}else{
+		var tempid sql.NullInt64
+		tempid.Valid=false
+		_,err=stmtIns.Exec(&tempid,&info.UserName,&info.Password_Hash,&info.FamilyName,&info.FirstName,&info.Grade,&info.Belong,&info.Sex,&info.Birth)
+	}
 	if err!=nil {
 		return 0
+	}
+	if info.ID==0 {
+		userid:=mgr.sqllist.User().GetUserID(info.UserName)
+		if userid==0 {
+			return 0
+		}
+		err=mgr.sqllist.Auth().User(userid).Create()
+		if err!=nil {
+			return 0
+		}
+		userinfo,err:=mgr.sqllist.Auth().User(userid).Pull()
+		if err!=nil {
+			return 0
+		}
+		
+		if !slices.Contains(*(userinfo.Users()),userid){
+			*(userinfo.Users())=append(*(userinfo.Users()),userid)
+			err:=mgr.sqllist.Auth().User(userid).Push(userinfo)
+			if err!=nil {
+				return 0
+			}
+		}
+		mgr.AddToGroup(userid,"Guests")
 	}
 	return mgr.GetUserID(info.UserName)
 	
+}
+
+func (mgr *usermanager) AddToGroup(userid int64,groupname string) error{
+	if userid<=0 {
+		return errors.New("Please specify userid")
+	}
+	
+	groupinfo,err:=mgr.sqllist.Auth().Group(groupname).Pull()
+	if err!=nil {
+		return err
+	}
+	if !slices.Contains(*(groupinfo.Users()),userid){
+		*(groupinfo.Users())=append(*(groupinfo.Users()),userid)
+		err:=mgr.sqllist.Auth().Group(groupname).Push(groupinfo)
+		if err!=nil {
+			return err
+		}
+	}
+	
+	
+	userinfo,err:=mgr.sqllist.Auth().User(userid).Pull()
+	if err!=nil {
+		return err
+	}
+	if !slices.Contains(*(userinfo.Groups()),groupname){
+		*(userinfo.Groups())=append(*(userinfo.Groups()),groupname)
+		err:=mgr.sqllist.Auth().User(userid).Push(userinfo)
+		if err!=nil {
+			return err
+		}
+	}
+	return nil
 }
 
 
@@ -66,6 +179,7 @@ func (mgr *usermanager) Delete(userid int64){
 		return
 	}
 	_,_=stmtIns.Exec(&userid)
+	
 	return
 	
 }
@@ -167,8 +281,8 @@ func (mgr *usermanager) GetGroupContent(groupname string) ([]int64,[]string,erro
 		if err!=nil {
 			return nil,nil,err
 		}
-		quser:=tgroup.Users()
-		qgroup:=tgroup.Groups()
+		quser:=*(tgroup.Users())
+		qgroup:=*(tgroup.Groups())
 		for _,v := range quser {
 			if !slices.Contains(groupusers,v) {
 				groupusers=append(groupusers,v)

@@ -5,10 +5,8 @@ import styles from './styles/Home.module.css'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import F_calc from './F/F_calc'
 import Max_calc from './Max/Max_calc'
-import { Login } from '../api_communication/Login'
 
 function Home() {
-  console.log(Login())
   return (
     <div className={styles.Home}>
       <Header></Header>

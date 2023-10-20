@@ -20,12 +20,13 @@ type SQLList interface {
 	
 	
 	User() interface{
-		Add(UserInfo,string) int64
+		Update(UserInfo) int64
 		Delete(int64)
 		GetUserID(string) int64
 		Confirm(int64,string) bool
 		GetAllUser() ([]*UserInfo,error)
 		GetGroupContent(string) ([]int64,[]string,error)//misplace??
+		AddToGroup(int64,string) error
 	}
 	
 	Table() interface{
@@ -34,6 +35,7 @@ type SQLList interface {
 		Delete(string) error
 	}
 	Plans() interface{
+		Update(PlanInfo) error
 		IndexOfFYear(int64) ([]int64,error)
 		Plan(int64) (*PlanInfo,error)
 		GetPlanByTime(time.Time,time.Time) ([]*PlanInfo,error)
@@ -78,17 +80,19 @@ type AuthHandler interface {
 	Push(AuthInfos) error
 	Create() error
 	Parent() (AuthHandler,error)
+	Destroy() error
 	//New() AuthInfos
 }
 type AuthList interface {
-	Users() []int64
-	Groups() []string
+	Users() *([]int64)
+	Groups() *([]string)
 }
 type AuthLists interface {
 	Pull() (AuthList,error)
 	Push(AuthList) error
 	New() AuthList
 	Create() error
+	Destroy() error
 }
 
 
@@ -111,6 +115,19 @@ type PlanInfo struct {
 	LastUpdate time.Time
 	Members sql.NullString
 }
+type PlanInfo_ struct {
+	ID *int64
+	Name string
+	FYear int64
+	PlanType string
+	PlanNum *int64
+	ReserveStart *string
+	ReserveEnd *string
+	ClimeStart *string
+	ClimeEnd *string
+	LastUpdate string
+	Members *string
+}
 
 type EquipInfo struct{
 	ID int64//when 0, it means new equip info. we need to allocate ID
@@ -132,6 +149,7 @@ type EquipClass struct{
 type UserInfo struct{
 	ID int64
 	UserName string
+	Password sql.NullString
 	Password_Hash string
 	FamilyName sql.NullString
 	FirstName sql.NullString
@@ -139,4 +157,17 @@ type UserInfo struct{
 	Belong sql.NullString
 	Sex sql.NullString
 	Birth sql.NullTime
+}
+
+type UserInfo_ struct{
+	ID *int64
+	UserName string
+	Password *string
+	Password_Hash *string
+	FamilyName *string
+	FirstName *string
+	Grade int64
+	Belong *string
+	Sex *string
+	Birth *string
 }

@@ -25,15 +25,16 @@ func (engine *httpengine) getLoginInfo() bool{//whether redirected or not
 		log.Print("session id not set")
 		if w,err:=engine.r.Cookie(SLI_NAME);err!=nil||(w.Value!="true"&&w.Value!="True"&&w.Value!="TRUE"){
 			//guest
-			_,err=engine.Exec("Login",struct{Username string;Password string;ATA bool}{"Guest","anything",false})
+			_,err=engine.Exec("Login",struct{UserName string;Password string;ATA bool}{"Guest","anything",false})
 			
 			if err!=nil {
 				log.Print(err.Error())
+				return true
 			}
-			
+			engine.CurrentUserID=0
 		}else{
-			if strings.Index(engine.r.RequestURI,"/system/auth")!=0 {
-				engine.Run("ATA_Login")
+			if strings.Index(engine.r.RequestURI,"/system/auth/")!=0 {
+				engine.Run("ATA_Login")//Redirect to "/system/auth"
 				return true
 			}
 		}
@@ -44,9 +45,16 @@ func (engine *httpengine) getLoginInfo() bool{//whether redirected or not
 		userid,err:=engine.sqllist.Cookie().Session().GetUserID(v.Value)
 		if err!=nil {
 			//incorrect sessionid!
-			engine.Exec("login",struct{username string;password string}{"Guest","anything"})
+			_,err=engine.Exec("Login",struct{Username string;Password string;ATA bool}{"Guest","anything",false})
+			
+			if err!=nil {
+				log.Print(err.Error())
+				return true
+			}
+			
+			engine.CurrentUserID=0
 		}else{
-			engine.currentUserID=userid
+			engine.CurrentUserID=userid
 		}
 	}
 	return false

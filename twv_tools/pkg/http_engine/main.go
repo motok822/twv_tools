@@ -30,4 +30,5 @@ type HTTPEngineX struct {
 type HTTPServer interface {
 	ServeHTTP(http.ResponseWriter,*http.Request)
 	Register(EngineFunc,string)
+	SQLList() sql_list.SQLList
 }

@@ -1,3 +1,15 @@
+insert into FILEINDEX (tableid,tablename) VALUES ("/system/AUTH/GROUPS/Guests","Group_Guests");
+
+create table Group_Guests (
+	id integer NOT NULL AUTO_INCREMENT,
+	content varchar(100) NOT NULL,
+	userid INTEGER UNIQUE,
+	groupname varchar(100) UNIQUE,
+	PRIMARY KEY (id)
+);
+
+INSERT INTO Group_Guests (content,userid) VALUES ("USER",0);
+
 
 insert into FILEINDEX (tableid,tablename) VALUES ("/system/AUTH/GROUPS/Administrators","Group_Administrators");
 

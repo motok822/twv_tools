@@ -6,7 +6,7 @@ import (
 	"net/http"
 	_ "database/sql"
 	_ "github.com/windows-server-2003/twv_tools/pkg/sql_list"
-	"log"
+	_ "log"
 	"github.com/windows-server-2003/twv_tools/pkg/http_engine"
 	"github.com/windows-server-2003/twv_tools/pkg/http_tools"
 	"errors"
@@ -20,12 +20,12 @@ const SLI_NAME="STAY_LOGGED_IN"//Stay Logged In
 
 func Login(arg_byte []byte,engine http_engine.HTTPEngine) (any,error){
 	engine.X().CurrentUserID=0
-	arg:=struct{Username string;Password string;ATA bool}{"","",false}
+	arg:=struct{UserName string;Password string;ATA bool}{"","",false}
 	err:=json.Unmarshal(arg_byte,&arg)
 	if err!=nil {
 		return nil,err
 	}
-	userid:=engine.X().SQLList.User().GetUserID(arg.Username)
+	userid:=engine.X().SQLList.User().GetUserID(arg.UserName)
 	if userid!=0 {
 		if !engine.X().SQLList.User().Confirm(userid,arg.Password){
 			return nil,errors.New("username or password not correct")
@@ -86,7 +86,6 @@ func ATA_Login(arg_byte []byte,engine http_engine.HTTPEngine) (any,error) {
 	return nil,ATA_set(userid,engine)
 }
 func ATA_Set(arg []byte,engine http_engine.HTTPEngine) (any,error) {
-	log.Print("called")
 	w,err:=engine.X().R.Cookie(SLI_NAME)
 	if err==nil&&(w.Value=="true"||w.Value=="True"||w.Value=="TRUE") {
 		return nil,errors.New("ATA already set")
@@ -105,6 +104,8 @@ func ATA_Set(arg []byte,engine http_engine.HTTPEngine) (any,error) {
 	}
 	return struct{Status string}{"succeed"},nil
 }
+
+
 
 func ATA_set(userid int64,engine http_engine.HTTPEngine) error{
 	token,expire,err:=engine.X().SQLList.Cookie().ATA().Add(userid)

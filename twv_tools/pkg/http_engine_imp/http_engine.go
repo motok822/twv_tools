@@ -47,14 +47,14 @@ type httpengine struct {
 	w http.ResponseWriter
 	r *http.Request
 	sqllist sql_list.SQLList
-	currentUserID int64
+	CurrentUserID int64
 	parseURL *url.URL
 }
 
 
 func (engine *httpengine) ServeHTTP(){
 	log.Print(engine.r.RequestURI)
-	engine.currentUserID=0
+	engine.CurrentUserID=0
 	err:=engine.r.ParseForm()
 	if err!=nil {
 		log.Print("ParseForm Failed")
@@ -77,6 +77,10 @@ func (engine *httpengine) ServeHTTP(){
 			engine.Run("ATA_Login")
 			return
 		}
+		if engine.r.URL.Path=="/system/auth/logout" {
+			engine.Run("User_Logout")
+			return
+		}
 		
 		http_tools.WriteErrorAuto(http.StatusNotFound,engine)
 	}
@@ -95,17 +99,10 @@ func (engine *httpengine) ServeHTTP(){
 }
 
 func (engine *httpengine) DeployLocalFile(){
-	if !sql_list.Certificate("Read",engine.sqllist.Auth().File(engine.r.URL.Path),engine.sqllist.Auth().User(engine.currentUserID)){
-		log.Print("failed")
-		log.Print(engine.r.URL.Path)
-		filename,_:=localmgr.ConvertPath(engine.r.URL.Path)
-		log.Print(filename)
-		log.Print("DeployLocalFile Error")
-		log.Print(engine.currentUserID)
-		http_tools.WriteErrorAuto(http.StatusNotFound,engine)
+	if !sql_list.Certificate("Read",engine.sqllist.Auth().File(engine.r.URL.Path),engine.sqllist.Auth().User(engine.CurrentUserID)){
+		http_tools.RedirectToURILoop("/account/main.html",engine.X().W,engine.X().R,http.StatusTemporaryRedirect)
 		return
 	}
-	
 	filename,err:=localmgr.ConvertPath(engine.r.URL.Path)
 	if err!=nil {
 		http_tools.WriteErrorAuto(http.StatusNotFound,engine)
@@ -129,9 +126,14 @@ func (server *httpserver) Register(f http_engine.EngineFunc,funcname string){
 	server.funclist[funcname]=f
 }
 
+func (server *httpserver) SQLList() sql_list.SQLList{
+	return server.sqllist
+}
+
 func (engine *httpengine) Run(funcname string) (any,error){
-	if !sql_list.Certificate("Exec",engine.sqllist.Auth().Func(funcname),engine.sqllist.Auth().User(engine.currentUserID)) {
-		err:=errors.New("@"+funcname+" By User("+fmt.Sprint(engine.currentUserID)+"):unauthorized")
+	if !sql_list.Certificate("Exec",engine.sqllist.Auth().Func(funcname),engine.sqllist.Auth().User(engine.CurrentUserID)) {
+		err:=errors.New("@"+funcname+" By User("+fmt.Sprint(engine.CurrentUserID)+"):unauthorized")
+		engine.X().W.WriteHeader(http.StatusUnauthorized)
 		val,err2:=json.Marshal(struct{Error string}{err.Error()})
 		if err2==nil {//Write called after Handler finished
 			bb:=bytes.NewReader(val)
@@ -160,7 +162,14 @@ func (engine *httpengine) Run(funcname string) (any,error){
 		io.Copy(engine.w,bb)
 		return v,err
 	}else{
-		return nil,errors.New("No function found")
+		err:=errors.New("@"+funcname+" Such function not found")
+		engine.X().W.WriteHeader(http.StatusNotFound)
+		val,err2:=json.Marshal(struct{Error string}{err.Error()})
+		if err2==nil {//Write called after Handler finished
+			bb:=bytes.NewReader(val)
+			io.Copy(engine.w,bb)
+		}
+		return nil,err
 	}
 }
 
@@ -178,6 +187,6 @@ func (engine *httpengine) Exec(funcname string,v any) (any,error){
 
 
 func (engine *httpengine) X() *http_engine.HTTPEngineX{
-	enginex:=http_engine.HTTPEngineX{engine.w,engine.r,engine.sqllist,engine.currentUserID,engine.parseURL}
+	enginex:=http_engine.HTTPEngineX{engine.w,engine.r,engine.sqllist,engine.CurrentUserID,engine.parseURL}
 	return &enginex
 }

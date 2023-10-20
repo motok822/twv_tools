@@ -3,7 +3,7 @@
 package sql_list
 
 import (
-	"log"
+	_ "log"
 )
 
 func Certificate(action string,handler AuthHandler,lists AuthLists) bool{
@@ -17,9 +17,8 @@ func Certificate(action string,handler AuthHandler,lists AuthLists) bool{
 	}
 	var auth uint8=0
 	
-	for _,v:=range list.Users() {
+	for _,v:=range *(list.Users()) {
 		try:=infos.User(v).Get(action)
-		log.Print(try)
 		if try!=0 {
 			if try==2 {
 				return false
@@ -29,7 +28,7 @@ func Certificate(action string,handler AuthHandler,lists AuthLists) bool{
 			}
 		}
 	}
-	for _,v:=range list.Groups() {
+	for _,v:=range *(list.Groups()) {
 		try:=infos.Group(v).Get(action)
 		if try!=0 {
 			if try==2 {
@@ -40,7 +39,6 @@ func Certificate(action string,handler AuthHandler,lists AuthLists) bool{
 			}
 		}
 	}
-	
 	
 	if auth==0 {
 		auth=infos.Default().Get(action)
