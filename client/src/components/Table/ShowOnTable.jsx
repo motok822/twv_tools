@@ -79,7 +79,7 @@ function ShowOnTable(props) {
             info.color = "red"
         } else {
             info.place = ""
-            info.color = "black"
+            info.color = "white"
         }
 
         if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態

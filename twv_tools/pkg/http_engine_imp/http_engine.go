@@ -61,7 +61,10 @@ func (engine *httpengine) ServeHTTP(){
 		http_tools.WriteErrorAuto(http.StatusBadRequest,engine)
 		return
 	}
-	
+	if engine.r.URL.Path=="/dist/manifest.json" {
+		engine.DeployLocalFile()
+		return
+	}
 	
 	//about user_info
 	if redirect:=engine.getLoginInfo();redirect {
@@ -99,6 +102,7 @@ func (engine *httpengine) ServeHTTP(){
 }
 
 func (engine *httpengine) DeployLocalFile(){
+	log.Print("llog:",engine.r.URL.Path)
 	if !sql_list.Certificate("Read",engine.sqllist.Auth().File(engine.r.URL.Path),engine.sqllist.Auth().User(engine.CurrentUserID)){
 		http_tools.RedirectToURILoop("/account/main.html",engine.X().W,engine.X().R,http.StatusTemporaryRedirect)
 		return

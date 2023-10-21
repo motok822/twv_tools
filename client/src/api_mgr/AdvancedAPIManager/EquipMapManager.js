@@ -1,6 +1,9 @@
 import {APIFunc} from "../APIFunc.js"
 
 
+var NullEquipID={ID:0,UserID:0,EquipID:0,Act:"NULL",T1:null,T2:null,MoveDest:"",PlanID:0}
+
+
 class EquipMapManager {
 	constructor(BMgr){
 		this.BMgr=BMgr
@@ -19,6 +22,11 @@ class EquipMapManager {
 		var planmap=new Array(equipclass.length)
 		for(var i=0;i<equipclass.length;i++){
 			planmap[i]=new Array(plans.length)
+			let temp=Object.assign({},NullEquipID);
+			temp.EquipID=equipclass[i].ID;
+			for(var j=0;j<plans.length;j++){
+				planmap[i][j]=temp;	
+			}
 		}
 		for(const v of infos){
 			var i=0;
@@ -39,7 +47,7 @@ class EquipMapManager {
 			if(j==plans.length){
 				continue
 			}
-			if(planmap[i][j]==null){
+			if(planmap[i][j]==null||planmap[i][j].Act=="NULL"){
 				planmap[i][j]=v
 			}else{
 				if(planmap[i][j].Act=="RESERVE"&&v.Act=="MOVE"){
@@ -56,6 +64,8 @@ class EquipMapManager {
 					continue
 				}
 				if(planmap[i][j].Act=="MOVE"&&v.Act=="MOVE"){
+					console.log(planmap[i][j])
+					console.log(v)
 					if(planmap[i][j].T1.getTime()<v.T1.getTime()){
 						planmap[i][j]=v
 					}

@@ -34,7 +34,7 @@ function Distribute_equip() {
                 state: {
                     EquipList: EquipList,
                     MemberSum: Members.length,
-                    ClimbingType: location.state.ClimbingType
+                    ClimbingState: location.state.ClimbingState
                 }
             })
         }
@@ -46,7 +46,7 @@ function Distribute_equip() {
                 Equips[key].map((value) => {
                     if (value.num >= 1) {
                         for (let i = 1; i <= value.num; i++) {
-                            SetEquipList((prev) => [...prev, { Name: value.name, MemberID: -1, UserName: "" }])
+                            SetEquipList((prev) => [...prev, { Name: value.name, MemberID: -1, UserName: "", EquipID: -1 }])
                         }
                     }
                 })
@@ -56,10 +56,10 @@ function Distribute_equip() {
                         val.selected.map((v) => {
                             if (v.flag == true) {
                                 if (value.Group == "テント") {
-                                    console.log(value.Type + val.Family + v.Name)
-                                    SetEquipList((prev) => [...prev, { Name: value.Type + val.Family + v.Name, MemberID: -1, UserName: "" }])
+                                    console.log(value.Type + val.Family + v.Name, "EquipID", v.EquipID)
+                                    SetEquipList((prev) => [...prev, { Name: value.Type + val.Family + v.Name, MemberID: -1, UserName: "", EquipID: v.EquipID }])
                                 } else {
-                                    SetEquipList((prev) => [...prev, { Name: value.Group + value.Type + val.Family + v.Name, MemberID: -1, UserName: "" }])
+                                    SetEquipList((prev) => [...prev, { Name: value.Group + value.Type + val.Family + v.Name, MemberID: -1, UserName: "", EquipID: v.EquipID }])
                                 }
                             }
                         })
@@ -70,6 +70,7 @@ function Distribute_equip() {
     }
     const EquipMove = (e, name) => {
         let flag = 0
+        console.log(e.pageX, e.pageY)
         for (let i = 0; i < MembersPos.length; i++) {
             if (MembersPos[i].top <= e.pageY && e.pageY <= MembersPos[i].bottom && MembersPos[i].left <= e.pageX && e.pageX <= MembersPos[i].right) {
                 flag = 1
@@ -110,6 +111,7 @@ function Distribute_equip() {
             }
         }
     }
+
     return (
         <>
             <Header />

@@ -36,30 +36,30 @@ const EquipTemplate =
   { Group: "テント", Type: "7天", Family: "δ", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
   { Group: "テント", Type: "7天", Family: "δ", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
   { Group: "テント", Type: "7天", Family: "δ", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "α", Name: "本体", state: Hongou, last: 0, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "α", Name: "ポール", state: Hongou, last: 0, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "α", Name: "フライ", state: Hongou, last: 1, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "β", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "β", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "γ", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "γ", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "γ", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "δ", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "δ", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "δ", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "ε", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "ε", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "45天", Type: "", Family: "ε", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
-  { Group: "6天", Type: "", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "6天", Type: "", Family: "α", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "6天", Type: "", Family: "α", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
-  { Group: "6天", Type: "", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "6天", Type: "", Family: "β", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "6天", Type: "", Family: "β", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
-  { Group: "12天", Type: "", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "12天", Type: "", Family: "α", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "12天", Type: "", Family: "α", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },];
+  { Group: "テント", Type: "45天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "α", Name: "ポール", state: Hongou, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "α", Name: "フライ", state: Hongou, last: 1, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "β", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "β", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "γ", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "γ", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "γ", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "δ", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "δ", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "δ", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "ε", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "ε", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "45天", Family: "ε", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "テント", Type: "6天", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "6天", Family: "α", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "6天", Family: "α", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "テント", Type: "6天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "6天", Family: "β", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "6天", Family: "β", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
+  { Group: "テント", Type: "12天", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "12天", Family: "α", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "テント", Type: "12天", Family: "α", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },];
 
 
 function Tent_Table(props) {
@@ -95,8 +95,8 @@ function Tent_Table(props) {
       ]
     },
     {
-      Group: "45天",
-      Type: "",
+      Group: "テント",
+      Type: "45天",
       List: [
         { Family: "α", selected: [{ Name: "本体", flag: 0 }, { Name: "ポール", flag: 0 }, { Name: "フライ", flag: 0 }] },
         { Family: "β", selected: [{ Name: "本体", flag: 0 }, { Name: "ポール", flag: 0 }, { Name: "フライ", flag: 0 }] },
@@ -106,16 +106,16 @@ function Tent_Table(props) {
       ]
     },
     {
-      Group: "6天",
-      Type: "",
+      Group: "テント",
+      Type: "6天",
       List: [
         { Family: "α", selected: [{ Name: "本体", flag: 0 }, { Name: "ポール", flag: 0 }, { Name: "フライ", flag: 0 }] },
         { Family: "β", selected: [{ Name: "本体", flag: 0 }, { Name: "ポール", flag: 0 }, { Name: "フライ", flag: 0 }] },
       ]
     },
     {
-      Group: "12天",
-      Type: "",
+      Group: "テント",
+      Type: "12天",
       List: [
         { Family: "α", selected: [{ Name: "本体", flag: 0 }, { Name: "ポール", flag: 0 }, { Name: "フライ", flag: 0 }] },
       ]

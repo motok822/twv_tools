@@ -6,15 +6,48 @@ var DefaultUserInfo={ID:0,UserName:"Guest",FamilyName:"Guest",FirstName:"",Grade
 
 class UserManager {
 	async GetAll(){//auth:admin
-		console.log("not implemented")
+		return ParseUserInfo(await APIFunc("User_GetAll",{}))
 	}
-	async GetGroup(){//auth:admin
-		console.log("not implemented")
+	async GetGroup(GroupName){//auth:admin
+		return ParseUserInfo(await APIFunc("User_GetGroup",{GroupName:GroupName}))
 	}
 	async GetUsers(){//auth:user
 		return ParseUserInfo(await APIFunc("User_GetUsers",{}))
 	}
 	
+	async GetMyUserInfo(){
+		return (ParseUserInfo(await APIFunc("User_GetMyUserInfo",{})))[0]
+	}
+	
+	async UpdateMyUserInfo(info){
+		return await APIFunc("User_UpdateMyUserInfo",info)
+	}
+	async DeleteMyUserInfo(username){
+		return await APIFunc("User_DeleteMyUserInfo",{UserName:username})
+	}	
+	
+	async UpdateUserInfo(info){
+		return await APIFunc("User_UpdateUserInfo",info)
+	}
+	async DeleteUserInfo(username){
+		return await APIFunc("User_DeleteUserInfo",{UserName:username})
+	}
+	
+	async AddToGroup(username,groupname){
+		return await APIFunc("User_AddToGroup",{UserName:username,GroupName:groupname})
+	}
+	
+	async RemoveFromGroup(username,groupname){
+		return await APIFunc("User_RemoveFromGroup",{UserName:username,GroupName:groupname})
+	}
+	
+	
+	async Login(Username,Password){
+		return await APIFunc("User_Login",{UserName:Username,Password:Password})
+	}
+	async Logout(){
+		return await APIFunc("User_Logout",{})
+	}
 	
 }
 

@@ -83,7 +83,7 @@ function Create_equip() {
               <tr>
                 <td>山行企画の番号</td>
                 <td>twv<input type='number' value={year} className={styles.NumberInput} onClick={(e) => { SetClimbingYear(e.target.value) }}></input>-
-                  <input type="number" className={styles.NumberInput} onChange={(e) => { SetClimbingId(e.target.value) }}></input></td>
+                  <input type="number" className={styles.NumberInput} onChange={(e) => { SetClimbingId(Number(e.target.value)) }}></input></td>
               </tr>
               <tr>
                 <td>企画名</td>

@@ -2,10 +2,21 @@ import {APIFunc} from "../APIFunc.js"
 
 
 
-var DefaultPlanInfo={ID:3,Name:"雲取",FYear:2023,PlanType:"CLUB",PlanNum:"1",ReserveStart:new Date('2023-08-23T15:00:00.000Z'),ReserveEnd:new Date('2023-08-30T15:00:00.000Z'),ClimeStart:new Date('2023-08-23T15:00:00.000Z'),ClimeEnd:new Date('2023-08-30T15:00:00.000Z'),LastUpdate:new Date('2023-08-30T15:00:00.000Z'),Members:"3"}
+var DefaultPlanInfo={ID:3,Name:"雲取",FYear:2023,PlanType:"CLUB",PlanNum:1,ReserveStart:new Date('2023-08-23T15:00:00.000Z'),ReserveEnd:new Date('2023-08-30T15:00:00.000Z'),ClimeStart:new Date('2023-08-23T15:00:00.000Z'),ClimeEnd:new Date('2023-08-30T15:00:00.000Z'),LastUpdate:new Date('2023-08-30T15:00:00.000Z'),Members:[3]}
 
 
 class PlanManager {
+	async Update(info){
+		var memberstr=""
+		for(const v of info.Members){
+			memberstr+=v+";"
+		}
+		if(memberstr!=""){
+			memberstr=memberstr.slice(0,memberstr.length)
+		}
+		info.Members=memberstr
+		return await(APIFunc("Plan_Update",info))
+	}
 	async GetOneYear(){//auth:user
 		var oneyearpast=new Date()
 		oneyearpast.setFullYear(((new Date()).getFullYear())-1)

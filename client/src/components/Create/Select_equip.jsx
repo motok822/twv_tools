@@ -42,6 +42,9 @@ function Select_equip() {
       return prev
     })
   }, [MemberNum])
+  useEffect(() => {
+    SetEquipIDs() 
+  })
   const [EquipsState, SetEquips] = useState({
     tent: [
       {
@@ -55,8 +58,8 @@ function Select_equip() {
         ]
       },
       {
-        Group: "45天",
-        Type: "",
+        Group: "テント",
+        Type: "45天",
         List: [
           { Family: "α", selected: [{ Name: "本体", flag: 0, EquipID: 0 }, { Name: "ポール", flag: 0, EquipID: 0 }, { Name: "フライ", flag: 0, EquipID: 0 }] },
           { Family: "β", selected: [{ Name: "本体", flag: 0, EquipID: 0 }, { Name: "ポール", flag: 0, EquipID: 0 }, { Name: "フライ", flag: 0, EquipID: 0 }] },
@@ -66,16 +69,16 @@ function Select_equip() {
         ]
       },
       {
-        Group: "6天",
-        Type: "",
+        Group: "テント",
+        Type: "6天",
         List: [
           { Family: "α", selected: [{ Name: "本体", flag: 0, EquipID: 0 }, { Name: "ポール", flag: 0, EquipID: 0 }, { Name: "フライ", flag: 0, EquipID: 0 }] },
           { Family: "β", selected: [{ Name: "本体", flag: 0, EquipID: 0 }, { Name: "ポール", flag: 0, EquipID: 0 }, { Name: "フライ", flag: 0, EquipID: 0 }] },
         ]
       },
       {
-        Group: "12天",
-        Type: "",
+        Group: "テント",
+        Type: "12天",
         List: [
           { Family: "α", selected: [{ Name: "本体", flag: 0, EquipID: 0 }, { Name: "ポール", flag: 0, EquipID: 0 }, { Name: "ポール", flag: 0, EquipID: 0 }] },
         ]
@@ -253,12 +256,12 @@ function Select_equip() {
 
   const navigate = useNavigate()
   const JumpToNext = () => {
-    SendInfoToServer()
+    console.log(EquipsState)
     navigate("/Create/DistributeEquip", {
       state: {
         Equips_state: EquipsState,
         Members: Members,
-        ClimbingType: ClimbingState.ClimbingType
+        ClimbingState: ClimbingState
       }
     })
   }
@@ -273,13 +276,17 @@ function Select_equip() {
     }
     return null
   }
-  const SetEquipIDs = () => {
+  const SetEquipIDs = async() => {
+    let BMgr = new BasicAPIManager()
+    let AMgr = new AdvancedAPIManager();
+    PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
     Object.keys(EquipsState).forEach(function (key) {
       if (key != "other") {
         EquipsState[key].map((value) => {
           value.List.map((val) => {
             val.selected.map((v) => {
               v.EquipID = SearchEquipID(value.Group, value.Type, val.Family, v.Name)
+              console.log(value.Group+value.Type+val.Family+v.Name, v.EquipID)
             })
           })
         })
@@ -315,24 +322,8 @@ function Select_equip() {
     let AMgr = new AdvancedAPIManager();
     PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
     SetEquipIDs()
-    let NewEquipRequest = new Array()
-    EquipInfoTemplate.T1 = new Date(ClimbingState.T1)
-    EquipInfoTemplate.T2 = new Date(ClimbingState.T2)
-    EquipInfoTemplate.Act = "RESERVE"
-    EquipInfoTemplate.PlanID = ClimbingState.ClimbingId
     console.log(EquipsState)
-    NewEquipRequest = MakeRequest(EquipInfoTemplate)
-    console.log(await BMgr.EquipInfo.RegisterInfos(NewEquipRequest))
-    console.log("EquipInfo")
-    console.log(await BMgr.EquipInfo.GetOneYear())
-    // EquipInfoTemplate.EquipID = NewInfo.ID
-    // NewEquipRequest.push(EquipInfoTemplate)
-    // console.log("EquipInfoTemplate")
-    // console.log(EquipInfoTemplate)
-    // console.log(await BMgr.EquipInfo.RegisterInfos(NewEquipRequest))
-    // console.log("EquipInfo")
-    // console.log(await BMgr.EquipInfo.GetOneYear())
-  }
+    }
 
   return (
     <div className={styles.Home}>
