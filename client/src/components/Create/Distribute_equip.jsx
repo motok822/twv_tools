@@ -11,15 +11,11 @@ function Distribute_equip() {
     const location = useLocation()
     const [Equips, SetEquips] = useState(location.state.Equips_state)
     const [Members, SetMembers] = useState(location.state.Members)
-    const [MembersPos, SetMembersPos] = useState([])
+    let MemberPos = new Array(location.state.Members.length)
     const [EquipList, SetEquipList] = useState([])
     const navigate = useNavigate()
     let MemberDomList = new Array(location.state.Members.length)
     useEffect(() => {
-        for (let i = 0; i < location.state.Members.length; i++) {
-            SetMembersPos((prev) => [...prev, {}])
-        }
-        getPos()
         ShowList()
     }, [])
     const JumpToNext = () => {
@@ -70,16 +66,17 @@ function Distribute_equip() {
     }
     const EquipMove = (e, name) => {
         let flag = 0
-        console.log(e.pageX, e.pageY)
-        for (let i = 0; i < MembersPos.length; i++) {
-            if (MembersPos[i].top <= e.pageY && e.pageY <= MembersPos[i].bottom && MembersPos[i].left <= e.pageX && e.pageX <= MembersPos[i].right) {
+        getPos()
+        for (let i = 0; i < MemberPos.length; i++) {
+            if (MemberPos[i].top <= e.clientY && e.clientY <= MemberPos[i].bottom && MemberPos[i].left <= e.clientX && e.clientX <= MemberPos[i].right) {
                 flag = 1
                 SetEquipList((prev) => {
                     for (let j = 0; j < EquipList.length; j++) {
                         if (prev[j].Name == name) {
                             prev[j].MemberID = i
                             prev[j].UserName = Members[i]
-                            e.target.style.backgroundColor = "rgb(0, 0, 200, 0.4)"
+                            let p = document.getElementById(name + "DOM")
+                            p.style.backgroundColor = "rgb(0, 0, 200, 0.4)"
                         }
                     }
                     return prev
@@ -91,7 +88,8 @@ function Distribute_equip() {
                 for (let j = 0; j < EquipList.length; j++) {
                     if (prev[j].Name == name) {
                         prev[j].MemberID = -1
-                        e.target.style.backgroundColor = "gray"
+                        let p = document.getElementById(name + "DOM")
+                        p.style.backgroundColor = "gray"
                     }
                 }
                 return prev
@@ -104,10 +102,7 @@ function Distribute_equip() {
         }
         for (let i = 0; i < location.state.Members.length; i++) {
             if (MemberDomList[i] != null) {
-                SetMembersPos((prev) => {
-                    prev[i] = MemberDomList[i].getBoundingClientRect()
-                    return prev
-                })
+                MemberPos[i] = MemberDomList[i].getBoundingClientRect()
             }
         }
     }
@@ -121,7 +116,7 @@ function Distribute_equip() {
                         EquipList.map((value) => {
                             return (
                                 <Draggable onDrag={(e) => EquipMove(e, value.Name)}>
-                                    <div className={styles.MoveItem}>
+                                    <div className={styles.MoveItem} id={value.Name + "DOM"}>
                                         <p>{value.Name}</p>
                                     </div>
                                 </Draggable>

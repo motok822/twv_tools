@@ -5,7 +5,6 @@
     color: white;
     padding: 0 1rem;
     box-shadow: 7px 10px 5px #cccccc;
-    position: absolute;
     z-index: 10;
     font-size: small;
     height: 2rem;
@@ -25,4 +24,6 @@
 }
 .ItemContainer{
     margin: 100px 0;
+    display: grid;
+    grid-template-columns: repeat(12, minmax(100px, 1fr));
 }   

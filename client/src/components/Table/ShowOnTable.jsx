@@ -46,7 +46,10 @@ function ShowOnTable(props) {
             document.addEventListener("click", closeModal);
             event.stopPropagation();
         }
-        if (IsElementIn(selectedElement, selected)) {
+        if(info.place == NotReserved){
+            SetClickCount((pre) => (pre + 2) % 3)
+            SetSelectedElement([...selectedElement, selected]);
+        }else if (IsElementIn(selectedElement, selected)) {
             SetClickCount((pre) => (pre+1) % 3);
         } else {
             SetClickCount(1);
