@@ -64,8 +64,6 @@ class EquipMapManager {
 					continue
 				}
 				if(planmap[i][j].Act=="MOVE"&&v.Act=="MOVE"){
-					console.log(planmap[i][j])
-					console.log(v)
 					if(planmap[i][j].T1.getTime()<v.T1.getTime()){
 						planmap[i][j]=v
 					}

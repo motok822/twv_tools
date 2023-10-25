@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Greek_Character, StyledContent, StyledOverlay } from './Equip_table';
+import { Greek_Character, StyledContent, StyledOverlay, UserDict} from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import PopUp from './PopUp';
 import { ParsePlanMap } from './ParsePlanMap';
@@ -14,6 +14,7 @@ import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import ShowOnTable from './ShowOnTable';
 import { pot_headState } from './Equip_table_List';
+import { ShowUser } from '../UserManage';
 const Head_Character = ["α", "β", "γ", "δ", "ε", "η", "θ", "λ", "μ", "π", "ρ", "σ", "φ", "ω"];
 
 
@@ -23,7 +24,7 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate = [
-  { Group: "", Type: "", Family: "", Name: "山行ID", state: Reserved, last: 1, value: "0", ID: 0 },
+  { Group: "", Type: "", Family: "", Name: "山行ID", state: Reserved, last: 1, value: 0, ID: 0 },
   { Group: "", Type: "", Family: "", Name: "山行名", state: Reserved, last: 1, value: "サンプル", ID: 0 },
   { Group: "コッヘル", Type: "", Family: "α", Name: "特大", state: NotReserved, last: 0, value: "", ID: 0 },
   { Group: "コッヘル", Type: "", Family: "α", Name: "大", state: NotReserved, last: 0, value: "", ID: 0 },
@@ -58,21 +59,21 @@ const EquipTemplate = [
 
 function Pot_Head_Table(props) {
   const pot_head_state = useContext(pot_headState)
-  const [rows, SetRows] = useState([[...EquipTemplate]])
+  const [rows, SetRows] = useState(null)
   let PlanMapOneYear = null
   useEffect(() => {
-    Parse_Table();
-  }, [])
-  const Parse_Table = () => {
     PlanMapOneYear = props.PlanMapOneYear
-  }
-  useEffect(() => {
+  }, [])
+  const ParsePlan = async () =>{
     if (PlanMapOneYear != null) {
-      const res = ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear)
+      const res = await ParsePlanMap(EquipTemplate, PlanMapOneYear)
       console.log(res)
       SetRows(res)
     }
-  }, ParsePlanMap)
+  }
+  useEffect(() => {
+    ParsePlan()
+  })
   const initial_Equips = [
     {
       Group: "コッヘル",
@@ -211,7 +212,7 @@ function Pot_Head_Table(props) {
               {Table_Header_Element()}
             </TableRow>
           </TableHead>
-          <ShowOnTable rows={rows}></ShowOnTable>
+          {rows != null ? <ShowOnTable rows={rows}></ShowOnTable>: <></>}
         </Table>
       </TableContainer>
     </>

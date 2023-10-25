@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Equip_State, Greek_Character, StyledContent, StyledOverlay, isModal } from './Equip_table';
+import { Equip_State, Greek_Character, StyledContent, StyledOverlay, UserDict, isModal } from './Equip_table';
 import { Box, Switch } from '@mui/material';
 import styled from '@emotion/styled';
 import PopUp from './PopUp';
@@ -15,6 +15,7 @@ import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ParsePlanMap } from './ParsePlanMap';
 import ShowOnTable from './ShowOnTable';
+import { ShowUser } from '../UserManage';
 
 const Reserved = 0;
 const Komaba = 1;
@@ -22,7 +23,7 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate =
-  [{ Group: "", Type: '', Family: "", Name: "山行ID", state: Reserved, last: 1, value: "0", ID: 0 },
+  [{ Group: "", Type: '', Family: "", Name: "山行ID", state: Reserved, last: 1, value: 0, ID: 0 },
   { Group: "", Type: '', Family: "", Name: "山行名", state: Reserved, last: 1, value: "サンプル", ID: 0 },
   { Group: "テント", Type: "7天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "", ID: 0 },
   { Group: "テント", Type: "7天", Family: "α", Name: "ポール", state: Hongou, last: 0, value: "", ID: 0 },
@@ -65,23 +66,22 @@ const EquipTemplate =
 function Tent_Table(props) {
 
   const tent_state = useContext(tentState)
-  const [rows, SetRows] = useState([[...EquipTemplate]])
+  const UserDictionary = useContext(UserDict)
+  const [rows, SetRows] = useState(null)
   let PlanMapOneYear = null;
   useEffect(() => {
-    Parse_Table();
-  }, [])
-  const Parse_Table = () => {
     PlanMapOneYear = props.PlanMapOneYear
-  }
-  useEffect(() => {
+  }, [])
+  const ParsePlan = async () =>{
     if (PlanMapOneYear != null) {
-      console.log("PlanMapOneYear")
-      console.log(PlanMapOneYear)
-      const res = ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear)
+      const res = await ParsePlanMap(EquipTemplate, PlanMapOneYear)
       console.log(res)
       SetRows(res)
     }
-  }, ParsePlanMap)
+  }
+  useEffect(() => {
+    ParsePlan()
+  })
 
   const initial_Equips = [
     {
@@ -200,7 +200,6 @@ function Tent_Table(props) {
       </>
     )
   }
-
   return (
     <>
       <TableContainer component={Paper}>
@@ -228,8 +227,7 @@ function Tent_Table(props) {
               {Table_Header_Element()}
             </TableRow>
           </TableHead>
-
-          <ShowOnTable rows={rows}></ShowOnTable>
+          {rows != null ?<ShowOnTable rows={rows}></ShowOnTable>: <></>}
 
         </Table>
       </TableContainer>
@@ -239,13 +237,3 @@ function Tent_Table(props) {
 
 
 export default Tent_Table
-
-/*
-To do
-テーブルの部分の抽象化をもうちょい頑張る
-新しいequip情報をサーバーに送るやつを作る
-E表作成のトグルスイッチがポップアップ画面にも浮き出るのを直す
-E表作成を終わらせる
-反省点
-もっと抽象化しておくべきだった（正直今からじゃ無理かな）
-*/

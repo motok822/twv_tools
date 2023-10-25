@@ -1,3 +1,4 @@
+import { ShowUser } from "../UserManage";
 
 const Reserved = 0;
 const Komaba = 1;
@@ -45,7 +46,20 @@ const EquipTemplate =
   { Group: "テント", Type: "12天", Family: "α", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },];
   {ID: 1, UserID: 3, EquipID: 5, Act: 'MOVE', T1: Fri Oct 06 2023 19:47:41 GMT+0900 (Japan Standard Time)
 */
-function ParsePlanMap(rows, EquipTemplate, PlanMap) {
+
+let UserDictionary = null
+async function ParsePlanMap(EquipTemplate, PlanMap) {
+    console.log("PlanMap",PlanMap)
+    if(UserDictionary == null){
+        UserDictionary = await ShowUser()
+    }
+    const SearchUser= (ID) => {
+        for(let i = 0;i < UserDictionary.length;i++){
+            if(UserDictionary[i].ID == ID){
+                return UserDictionary[i].UserName
+            }
+        }
+    }
     let EquipID = []
     let res = [];
     for (let i = 0; i < EquipTemplate.length; i++) {
@@ -81,17 +95,25 @@ function ParsePlanMap(rows, EquipTemplate, PlanMap) {
             res[j][i + 2].ID = PlanMap.planmap[EquipID[i]][j].EquipID
             if (PlanMap.planmap[EquipID[i]][j].MoveDest == "本郷") {
                 res[j][i + 2].state = Hongou                         //山行のカラムがあるので+2
+                res[j][i + 2].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
             } else if (PlanMap.planmap[EquipID[i]][j].MoveDest == "駒場") {
                 res[j][i + 2].state = Komaba
+                res[j][i + 2].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
             } else if (PlanMap.planmap[EquipID[i]][j].MoveDest == "予約") {
                 res[j][i + 2].state = Reserved
+                res[j][i + 2].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
             } else {
                 res[j][i + 2].state = NotReserved
             }
         }
     }
-    rows = [rows[0], ...res]
-    // rows.reverse()
-    return rows
+    res.sort(function(first, second){
+        if(first[0].value > second[0].value){
+            return -1;
+        }else if(first[0].value < second[0].value){
+            return 1;
+        }else return 0;
+    })
+    return res
 }
 export { ParsePlanMap }

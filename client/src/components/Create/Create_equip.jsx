@@ -22,40 +22,28 @@ function Create_equip() {
   const [AdditionalEquip, SetAdditionalEquip] = useState("防寒着　熊鈴")
   const navigate = useNavigate()
   const JumpToNext = () => {
-    // if(ClimbingName == ""){
-    //   alert("山行名を入力してください")
-    // }else if(ClimbingId == 0){
-    //   alert("山行IDを入力してください")
-    // }else{
-    //   navigate("/Create/SelectEquip", {state: {
-    //     activefood: ActiveFood,
-    //     emergencyfood: EmergencyFood,
-    //     sparefood: SpareFood,
-    //     water: Water,
-    //     rice: Rice,
-    //     climbingtype: ClimbingType,
-    //     climbingid: ClimbingId,
-    //     climbingname: ClimbingName,
-    //     climbingyear: ClimbingYear,
-    //     additionalequip: AdditionalEquip,
-    //   }})
-    // }
-    navigate("/Create/SelectEquip", {
-      state: {
-        ActiveFood: ActiveFood,
-        EmergencyFood: EmergencyFood,
-        SpareFood: SpareFood,
-        Water: Water,
-        Rice: Rice,
-        ClimbingType: ClimbingType,
-        ClimbingId: ClimbingId,
-        ClimbingName: ClimbingName,
-        ClimbingYear: ClimbingYear,
-        AdditionalEquip: AdditionalEquip,
-        T1: T1,
-        T2: T2
-      }
-    })
+    if(ClimbingName == ""){
+      alert("山行名を入力してください")
+    }else if(ClimbingId == 0){
+      alert("山行IDを入力してください")
+    }else{
+      navigate("/Create/SelectEquip", {
+        state: {
+          ActiveFood: ActiveFood,
+          EmergencyFood: EmergencyFood,
+          SpareFood: SpareFood,
+          Water: Water,
+          Rice: Rice,
+          ClimbingType: ClimbingType,
+          ClimbingId: ClimbingId,
+          ClimbingName: ClimbingName,
+          ClimbingYear: ClimbingYear,
+          AdditionalEquip: AdditionalEquip,
+          T1: T1,
+          T2: T2
+        }
+      })
+    }
   }
   const ForShortClimbing = (index, type) => {
     SetClimbingType(index)
@@ -83,7 +71,7 @@ function Create_equip() {
               <tr>
                 <td>山行企画の番号</td>
                 <td>twv<input type='number' value={year} className={styles.NumberInput} onClick={(e) => { SetClimbingYear(e.target.value) }}></input>-
-                  <input type="number" className={styles.NumberInput} onChange={(e) => { SetClimbingId(Number(e.target.value)) }}></input></td>
+                  <input type="number" className={styles.NumberInput} onChange={(e) => { if(Number(e.target.value) > 0)SetClimbingId(Number(e.target.value)) }}></input></td>
               </tr>
               <tr>
                 <td>企画名</td>

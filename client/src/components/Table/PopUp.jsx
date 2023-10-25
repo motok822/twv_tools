@@ -74,7 +74,7 @@ function PopUp(props) {
     EquipInfoTemplate.Act = "MOVE"
     EquipInfoTemplate.T2 = null
     EquipInfoTemplate.MoveDest = ConstToString(NewInfo.Place)
-    EquipInfoTemplate.PlanID = NewInfo.PlanID
+    EquipInfoTemplate.PlanID = props.rows[NewInfo.PlanID][0].value
     EquipInfoTemplate.EquipID = NewInfo.ID
     NewEquipRequest.push(EquipInfoTemplate)
     console.log("EquipInfoTemplate")

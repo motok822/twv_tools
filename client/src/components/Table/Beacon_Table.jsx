@@ -12,7 +12,9 @@ import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ParsePlanMap } from './ParsePlanMap';
 import ShowOnTable from './ShowOnTable';
-import { beaconState } from './Equip_table_list';
+import { beaconState } from './Equip_table_List';
+import { ShowUser } from '../UserManage';
+import { UserDict } from './Equip_table';
 
 const Reserved = 0;
 const Komaba = 1;
@@ -20,7 +22,7 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate = [
-  { Group: "", Type: "", Family: "", Name: "山行ID", state: Reserved, last: 1, value: "0", ID: 0 },
+  { Group: "", Type: "", Family: "", Name: "山行ID", state: Reserved, last: 1, value: 0, ID: 0 },
   { Group: "", Type: "", Family: "", Name: "山行名", state: Reserved, last: 1, value: "サンプル", ID: 0 },
   { Group: "ビーコン", Type: "", Family: "", Name: "A", state: NotReserved, last: 0, value: "", ID: 0 },
   { Group: "ビーコン", Type: "", Family: "", Name: "B", state: NotReserved, last: 0, value: "", ID: 0 },
@@ -49,22 +51,21 @@ const Beacon_Character = ["A", "B", "E", "F", "G", "H", "M", "O", "Q", "S", "X",
 function Beacon_Table(props) {
 
   const beacon_state = useContext(beaconState)
-  const [rows, SetRows] = useState([[...EquipTemplate]])
+  const [rows, SetRows] = useState(null)
   let PlanMapOneYear = null
-
   useEffect(() => {
-    Parse_Table();
-  }, [])
-  const Parse_Table = () => {
     PlanMapOneYear = props.PlanMapOneYear
-  }
-  useEffect(() => {
+  }, [])
+  const ParsePlan = async () =>{
     if (PlanMapOneYear != null) {
-      const res = ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear)
+      const res = await ParsePlanMap(EquipTemplate, PlanMapOneYear)
       console.log(res)
       SetRows(res)
     }
-  }, ParsePlanMap)
+  }
+  useEffect(() => {
+    ParsePlan()
+  })
 
   const initial_Equips = [
     {
@@ -146,7 +147,7 @@ function Beacon_Table(props) {
             </TableRow>
           </TableHead>
 
-          <ShowOnTable rows={rows}></ShowOnTable>
+          {rows != null ?<ShowOnTable rows={rows}></ShowOnTable>: <></>}
 
         </Table>
       </TableContainer>

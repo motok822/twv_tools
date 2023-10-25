@@ -88,14 +88,14 @@ function ShowOnTable(props) {
         if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態
             return (
                 <Box style={{ cursor: "default" }}>
-                    <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
+                    <Box width={30} style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center", wordBreak: "break-all" }}>{info.name}</Box>
                 </Box>
             );
         } else if (IsElementIn(selectedElement, selected)) {                  //クリック一回or二回 選ばれたセルのみ拡張 
             return (
                 <Box style={{ cursor: "default" }}>
-                    <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.name}</Box>
-                    <Box style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center" }}>{info.place}</Box>
+                    <Box width={30} style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center", wordBreak: "break-all" }}>{info.name}</Box>
+                    <Box width={30} style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center", wordBreak: "break-all" }}>{info.place}</Box>
                 </Box>
             );
         }

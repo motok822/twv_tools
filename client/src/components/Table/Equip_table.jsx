@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { createContext, useCallback, useEffect, useRef, useState } from 'react'
 import Footer from '../Footer'
 import Header from '../Header'
 import styles from '../styles/EquipTable.module.css'
@@ -11,9 +11,10 @@ import styled from '@emotion/styled';
 import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import Equip_table_list from './Equip_table_List';
+import { ShowUser } from '../UserManage';
 
 const Greek_Character = ["α", "β", "γ", "δ", "ε", "ζ", "η"];
-
+export const UserDict = createContext()
 
 function Equip_table(props) {
   const [PlanMapOneYear, SetPlanMapOneYear] = useState(null)
@@ -23,7 +24,6 @@ function Equip_table(props) {
   const Fetch_Table = async () => {
     let BMgr = new BasicAPIManager();
     let AMgr = new AdvancedAPIManager();
-
     console.log(await BMgr.User.GetUsers())
     console.log(await BMgr.EquipClass.GetAll())
     console.log(await BMgr.EquipInfo.GetOneYear())
@@ -36,22 +36,22 @@ function Equip_table(props) {
     return (
       <>
         {
-          PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear} CreateOption={true}/>
+          PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear} CreateOption={true} />
         }
       </>
     )
   } else {
     return (
-      <div className={styles.Home}>
-        <Header></Header>
-        <main className={styles.main}>
-          <p className={styles.title}>装備管理システム</p>
-          {
-            PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear} CreateOption={false}/>
-          }
-        </main >
-        <Footer></Footer>
-      </div >
+        <div className={styles.Home}>
+          <Header></Header>
+          <main className={styles.main}>
+            <p className={styles.title}>装備管理システム</p>
+            {
+              PlanMapOneYear == null ? <></> : <Equip_table_list PlanMapOneYear={PlanMapOneYear} CreateOption={false} />
+            }
+          </main >
+          <Footer></Footer>
+        </div >
     )
   }
 }

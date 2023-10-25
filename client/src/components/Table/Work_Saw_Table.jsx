@@ -12,8 +12,9 @@ import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ParsePlanMap } from './ParsePlanMap';
 import ShowOnTable from './ShowOnTable';
-import { work_sawState } from './Equip_table_list';
-
+import { work_sawState } from './Equip_table_List';
+import { ShowUser } from '../UserManage';
+import { UserDict } from './Equip_table';
 
 const Reserved = 0;
 const Komaba = 1;
@@ -21,7 +22,7 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate = [
-  { Group: "", Type: "",Family: "", Name: "山行ID", state: Reserved, last: 1, value: "0" , ID: 0},
+  { Group: "", Type: "",Family: "", Name: "山行ID", state: Reserved, last: 1, value: 0 , ID: 0},
   { Group: "", Type: "",Family: "", Name: "山行名", state: Reserved, last: 1, value: "サンプル", ID: 0 },
   { Group: "L装", Type: "",Family: "", Name: "α", state: NotReserved, last: 0, value: "" , ID: 0},
   { Group: "L装", Type: "",Family: "", Name: "β", state: NotReserved, last: 1, value: "" , ID: 0},
@@ -51,22 +52,21 @@ const EquipTemplate = [
 
 function Work_Saw_Table(props) {
   const work_saw_state = useContext(work_sawState)
-  const [rows, SetRows] = useState([[...EquipTemplate]])
+  const [rows, SetRows] = useState(null)  
   let PlanMapOneYear = null
   useEffect(() => {
-    Parse_Table();
-  }, [])
-  const Parse_Table = () => {
     PlanMapOneYear = props.PlanMapOneYear
+  }, [])
+  const ParsePlan = async () =>{
+    if (PlanMapOneYear != null) {
+      const res = await ParsePlanMap(EquipTemplate, PlanMapOneYear)
+      console.log(res)
+      SetRows(res)
+    }
   }
   useEffect(() => {
-    if(PlanMapOneYear != null){
-      const res = ParsePlanMap([EquipTemplate], EquipTemplate, PlanMapOneYear)
-      console.log(res)
-      SetRows(res)  
-    }
-  }, ParsePlanMap)
-
+    ParsePlan()
+  })
   const initial_Equips = [
     {
       Group: "L装", 
@@ -186,7 +186,7 @@ function Work_Saw_Table(props) {
               {Table_Header()}
             </TableRow>
           </TableHead>
-          <ShowOnTable rows={rows}></ShowOnTable>
+          {rows != null ?<ShowOnTable rows={rows}></ShowOnTable>: <></>}
         </Table>
       </TableContainer>
     </>

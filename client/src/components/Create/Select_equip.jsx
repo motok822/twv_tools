@@ -27,12 +27,9 @@ function Select_equip() {
   const [MemberNum, SetMemberNum] = useState(5)
   const [Members, SetMembers] = useState(["1人目", "2人目", "3人目", "4人目", "5人目"])
   useEffect(() => {
-    console.log("MemberNum", MemberNum)
-    console.log("Members", Members.length)
     SetMembers((prev) => {
       for(let i = 0;i < MemberNum;i++){
         if(i >= Members.length){
-          console.log("MemberNum",  MemberNum)
           prev = [...prev, String(i+1)+"人目"]
         }else if(prev[i] == ""){
           prev[i] = String(i+1) + "人目"
@@ -286,7 +283,6 @@ function Select_equip() {
           value.List.map((val) => {
             val.selected.map((v) => {
               v.EquipID = SearchEquipID(value.Group, value.Type, val.Family, v.Name)
-              console.log(value.Group+value.Type+val.Family+v.Name, v.EquipID)
             })
           })
         })
@@ -322,7 +318,6 @@ function Select_equip() {
     let AMgr = new AdvancedAPIManager();
     PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
     SetEquipIDs()
-    console.log(EquipsState)
     }
 
   return (
