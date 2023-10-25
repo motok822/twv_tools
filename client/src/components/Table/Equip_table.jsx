@@ -28,8 +28,9 @@ function Equip_table(props) {
     console.log(await BMgr.EquipClass.GetAll())
     console.log(await BMgr.EquipInfo.GetOneYear())
     console.log(await BMgr.Plans.GetOneYear())
-    console.log("plan map")
-    SetPlanMapOneYear(await AMgr.EquipMap.GetPlanMapOneYear())
+    const res = await AMgr.EquipMap.GetPlanMapOneYear()
+    console.log("plan map",res)
+    SetPlanMapOneYear(res)
   }
 
   if (props.CreateOption == true) {

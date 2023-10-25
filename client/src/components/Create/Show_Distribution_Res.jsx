@@ -30,7 +30,7 @@ function Show_Distribution_Res() {
                 return UserDictionary[i].ID
             }
         }
-        return 3 //TestUser
+        return 3
     }
     const ChangeEquipState = async () => {
         let BMgr = new BasicAPIManager()

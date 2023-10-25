@@ -53,10 +53,7 @@ const EquipTemplate = [
 function Work_Saw_Table(props) {
   const work_saw_state = useContext(work_sawState)
   const [rows, SetRows] = useState(null)  
-  let PlanMapOneYear = null
-  useEffect(() => {
-    PlanMapOneYear = props.PlanMapOneYear
-  }, [])
+  let PlanMapOneYear =  props.PlanMapOneYear
   const ParsePlan = async () =>{
     if (PlanMapOneYear != null) {
       const res = await ParsePlanMap(EquipTemplate, PlanMapOneYear)
@@ -66,7 +63,7 @@ function Work_Saw_Table(props) {
   }
   useEffect(() => {
     ParsePlan()
-  })
+  }, [])
   const initial_Equips = [
     {
       Group: "L装", 

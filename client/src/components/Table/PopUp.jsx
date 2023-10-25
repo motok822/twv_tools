@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled';
 import { Button, FormControl, InputLabel, MenuItem, NativeSelect, Select } from '@mui/material';
 import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
+import { ShowUser } from '../UserManage';
 
 const Reserved = 0;
 const Komaba = 1;
@@ -32,6 +33,16 @@ let EquipInfoTemplate = { ID: null, UserID: 2, EquipID: 7, Act: "DELETE", T1: ne
 
 function PopUp(props) {
   const [NewInfo, SetNewInfo] = useState({ Name: "", Place: "", PlanID: 0, EquipID: 0 })
+  let UserDictionary = null
+  const SearchUser = async (Name) => {
+    if(UserDictionary == null) UserDictionary = await ShowUser()
+    for(let i = 0;i < UserDictionary.length; i++){
+        if(UserDictionary[i].UserName == Name){
+            return UserDictionary[i].ID
+        }
+    }
+    return 3 //TestUser
+}
   const ConstToString = (place) => {
     let res = ""
     switch (place) {
@@ -76,6 +87,7 @@ function PopUp(props) {
     EquipInfoTemplate.MoveDest = ConstToString(NewInfo.Place)
     EquipInfoTemplate.PlanID = props.rows[NewInfo.PlanID][0].value
     EquipInfoTemplate.EquipID = NewInfo.ID
+    EquipInfoTemplate.UserID = await SearchUser(NewInfo.Name)
     NewEquipRequest.push(EquipInfoTemplate)
     console.log("EquipInfoTemplate")
     console.log(EquipInfoTemplate)

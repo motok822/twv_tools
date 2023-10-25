@@ -60,10 +60,7 @@ const EquipTemplate = [
 function Pot_Head_Table(props) {
   const pot_head_state = useContext(pot_headState)
   const [rows, SetRows] = useState(null)
-  let PlanMapOneYear = null
-  useEffect(() => {
-    PlanMapOneYear = props.PlanMapOneYear
-  }, [])
+  let PlanMapOneYear = props.PlanMapOneYear
   const ParsePlan = async () =>{
     if (PlanMapOneYear != null) {
       const res = await ParsePlanMap(EquipTemplate, PlanMapOneYear)
@@ -73,7 +70,7 @@ function Pot_Head_Table(props) {
   }
   useEffect(() => {
     ParsePlan()
-  })
+  }, [])
   const initial_Equips = [
     {
       Group: "コッヘル",
