@@ -28,11 +28,11 @@ function Select_equip() {
   const [Members, SetMembers] = useState(["1人目", "2人目", "3人目", "4人目", "5人目"])
   useEffect(() => {
     SetMembers((prev) => {
-      for(let i = 0;i < MemberNum;i++){
-        if(i >= Members.length){
-          prev = [...prev, String(i+1)+"人目"]
-        }else if(prev[i] == ""){
-          prev[i] = String(i+1) + "人目"
+      for (let i = 0; i < MemberNum; i++) {
+        if (i >= Members.length) {
+          prev = [...prev, String(i + 1) + "人目"]
+        } else if (prev[i] == "") {
+          prev[i] = String(i + 1) + "人目"
         }
       }
       prev = prev.slice(0, MemberNum)
@@ -40,7 +40,7 @@ function Select_equip() {
     })
   }, [MemberNum])
   useEffect(() => {
-    SetEquipIDs() 
+    SetEquipIDs()
   })
   const [EquipsState, SetEquips] = useState({
     tent: [
@@ -248,6 +248,30 @@ function Select_equip() {
         name: "替えフィルター",
         num: 0,
       },
+      {
+        name: "確保用具",
+        num: 0,
+      },
+      {
+        name: "赤布",
+        num: 0,
+      },
+      {
+        name: "8.1×50mロープ",
+        num: 0,
+      },
+      {
+        name: "ハーケン",
+        num: 0,
+      },
+      {
+        name: "ハンマーバイル",
+        num: 0,
+      },
+      {
+        name: "ツェルト",
+        num: 0,
+      },
     ]
   })
 
@@ -273,7 +297,7 @@ function Select_equip() {
     }
     return null
   }
-  const SetEquipIDs = async() => {
+  const SetEquipIDs = async () => {
     let BMgr = new BasicAPIManager()
     let AMgr = new AdvancedAPIManager();
     PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
@@ -310,7 +334,7 @@ function Select_equip() {
   }
   const SetOtherEquip = (value, e) => {
     value.num = Number(e.target.value)
-    if(value.num < 0)value.num = 0
+    if (value.num < 0) value.num = 0
   }
   let PlanMapOneYear = null
   const SendInfoToServer = async () => {
@@ -318,7 +342,7 @@ function Select_equip() {
     let AMgr = new AdvancedAPIManager();
     PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
     SetEquipIDs()
-    }
+  }
 
   return (
     <div className={styles.Home}>
@@ -346,7 +370,7 @@ function Select_equip() {
               <td className={styles.TableContent}>
                 {Members.map((val, ind) => {
                   return (
-                    <input type='text' onChange={(e) =>{
+                    <input type='text' onChange={(e) => {
                       SetMembers((prev) => {
                         prev[ind] = e.target.value
                         return prev
@@ -365,23 +389,16 @@ function Select_equip() {
         <div>
           <p className={styles.Text}>その他</p>
 
-          <table border="1" className={styles.table}>
-            <tbody>
-              <div className={styles.GridTable}> 
-              {
-                EquipsState.other.map((value) => {
-                  return (
-                    <>
-                      <td>{value.name}</td>
-                      <input type='number' className={styles.NumberInput} placeholder={value.num} onChange={(e) => SetOtherEquip(value, e)}></input>
-                      <div className={styles.space}></div>
-                    </>
-                  )
-                })
-              }
-              </div>
-            </tbody>
-          </table>
+          <div className={styles.GridTable}>
+            {EquipsState.other.map((value) => {
+              return (
+                <div style={{display: "flex", justifyContent: "center"}}>
+                  <div>{value.name}</div>
+                  <input type='number' className={styles.NumberInput} placeholder={value.num} onChange={(e) => SetOtherEquip(value, e)}></input>
+                </div>
+              )
+            })}
+          </div>
         </div>
         <button className={styles.button} onClick={JumpToNext}>
           次へ

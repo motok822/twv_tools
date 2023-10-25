@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Header from '../Header';
 import Footer from '../Footer';
 import styles from '../styles/Select_equip.module.css'
@@ -25,13 +25,14 @@ function Show_Distribution_Res() {
         "山スキー日帰り装(1人1発): ザック、ザックカバー、シュラフカバー、登山靴、雨具(ゴアマ)、山シャツor ジャージ上、防寒具(フリースorセーター)、速乾性Tシャツ(ダクロンT)×2、靴下×2、地図(本、予備)、コンパス、マップケース、銀マット、ヘッドランプ、替え電池、テーピング、キジペ(トイレットペーパー)、笛、缶きり(1年)、非常用パック、タオル、帽子、時計、日焼け止め、お金、本審用紙(登山計画書)、学生証、保険証、毛下(厚手)、ゴーグル、サングラス、目出し帽、スパッツ、ハンガロン、オーバーグローブ、スキー板、ストック、シール、クトー、ポリタン×1、行動食2日分、非常食1日分、無洗米1合"
     ]
     const SearchUser = (Name, UserDictionary) => {
-        for(let i = 0;i < UserDictionary.length; i++){
-            if(UserDictionary[i].UserName == Name){
+        for (let i = 0; i < UserDictionary.length; i++) {
+            if (UserDictionary[i].UserName == Name) {
                 return UserDictionary[i].ID
             }
         }
         return 3
     }
+    const navigate = useNavigate()
     const ChangeEquipState = async () => {
         let BMgr = new BasicAPIManager()
         let NewEquipRequest = new Array()
@@ -45,14 +46,15 @@ function Show_Distribution_Res() {
             newEquipInfo.PlanID = ClimbingState.ClimbingId
             newEquipInfo.EquipID = value.EquipID
             newEquipInfo.UserID = SearchUser(value.UserName, UserDictionary)
-            console.log("UserName",newEquipInfo.UserID)
+            console.log("UserName", newEquipInfo.UserID)
             console.log(value.Name, value.EquipID)
-            console.log("newEquipInfo",newEquipInfo)
+            console.log("newEquipInfo", newEquipInfo)
             NewEquipRequest.push(newEquipInfo)
         })
         console.log(await BMgr.EquipInfo.RegisterInfos(NewEquipRequest))
         console.log("EquipInfo")
         console.log(await BMgr.EquipInfo.GetOneYear())
+        navigate("/Table")
     }
     const AddPlan = async () => {
         let BMgr = new BasicAPIManager()
@@ -67,17 +69,15 @@ function Show_Distribution_Res() {
     const EquipList = location.state.EquipList
     const MemberNum = location.state.MemberSum
     const ClimbingState = location.state.ClimbingState
-    const [MemberEquip, SetMemberEquip] = useState(new Array(MemberNum))
+    const MemberEquip = new Array(MemberNum)
+    const Members = location.state.Members
     MemberEquip.fill([])
     console.log(IndivisualEquip[ClimbingState.ClimbingType])
     console.log(ClimbingState.ClimbingType)
+    EquipList.map((value) => {
+        MemberEquip[value.MemberID] = [...MemberEquip[value.MemberID], value.Name]
+    })
     useEffect(() => {
-        EquipList.map((value) => {
-            SetMemberEquip((prev) => {
-                prev[value.MemberID] = [...prev[value.MemberID], value.Name]
-                return prev
-            })
-        })
         AddPlan()
     }, [])
     return (
@@ -91,15 +91,22 @@ function Show_Distribution_Res() {
                     {console.log("MemberEquip", MemberEquip)}
                     <div>
                         {
-                            MemberEquip.map((value) => {
+                            MemberEquip.map((value, ind) => {
                                 return (
                                     <p>
+                                        <div>{Members[ind] + ":"}</div>
+                                        <div style={{display: "flex"}}>
                                         {value.map((val) => {
                                             { console.log(val) }
                                             return (
-                                                <div>{val}</div>
+                                                <>
+                                                <div style={{ display: "inline" }}>{val}</div>
+                                                <div style={{width: "10px"}}></div>
+                                                </>
                                             )
                                         })}
+                                        </div>
+
                                     </p>
                                 )
                             })
@@ -107,7 +114,7 @@ function Show_Distribution_Res() {
                     </div>
 
                 </main>
-                <Button onClick={ChangeEquipState}>確認</Button>
+                <Button onClick={ChangeEquipState}><h2>確認</h2></Button>
                 <Footer />
             </div>
         </>

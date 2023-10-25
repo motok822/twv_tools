@@ -30,6 +30,7 @@ function Distribute_equip() {
                 state: {
                     EquipList: EquipList,
                     MemberSum: Members.length,
+                    Members: Members,
                     ClimbingState: location.state.ClimbingState
                 }
             })
