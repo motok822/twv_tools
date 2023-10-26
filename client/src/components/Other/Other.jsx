@@ -8,7 +8,7 @@ function Other() {
     <div className={styles.Home}>
     <Header></Header>
     <main className={styles.main}>
-     <div>特にない</div>
+     <div>あああああ</div>
     </main>
     <Footer></Footer>
     </div>

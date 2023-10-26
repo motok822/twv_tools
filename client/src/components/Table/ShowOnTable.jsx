@@ -13,11 +13,11 @@ const NotReserved = 3;
 function ShowOnTable(props) {
     let rows = props.rows
     const [clickCount, SetClickCount] = useState(0);
-    const [selectedElement, SetSelectedElement] = useState(['']);
+    const [selectedElement, SetSelectedElement] = useState([]);
     const information = useRef(null);
     const [CloseClick, SetCloseClick] = useState({flag: 0})
 
-    const closeModal = (e) => {
+    const closeModal = async (e) => {
         let elm = e.target;
         let flag = 0;
         while (elm != null) {
@@ -28,11 +28,11 @@ function ShowOnTable(props) {
             elm = elm.parentNode;
         }
         if (flag == 1) return;
-        SetClickCount(0);
-        SetSelectedElement(['']);
+        await SetClickCount(0);
+        await SetSelectedElement([]);
         document.removeEventListener("click", closeModal)
     }
-    function Change_State(place, name, event, selected, EquipID, PlanID, ID) {
+    async function Change_State(place, name, event, selected, EquipID, PlanID, ID) {
         const info = {
             place: place,
             color: "",
@@ -47,13 +47,13 @@ function ShowOnTable(props) {
             event.stopPropagation();
         }
         if(info.place == NotReserved){
-            SetClickCount((pre) => (pre + 2) % 3)
-            SetSelectedElement([...selectedElement, selected]);
+            await SetClickCount(2)
+            await SetSelectedElement([...selectedElement, selected]);
         }else if (IsElementIn(selectedElement, selected)) {
-            SetClickCount((pre) => (pre+1) % 3);
+            await SetClickCount((pre) => (pre+1) % 3);
         } else {
-            SetClickCount(1);
-            SetSelectedElement([...selectedElement, selected]);
+            await SetClickCount(1);
+            await SetSelectedElement([...selectedElement, selected]);
         }
     }
     const IsElementIn = (array, element) => {
@@ -84,7 +84,6 @@ function ShowOnTable(props) {
             info.place = ""
             info.color = "white"
         }
-
         if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態
             return (
                 <Box style={{ cursor: "default" }}>
@@ -102,7 +101,7 @@ function ShowOnTable(props) {
     }
     const ClosePopUp = () => {
         SetClickCount(0)
-        SetSelectedElement(['']);
+        SetSelectedElement([]);
     }
     return (
         <>
