@@ -6,6 +6,7 @@ import styles from '../styles/Select_equip.module.css'
 import { Equip_table } from '../Table/Equip_table';
 import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
+import { ShowUser } from '../UserManage';
 
 export const EquipsContext = createContext()
 let EquipInfoTemplate = { ID: null, UserID: 2, EquipID: 7, Act: "DELETE", T1: new Date("2022-08-18 14:58:00"), T2: null, MoveDest: "temp", PlanID: 0 }
@@ -26,7 +27,12 @@ function Select_equip() {
   const [ClimbingState, SetClimbingState] = useState(location.state)
   const [MemberNum, SetMemberNum] = useState(5)
   const [Members, SetMembers] = useState(["1人目", "2人目", "3人目", "4人目", "5人目"])
+  let UserDictionary = null
+  const setDict = async() =>{
+    UserDictionary = await ShowUser()
+  }
   useEffect(() => {
+    setDict()
     SetMembers((prev) => {
       for (let i = 0; i < MemberNum; i++) {
         if (i >= Members.length) {

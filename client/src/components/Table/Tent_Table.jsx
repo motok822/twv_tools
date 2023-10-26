@@ -55,9 +55,6 @@ const EquipTemplate =
   { Group: "テント", Type: "6天", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
   { Group: "テント", Type: "6天", Family: "α", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
   { Group: "テント", Type: "6天", Family: "α", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
-  { Group: "テント", Type: "6天", Family: "β", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "テント", Type: "6天", Family: "β", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "テント", Type: "6天", Family: "β", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },
   { Group: "テント", Type: "12天", Family: "α", Name: "本体", state: NotReserved, last: 0, value: "", ID: 0 },
   { Group: "テント", Type: "12天", Family: "α", Name: "ポール", state: NotReserved, last: 0, value: "", ID: 0 },
   { Group: "テント", Type: "12天", Family: "α", Name: "フライ", state: NotReserved, last: 1, value: "", ID: 0 },];
@@ -107,7 +104,6 @@ function Tent_Table(props) {
       Type: "6天",
       List: [
         { Family: "α", selected: [{ Name: "本体", flag: 0 }, { Name: "ポール", flag: 0 }, { Name: "フライ", flag: 0 }] },
-        { Family: "β", selected: [{ Name: "本体", flag: 0 }, { Name: "ポール", flag: 0 }, { Name: "フライ", flag: 0 }] },
       ]
     },
     {
@@ -206,7 +202,7 @@ function Tent_Table(props) {
               <TableCell align="center" colSpan={4} style={{ borderBottom: "none" }}></TableCell>
               <TableCell align='left' colSpan={16}>7天</TableCell>
               <TableCell align='left' colSpan={20}>45天</TableCell>
-              <TableCell align='left' colSpan={8}>6天</TableCell>
+              <TableCell align='left' colSpan={4}>6天</TableCell>
               <TableCell align='left' colSpan={4}>12天</TableCell>
             </TableRow>
             <TableRow>

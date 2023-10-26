@@ -42,7 +42,7 @@ const EquipTemplate = [
   { Group: "ビーコン", Type: "", Family: "", Name: "乙", state: NotReserved, last: 0, value: "", ID: 0 },
   { Group: "ビーコン", Type: "", Family: "", Name: "い", state: NotReserved, last: 0, value: "", ID: 0 },
   { Group: "ビーコン", Type: "", Family: "", Name: "ろ", state: NotReserved, last: 0, value: "", ID: 0 },
-  { Group: "ビーコン", Type: "", Family: "", Name: "は", state: NotReserved, last: 0, value: "", ID: 0 },
+  { Group: "ビーコン", Type: "", Family: "", Name: "に", state: NotReserved, last: 0, value: "", ID: 0 },
 ]
 
 const Beacon_Character = ["A", "B", "E", "F", "G", "H", "M", "O", "Q", "S", "X", "Y", "Z", "新arva", "甲", "丙", "い", "ろ", "に"]

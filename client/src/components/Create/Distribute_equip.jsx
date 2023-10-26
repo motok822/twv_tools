@@ -41,9 +41,21 @@ function Distribute_equip() {
         Object.keys(Equips).forEach(function (key) {
             if (key == "other") {
                 Equips[key].map((value) => {
-                    if (value.num >= 1) {
-                        for (let i = 1; i <= value.num; i++) {
-                            SetEquipList((prev) => [...prev, { Name: value.name, MemberID: -1, UserName: "", EquipID: -1 }])
+                    if(value.num >= 1){
+                        if (value.name != "ペグ" && value.name != "ハーケン" && value.name != "お玉") {
+                            for (let i = 1; i <= value.num; i++) {
+                                SetEquipList((prev) => [...prev, { Name: value.name, MemberID: -1, UserName: "", EquipID: -1, cnt: String(i) }])
+                            }
+                        }else if(value.name == "ハーケン"){
+                            for(let i = 1; i <= value.num/4; i+= 1){
+                                SetEquipList((prev) => [...prev, { Name: value.name+"4", MemberID: -1, UserName: "", EquipID: -1, cnt: String(i) }])
+                            }
+                        }else if(value.name == "お玉"){
+                            for(let i = 1; i <= value.num/2; i+= 1){
+                                SetEquipList((prev) => [...prev, { Name: value.name+"2", MemberID: -1, UserName: "", EquipID: -1, cnt: String(i) }])
+                            }
+                        }else{
+                            SetEquipList((prev) => [...prev, { Name: value.name+String(value.num), MemberID: -1, UserName: "", EquipID: -1,  cnt: "" }])
                         }
                     }
                 })
@@ -54,9 +66,9 @@ function Distribute_equip() {
                             if (v.flag == true) {
                                 if (value.Group == "テント") {
                                     console.log(value.Type + val.Family + v.Name, "EquipID", v.EquipID)
-                                    SetEquipList((prev) => [...prev, { Name: value.Type + val.Family + v.Name, MemberID: -1, UserName: "", EquipID: v.EquipID }])
+                                    SetEquipList((prev) => [...prev, { Name: value.Type + val.Family + v.Name, MemberID: -1, UserName: "", EquipID: v.EquipID , cnt: ""}])
                                 } else {
-                                    SetEquipList((prev) => [...prev, { Name: value.Group + value.Type + val.Family + v.Name, MemberID: -1, UserName: "", EquipID: v.EquipID }])
+                                    SetEquipList((prev) => [...prev, { Name: value.Group + value.Type + val.Family + v.Name, MemberID: -1, UserName: "", EquipID: v.EquipID, cnt: "" }])
                                 }
                             }
                         })
@@ -73,7 +85,7 @@ function Distribute_equip() {
                 flag = 1
                 SetEquipList((prev) => {
                     for (let j = 0; j < EquipList.length; j++) {
-                        if (prev[j].Name == name) {
+                        if (prev[j].Name+prev[j].cnt == name) {
                             prev[j].MemberID = i
                             prev[j].UserName = Members[i]
                             let p = document.getElementById(name + "DOM")
@@ -116,8 +128,8 @@ function Distribute_equip() {
                     {
                         EquipList.map((value) => {
                             return (
-                                <Draggable onDrag={(e) => EquipMove(e, value.Name)}>
-                                    <div className={styles.MoveItem} id={value.Name + "DOM"}>
+                                <Draggable onDrag={(e) => EquipMove(e, value.Name + value.cnt)}>
+                                    <div className={styles.MoveItem} id={value.Name + value.cnt + "DOM"}>
                                         <p>{value.Name}</p>
                                     </div>
                                 </Draggable>
