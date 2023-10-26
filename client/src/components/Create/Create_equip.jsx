@@ -17,6 +17,7 @@ function Create_equip() {
   const [ClimbingId, SetClimbingId] = useState(0)
   const [ClimbingName, SetClimbingName] = useState("")
   const [ClimbingYear, SetClimbingYear] = useState(year)
+  const [Tentnight, SetTentnight] = useState(0)
   const [T1, SetT1] = useState(null)
   const [T2, SetT2] = useState(null)
   const [AdditionalEquip, SetAdditionalEquip] = useState("防寒着　熊鈴")
@@ -39,6 +40,7 @@ function Create_equip() {
           ClimbingName: ClimbingName,
           ClimbingYear: ClimbingYear,
           AdditionalEquip: AdditionalEquip,
+          Tentnight: Tentnight,
           T1: T1,
           T2: T2
         }
@@ -52,11 +54,13 @@ function Create_equip() {
       SetEmergencyFood(1)
       SetWater(1)
       SetRice(0)
+      SetTentnight(0)
     } else {
       SetActiveFood(2)
       SetEmergencyFood(1)
       SetWater(2)
       SetRice(1)
+      SetTentnight(1)
     }
   }
   return (
@@ -93,6 +97,8 @@ function Create_equip() {
                     <option value="藪日帰り装">藪日帰り装</option>
                     <option value="沢一般装">沢一般装</option>
                     <option value="沢日帰り装" >沢日帰り装</option>
+                    <option value="岩一般装">岩一般装</option>
+                    <option value="岩日帰り装" >岩日帰り装</option>
                     <option value="冬山般装">冬山般装</option>
                     <option value="冬山日帰り装">冬山日帰り装</option>
                     <option value="山スキー般装">山スキー一般装</option>
@@ -122,7 +128,7 @@ function Create_equip() {
               </tr>
               <tr>
                 <td>追加の個装</td>
-                <td><textarea rows="5" cols="33" value={"防寒着　熊鈴"} onClick={(e) => { SetAdditionalEquip(e.target.value) }}></textarea></td>
+                <td><textarea rows="5" cols="33" value={AdditionalEquip} onChange={(e) => { SetAdditionalEquip(e.target.value) }}></textarea></td>
               </tr>
             </tbody>
           </table>

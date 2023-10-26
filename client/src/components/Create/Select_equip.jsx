@@ -17,6 +17,8 @@ const ClimbingTypeName = [
   "藪日帰り装",
   "沢一般装",
   "沢日帰り装",
+  "岩一般装",
+  "岩日帰り装",
   "冬山般装",
   "冬山日帰り装",
   "山スキー般装",
@@ -212,11 +214,11 @@ function Select_equip() {
     other: [
       {
         name: "F装",
-        num: 0,
+        num: ClimbingState.Tentnight,
       },
       {
         name: "W装",
-        num: 0,
+        num: ClimbingState.Tentnight,
       },
       {
         name: "ペグ",
@@ -236,11 +238,11 @@ function Select_equip() {
       },
       {
         name: "お玉",
-        num: 0,
+        num: ClimbingState.Tentnight*2,
       },
       {
         name: "しゃもじ",
-        num: 0,
+        num: ClimbingState.Tentnight,
       },
       {
         name: "熊スプレー",
