@@ -31,6 +31,7 @@ export function load_event(swiper){
 }
 
 const wait = async (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 export async function history_event(){
 	console.log(location.href)
 	var mode=((new URL(location.href)).searchParams.get("mode"))
@@ -92,6 +93,42 @@ export async function history_event(){
 				history_event()
 			}
 			break
+		case "register":
+			await jump_page(mode_to_page("register"))
+			break
+		case "unauthorized":
+			userinfo=await BMgr.User.GetMyUserInfo()
+			if(userinfo.ID==0){
+				let currentURL=new URL(location.href)
+				history.replaceState(null,null,change_query(currentURL.href,{mode:"login_username"}))
+				history_event()
+				break
+			}
+			await jump_page(mode_to_page("unauthorized"))
+			break
+		case "update_account":
+			userinfo=await BMgr.User.GetMyUserInfo()
+			console.log(userinfo)
+			if(userinfo.ID==0){
+				let currentURL=new URL(location.href)
+				history.replaceState(null,null,change_query(currentURL.href,{mode:"login_username",RedirectURI:encodeURI(currentURL.pathname+currentURL.search)}))
+				history_event()
+				break
+			}
+			document.getElementById("update_username").value=userinfo.UserName
+			document.getElementById("update_family_name").value=userinfo.FamilyName
+			document.getElementById("update_firstname").value=userinfo.FirstName
+			document.getElementById("update_grade").value=""+userinfo.Grade
+			document.getElementById("update_belong").value=userinfo.Belong
+			document.getElementById("update_sex").value=userinfo.Sex
+			document.getElementById("update_birth").value=new Date(userinfo.Birth).toISOString().replace('-', '/').split('T')[0].replace('/', '-');
+			await jump_page(mode_to_page("update_account"))
+			break
+		default:
+			let currentURL=new URL(location.href)
+			history.replaceState(null,null,change_query(currentURL.href,{mode:"nothing"}))
+			history_event()
+			break
 	}
 }
 
@@ -108,6 +145,8 @@ export function mode_to_page(str){
 			return 3;
 		case "unauthorized":
 			return 4;
+		case "update_account":
+			return 5;
 	}
 	return 2;
 }
@@ -123,6 +162,8 @@ export function page_to_mode(num){
 			return "register";
 		case 4:
 			return "unauthorized";
+		case 5:
+			return "update_account";
 	}
 	return "nothing";
 }

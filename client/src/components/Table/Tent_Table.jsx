@@ -23,7 +23,8 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate =
-  [{ Group: "", Type: '', Family: "", Name: "山行ID", state: Reserved, last: 1, value: 0, ID: 0 },
+  [{ Group: "", Type: '', Family: "", Name: "年度", state: Reserved, last: 1, value: 2023, ID: 0 },
+  { Group: "", Type: '', Family: "", Name: "山行ID", state: Reserved, last: 1, value: 0, ID: 0 },
   { Group: "", Type: '', Family: "", Name: "山行名", state: Reserved, last: 1, value: "サンプル", ID: 0 },
   { Group: "テント", Type: "7天", Family: "α", Name: "本体", state: Hongou, last: 0, value: "", ID: 0 },
   { Group: "テント", Type: "7天", Family: "α", Name: "ポール", state: Hongou, last: 0, value: "", ID: 0 },
@@ -199,13 +200,15 @@ function Tent_Table(props) {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow >
-              <TableCell align="center" colSpan={4} style={{ borderBottom: "none" }}></TableCell>
+              <TableCell align="center" colSpan={6} style={{ borderBottom: "none" }}></TableCell>
               <TableCell align='left' colSpan={16}>7天</TableCell>
               <TableCell align='left' colSpan={20}>45天</TableCell>
               <TableCell align='left' colSpan={4}>6天</TableCell>
               <TableCell align='left' colSpan={4}>12天</TableCell>
             </TableRow>
             <TableRow>
+              <TableCell align='center' colSpan={1} >年度</TableCell>
+              <TableCell></TableCell>
               <TableCell align='center' colSpan={1} >山行ID</TableCell>
               <TableCell></TableCell>
               <TableCell align='center' colSpan={1} >山行名</TableCell>
@@ -213,6 +216,8 @@ function Tent_Table(props) {
               {Table_Header()}
             </TableRow>
             <TableRow>
+              <TableCell align='center'></TableCell>
+              <TableCell></TableCell>
               <TableCell align='center'></TableCell>
               <TableCell></TableCell>
               <TableCell align='center'></TableCell>

@@ -22,6 +22,7 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate = [
+  { Group: "", Type: "",Family: "", Name: "年度", state: Reserved, last: 1, value: 2023 , ID: 0},
   { Group: "", Type: "",Family: "", Name: "山行ID", state: Reserved, last: 1, value: 0 , ID: 0},
   { Group: "", Type: "",Family: "", Name: "山行名", state: Reserved, last: 1, value: "サンプル", ID: 0 },
   { Group: "L装", Type: "",Family: "", Name: "α", state: NotReserved, last: 0, value: "" , ID: 0},
@@ -167,7 +168,7 @@ function Work_Saw_Table(props) {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell colSpan={4}></TableCell>
+              <TableCell colSpan={6}></TableCell>
               <TableCell colSpan={3}>L装</TableCell>
               <TableCell colSpan={5}>ヘルボ</TableCell>
               <TableCell colSpan={4}>エキボ</TableCell>
@@ -176,6 +177,8 @@ function Work_Saw_Table(props) {
               <TableCell colSpan={3}>スノーソー</TableCell>
             </TableRow>
             <TableRow>
+              <TableCell>年度</TableCell>
+              <TableCell></TableCell>
               <TableCell>山行ID</TableCell>
               <TableCell></TableCell>
               <TableCell>山行名</TableCell>

@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <!--https://kodocode.net/design-css-textbox/ -->
+<!--https://qiita.com/belq/items/10ec41f656e47ee2b540 -->
+<!--https://qiita.com/ryo2132/items/3ef8fb0def001d308490#bulma -->
 <html lang="en">
 
 <head>
@@ -9,6 +11,7 @@
   <!-- Link Swiper's CSS -->
   <link rel="stylesheet" href="./swiper-min.css" />
 	<link rel="stylesheet" href="./login.css" type="text/css">
+	<link rel="stylesheet" href="./bulma.min.css">
 
   <!-- Demo styles -->
   
@@ -37,10 +40,10 @@
 					
 					<label class="title_main" type="text" style="color:#1A73E8;">Sign in</label>
 					<label class="title_text" type="text">Use your Account. Please type your username.</label>
-					<label class="title_text" type="text" style="color:#1A73E8;text-decoration:underline;" onclick="jump_to_page(5)">Create Account</label>
+					<label class="title_text" type="text" style="color:#1A73E8;text-decoration:underline;" id="login_username_create">Create Account</label>
 					<label class="warning" type="text" id="login_username_warning"></label>
 					<form onsubmit="return false;">
-					<input class="input_box" type="username" id="login_username" value="USERNAME"></input>
+					<input class="input_box" type="username" name="username" id="login_username" value="USERNAME" autocomplete="username"></input>
 					<button class="input_next" type="submit" id="login_username_next">Next</button>
 					</form>
 				</div>
@@ -52,10 +55,10 @@
 					
 					<label class="title_main" type="text" style="color:#1A73E8;">Sign in</label>
 					<label class="title_text" type="text">Welcome <span id="login_password_title_text" style="font-weight:bold;text-decoration:underline;">username</span>. Please type your password.</label>
-					<label class="title_text" type="text" style="color:#1A73E8;" onclick="jump_to_page(5)">Password</label>
+					<label class="title_text" type="text" style="color:#1A73E8;">Password</label>
 					<label class="warning" type="text" id="login_password_warning"></label>
 					<form onsubmit="return false;">
-					<input class="input_box" type="password" id="login_password" value=""></input>
+					<input class="input_box" type="password" name="password" id="login_password" value="" autocomplete="current_password"></input>
 					<button class="input_next" type="submit" id="login_password_next">Next</button>
 					</form>
 				</div>
@@ -65,9 +68,188 @@
 					<label class="title_main" type="text" style="color:#1A73E8;font-style:italic;text-shadow: 1px 1px 2px silver;">Tokyo Wonder Vogel Club</label>
 				</div>
 			</div>
-      <div class="swiper-slide">Slide 5</div>
-      <div class="swiper-slide">Slide 6</div>
-      <div class="swiper-slide">Slide 7</div>
+      <div class="swiper-slide" style="overflow:auto;">
+				<form action="" style="margin:auto;font-size:1vw;" onsubmit="return false;">
+					<div class="field">
+						<label class="label" style="color:#1A73E8;">Create Account</label>
+						<label class="label" style="color:#1A73E8;text-decoration:underline;" id="register_login">Login</label>
+					</div>
+					<div class="field">
+						<label class="label">UserName</label>
+						<div class="control">
+							<input class="input" type="text" placeholder="UserName" id="register_username">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">PassWord</label>
+						<div class="control">
+							<input class="input" type="password" placeholder="PassWord" id="register_password">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Password(confirmation)</label>
+						<div class="control">
+							<input class="input" type="password" placeholder="Password(confirmation)" id="register_password_confirm">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">FamilyName("Myoji")</label>
+						<div class="control">
+							<input class="input" type="text" placeholder="FamilyName"  id="register_family_name">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">FirstName("Namae")</label>
+						<div class="control">
+							<input class="input" type="text" placeholder="FirstName" id="register_firstname">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Grade("Gakunenkai")</label>
+						<div class="control">
+							<div class="select">
+								<select id="register_grade">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Belong("Syozoku")</label>
+						<div class="control">
+							<input class="input" type="text" placeholder="Belong" id="register_belong">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Sex</label>
+						<div class="control">
+							<div class="select">
+								<select id="register_sex">
+									<option value="Male">Male</option>
+									<option value="Female">Female</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Birth</label>
+						<div class="control">
+							<input class="input" type="date" placeholder="Birth" id="register_birth">
+						</div>
+					</div>
+					<label class="warning" type="text" id="register_warning" style="font-weight: normal;"></label>
+					<div class="field">
+						<div class="control">
+							<button class="button is-link" id="register_button">Submit</button>
+						</div>
+					</div>
+				</form>
+			</div>
+			
+      <div class="swiper-slide">
+				<div>
+					<label class="title_main" type="text" style="color:#1A73E8;">Unauthorized</label>
+					<label class="title_text" type="text">Contact Adminstrator to authorize your account.</label>
+					<button class="input_next" type="submit" onclick="location.href='../dist/index.html'">Home</button>
+				</div>
+			</div>
+      <div class="swiper-slide" style="overflow:auto;">
+				<form action="" style="margin:auto;font-size:1vw;" onsubmit="return false;">
+					<div class="field">
+						<label class="label" style="color:#1A73E8;">Update Account</label>
+						<button class="input_next" type="submit" onclick="location.href='../dist/index.html'">Home</button>
+					</div>
+					<div class="field">
+						<label class="label">UserName</label>
+						<div class="control">
+							<input class="input" type="text" placeholder="UserName" id="update_username">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">PassWord</label>
+						<div class="control">
+							<input class="input" type="password" placeholder="PassWord" id="update_password">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Password(confirmation)</label>
+						<div class="control">
+							<input class="input" type="password" placeholder="Password(confirmation)" id="update_password_confirm">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">FamilyName("Myoji")</label>
+						<div class="control">
+							<input class="input" type="text" placeholder="FamilyName"  id="update_family_name">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">FirstName("Namae")</label>
+						<div class="control">
+							<input class="input" type="text" placeholder="FirstName" id="update_firstname">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Grade("Gakunenkai")</label>
+						<div class="control">
+							<div class="select">
+								<select id="update_grade">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+									<option value="9">9</option>
+									<option value="10">10</option>
+									<option value="11">11</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Belong("Syozoku")</label>
+						<div class="control">
+							<input class="input" type="text" placeholder="Belong" id="update_belong">
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Sex</label>
+						<div class="control">
+							<div class="select">
+								<select id="update_sex">
+									<option value="Male">Male</option>
+									<option value="Female">Female</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="field">
+						<label class="label">Birth</label>
+						<div class="control">
+							<input class="input" type="date" placeholder="Birth" id="update_birth">
+						</div>
+					</div>
+					<label class="warning" type="text" id="update_warning" style="font-weight: normal;"></label>
+					<div class="field">
+						<div class="control">
+							<button class="button is-link" id="update_button">Submit</button>
+						</div>
+					</div>
+				</form>
+			</div>
       <div class="swiper-slide">Slide 8</div>
       <div class="swiper-slide">Slide 9</div>
     </div>
@@ -98,7 +280,8 @@
 	swiper.on('reachBeginning',irregular_jump);
 	</script>
   <script type="module">
-		import {change_query,history_event} from "./load_event.js"
+		import {change_query,history_event,mode_to_page} from "./load_event.js"
+		import {jump_page} from "./jump_page.js"
 		document.getElementById("login_username").addEventListener("input",change_length);
 		document.getElementById("login_username").addEventListener("focus",change_length);
 		document.getElementById("login_username").addEventListener("focus",display_box_next);
@@ -123,6 +306,12 @@
 			}
 		}
 		document.getElementById("login_username_next").addEventListener("click",login_username_next_func);
+		document.getElementById("login_username_create").addEventListener("click",()=>{
+			let currentURL=new URL(location.href);
+			history.pushState(null,null,change_query(currentURL.href,{mode:"register"}));
+			document.getElementById("login_username_warning").textContent="";
+			history_event();
+		});
 		
   </script>
 	
@@ -148,6 +337,138 @@
 		document.getElementById("login_password_next").addEventListener("click",login_password_next_func);
 		
   </script>
+	<script type="module">
+		import {change_query,history_event,mode_to_page} from "./load_event.js"
+		import {jump_page} from "./jump_page.js"
+		import {BasicAPIManager} from "../js/api_mgr/BasicAPIManager.js"
+		async function create_account_submit(){
+			let warning_box_=document.getElementById("register_warning")
+			if(!check_string(document.getElementById("register_username").value)){
+				warning_box_.textContent ="Username contains malicious letters";
+				return false
+			}
+			if(document.getElementById("register_password").value==""){
+				warning_box_.textContent ="Password should not be blank";
+				return false
+			}
+			
+			if(!check_string(document.getElementById("register_password").value)){
+				warning_box_.textContent ="Password contains malicious letters";
+				return false
+			}
+			if(document.getElementById("register_password").value!=document.getElementById("register_password_confirm").value){
+				warning_box_.textContent ="Password_confirm not match";
+				return false
+			}
+			let new_user={
+				ID:null,
+				UserName:document.getElementById("register_username").value,
+				Password:document.getElementById("register_password").value,
+				FamilyName:document.getElementById("register_family_name").value,
+				FirstName:document.getElementById("register_firstname").value,
+				Grade:Number(document.getElementById("register_grade").value),
+				Belong:document.getElementById("register_belong").value,
+				Sex:document.getElementById("register_sex").value,
+				Birth:new Date(document.getElementById("register_birth").value),
+			}
+			let BMgr = new BasicAPIManager()
+			let message=await BMgr.User.UpdateMyUserInfo(new_user)
+			if(message!=null){
+				alert(message)
+				return false;
+			}
+		
+			document.getElementById("login_password_title_text").textContent=new_user.UserName
+			document.getElementById("login_password").textContent=new_user.Password
+			document.getElementById("login_password_warning").textContent=""
+			let currentURL=new URL(location.href)
+			history.pushState(null,null,change_query(currentURL.href,{mode:"login_password",username:new_user.UserName}))
+			history_event()
+			/*let currentURL=new URL(location.href)
+			history.pushState(null,null,change_query(currentURL.href,{mode:"login_password",username:document.getElementById("login_username").value}))
+			document.getElementById("login_password_title_text").textContent=document.getElementById("login_username").value
+			document.getElementById("login_password_warning").textContent=""
+			history_event()
+		
+			document.getElementById("login_username_warning").textContent ="Only alphabets, numbers and underbar is allowed";
+			document.getElementById("login_username").style.border="3px solid rgb(217,48,37)";
+			*/
+			return true;
+			
+		}
+		document.getElementById("register_button").addEventListener("click",create_account_submit);
+		function register_to_login(){	
+			let currentURL=new URL(location.href);
+			history.pushState(null,null,change_query(currentURL.href,{mode:"login_username"}));
+			document.getElementById("login_username_warning").textContent="";
+			history_event();
+		}
+		document.getElementById("register_login").addEventListener("click",register_to_login);
+		
+	</script>
+	<script type="module">
+		import {change_query,history_event,mode_to_page} from "./load_event.js"
+		import {jump_page} from "./jump_page.js"
+		import {BasicAPIManager} from "../js/api_mgr/BasicAPIManager.js"
+		async function update_account_submit(){
+			let BMgr = new BasicAPIManager()
+			let userinfo=await BMgr.User.GetMyUserInfo()
+			if(userinfo.ID==0||userinfo.ID==null){
+				alert("not logged in")
+				return
+			}
+			let warning_box_=document.getElementById("update_warning")
+			if(!check_string(document.getElementById("update_username").value)){
+				warning_box_.textContent ="Username contains malicious letters";
+				return false
+			}
+			
+			if(!check_string(document.getElementById("update_password").value)){
+				warning_box_.textContent ="Password contains malicious letters";
+				return false
+			}
+			if(document.getElementById("update_password").value!=document.getElementById("update_password_confirm").value){
+				warning_box_.textContent ="Password_confirm not match";
+				return false
+			}
+			let new_user={
+				ID:userinfo.ID,
+				UserName:document.getElementById("update_username").value,
+				Password:document.getElementById("update_password").value,
+				FamilyName:document.getElementById("update_family_name").value,
+				FirstName:document.getElementById("update_firstname").value,
+				Grade:Number(document.getElementById("update_grade").value),
+				Belong:document.getElementById("update_belong").value,
+				Sex:document.getElementById("update_sex").value,
+				Birth:new Date(document.getElementById("update_birth").value),
+			}
+			if(new_user.Password==""){
+				new_user.Password=null
+			}
+			let message=await BMgr.User.UpdateMyUserInfo(new_user)
+			if(message!=null){
+				alert(message)
+				return false;
+			}
+		
+			let currentURL=new URL(location.href)
+			history.pushState(null,null,change_query(currentURL.href,{mode:"nothing"}))
+			history_event()
+			/*let currentURL=new URL(location.href)
+			history.pushState(null,null,change_query(currentURL.href,{mode:"login_password",username:document.getElementById("login_username").value}))
+			document.getElementById("login_password_title_text").textContent=document.getElementById("login_username").value
+			document.getElementById("login_password_warning").textContent=""
+			history_event()
+		
+			document.getElementById("login_username_warning").textContent ="Only alphabets, numbers and underbar is allowed";
+			document.getElementById("login_username").style.border="3px solid rgb(217,48,37)";
+			*/
+			return true;
+			
+		}
+		document.getElementById("update_button").addEventListener("click",update_account_submit);
+		
+	</script>
 	
 </body>
 

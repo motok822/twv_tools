@@ -6,7 +6,7 @@ import (
 	_ "net/http"
 	_ "database/sql"
 	"github.com/windows-server-2003/twv_tools/pkg/sql_list"
-	"log"
+	_ "log"
 	"github.com/windows-server-2003/twv_tools/pkg/http_engine"
 	_ "github.com/windows-server-2003/twv_tools/pkg/http_tools"
 	_ "errors"
@@ -81,7 +81,6 @@ type PlanInfo_ struct {
 */
 
 func Plan_Update(arg_byte []byte,engine http_engine.HTTPEngine) (any,error){	
-	log.Print("fuck")
 	info,err :=ParsePlan(arg_byte)
 	if err!=nil {
 		return nil,err

@@ -18,6 +18,9 @@ func RedirectToURI(desturi string,w http.ResponseWriter,r *http.Request,code int
 func RedirectToURILoop(desturi string,w http.ResponseWriter,r *http.Request,code int){
 	RedirectToURI(desturi+"?RedirectURI="+url.QueryEscape(r.RequestURI),w,r,code)
 }
+func RedirectToURILoopModeUnauthrized(desturi string,w http.ResponseWriter,r *http.Request,code int){
+	RedirectToURI(desturi+"?mode=unauthorized&RedirectURI="+url.QueryEscape(r.RequestURI),w,r,code)
+}
 func RedirectToURIByQuery(w http.ResponseWriter,r *http.Request,code int) bool{
 	err:=r.ParseForm()
 	if err!=nil {

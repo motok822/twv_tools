@@ -43,7 +43,7 @@ class UserManager {
 	
 	
 	async Login(Username,Password){
-		return await APIFunc("User_Login",{UserName:Username,Password:Password})
+		return await APIFunc("User_Login",{UserName:Username,Password:Password,ATA:true})
 	}
 	async Logout(){
 		return await APIFunc("User_Logout",{})

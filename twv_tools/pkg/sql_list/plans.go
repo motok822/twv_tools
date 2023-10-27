@@ -6,7 +6,7 @@ package sql_list
 import (
 	"database/sql"
 	_ "crypto/sha512"
-	"log"
+	_ "log"
 	_ "fmt"
 	_ "strings"
 	"time"
@@ -33,7 +33,6 @@ func (mgr *planmanager) Plan(planID int64) (*PlanInfo,error){
 	
 	stmtOut,err:=mgr.sqllist.database.Prepare("SELECT ID,Name,FYear,PlanType,PlanNum,ReserveStart,ReserveEnd,ClimeStart,ClimeEnd,LastUpdate,Members FROM "+tablename + " where ID = ?")
 	if err != nil {
-		log.Print(err.Error())
 		return &info,err
 	}
 	defer stmtOut.Close()
@@ -64,7 +63,7 @@ func (mgr *planmanager) Update(info PlanInfo) error{
 		return err
 	}
 	stmtIns,err:=mgr.sqllist.database.Prepare("INSERT into "+tablename+
-	" (ID,Name,FYear,PlanType,PlanNum,ReserveStart,ReserveEnd,ClimeStart,ClimeEnd,LastUpdate,Members) VALUES (?,?,?,?,?,?,?,?,?,NOW(),?);" )
+	" (ID,Name,FYear,PlanType,PlanNum,ReserveStart,ReserveEnd,ClimeStart,ClimeEnd,LastUpdate,Members) VALUES (?,?,?,?,?,?,?,?,?,NOW(),?) ON DUPLICATE KEY UPDATE ID = VALUES(ID),Name=VALUES(Name),FYear = VALUES(FYear),PlanType = VALUES(PlanType),PlanNum = VALUES(PlanNum),ReserveStart = VALUES(ReserveStart),ReserveEnd = VALUES(ReserveEnd),ClimeStart = VALUES(ClimeStart),ClimeEnd = VALUES(ClimeEnd),LastUpdate = VALUES(LastUpdate),Members = VALUES(Members);" )
 	if err!=nil {
 		return err
 	}

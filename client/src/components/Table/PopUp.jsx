@@ -85,7 +85,7 @@ function PopUp(props) {
     EquipInfoTemplate.Act = "MOVE"
     EquipInfoTemplate.T2 = null
     EquipInfoTemplate.MoveDest = ConstToString(NewInfo.Place)
-    EquipInfoTemplate.PlanID = props.rows[NewInfo.PlanID][0].value
+    EquipInfoTemplate.PlanID = props.rows[NewInfo.PlanID][1].value
     EquipInfoTemplate.EquipID = NewInfo.ID
     EquipInfoTemplate.UserID = await SearchUser(NewInfo.Name)
     NewEquipRequest.push(EquipInfoTemplate)

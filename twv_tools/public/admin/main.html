@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>admin control</title>
+</head>
+<body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.0/ace.js"></script>
+  <div>In common</div>
+	<div id="editor" style="height: 300px">
+	import {BasicAPIManager} from "../js/api_mgr/BasicAPIManager.js"
+	import {AdvancedAPIManager} from "../js/api_mgr/AdvancedAPIManager.js"
+	let BMgr=BasicAPIManager()
+	let AMgr=AdvancedAPIManager()
+	</div>
+  
+	<script>
+    var editor = ace.edit("editor");
+		editor.getSession().setMode("ace/mode/javascript");
+  </script>	
+	<div>Login</div>
+	
+	<div id="editor1" style="height: 200px">
+	
+	</div>
+	<script>
+    var editor1 = ace.edit("editor1");
+		editor1.getSession().setMode("ace/mode/javascript");
+  </script>
+
+	<button id="editor1_exec"onclick=eval(editor.getValue()+editor1.getValue())>Exec
+	</button>
+	<script type="module">
+		document.getElementById("editor1_exec").addEventListener("click",()=>{eval(editor.getValue()+editor1.getValue())});
+	</script>
+	
+	
+</body>
+</html>

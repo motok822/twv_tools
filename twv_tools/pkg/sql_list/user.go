@@ -31,14 +31,23 @@ type usermanager struct {
 
 
 func (mgr *usermanager) Update(info UserInfo) int64{
+	if info.UserName=="" {
+		return 0
+	}		
 	if info.ID==0 {//create new
 		if !info.Password.Valid {
+			return 0
+		}
+		if info.Password.String=="" {
+			return 0
+		}
+		if mgr.GetUserID(info.UserName)!=0 {
 			return 0
 		}
 		hash_data := sha512.Sum512([]byte(info.Password.String))
 		info.Password_Hash= fmt.Sprintf("%x",hash_data)
 	}else{
-		if mgr.GetUserID(info.UserName)!=info.ID {
+		if mgr.GetUserID(info.UserName)!=info.ID&&mgr.GetUserID(info.UserName)!=0 {
 			return 0
 		}
 		var old_info *UserInfo=nil
@@ -55,7 +64,7 @@ func (mgr *usermanager) Update(info UserInfo) int64{
 		if old_info==nil {
 			return 0
 		}
-		if info.Password.Valid {
+		if info.Password.Valid&&info.Password.String!="" {
 			hash_data := sha512.Sum512([]byte(info.Password.String))
 			info.Password_Hash= fmt.Sprintf("%x",hash_data)
 		}else{
@@ -82,17 +91,12 @@ func (mgr *usermanager) Update(info UserInfo) int64{
 			info.Birth.Time=old_info.Birth.Time
 		}
 	}
-	//normality check
-	if info.UserName=="" {
-		return 0
-	}
-	
 	tablename,err:=mgr.sqllist.Table().Get(mgr.dest)
 	if err!=nil {
 		return 0
 	}
 	stmtIns,err:=mgr.sqllist.database.Prepare("INSERT into "+tablename+
-	" (id,username,password_hash,familyname,firstname,grade,belong,sex,birth) VALUES (?,?,?,?,?,?,?,?,?);" )
+	" (id,username,password_hash,familyname,firstname,grade,belong,sex,birth) VALUES (?,?,?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE id = VALUES(id),username = VALUES(username),password_hash = VALUES(password_hash),familyname = VALUES(familyname),firstname = VALUES(firstname),grade = VALUES(grade),belong = VALUES(belong),sex = VALUES(sex),birth=VALUES(birth);" )
 	if err!=nil {
 		return 0
 	}
@@ -105,6 +109,7 @@ func (mgr *usermanager) Update(info UserInfo) int64{
 		_,err=stmtIns.Exec(&tempid,&info.UserName,&info.Password_Hash,&info.FamilyName,&info.FirstName,&info.Grade,&info.Belong,&info.Sex,&info.Birth)
 	}
 	if err!=nil {
+		log.Print(err)
 		return 0
 	}
 	if info.ID==0 {
@@ -246,7 +251,7 @@ func (mgr *usermanager) GetAllUser() ([]*UserInfo,error){
 	if err!=nil {
 		return nil,err
 	}
-	rows, err := mgr.sqllist.database.Query("SELECT ID,UserName,FamilyName,FirstName,Grade,Belong,Sex,Birth FROM "+tablename)
+	rows, err := mgr.sqllist.database.Query("SELECT ID,Password_Hash,UserName,FamilyName,FirstName,Grade,Belong,Sex,Birth FROM "+tablename)
 	if err != nil {
 		return nil,err
 	}
@@ -255,7 +260,7 @@ func (mgr *usermanager) GetAllUser() ([]*UserInfo,error){
 	
 	for rows.Next() {
 		var info UserInfo
-		err = rows.Scan(&info.ID,&info.UserName,&info.FamilyName,&info.FirstName,&info.Grade,&info.Belong,&info.Sex,&info.Birth)
+		err = rows.Scan(&info.ID,&info.Password_Hash,&info.UserName,&info.FamilyName,&info.FirstName,&info.Grade,&info.Belong,&info.Sex,&info.Birth)
 		if err != nil {
 			return nil,err
 		}

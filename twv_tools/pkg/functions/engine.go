@@ -46,6 +46,7 @@ func Initialize(server http_engine.HTTPServer){
 	server.Register(User_DeleteUserInfo,"User_DeleteUserInfo")
 	server.Register(User_UpdateMyUserInfo,"User_UpdateMyUserInfo")
 	AuthGroupToFunc(server.SQLList(),"User_UpdateMyUserInfo","Users","Exec",1)
+	AuthGroupToFunc(server.SQLList(),"User_UpdateMyUserInfo","Guests","Exec",1)
 	server.Register(User_DeleteMyUserInfo,"User_DeleteMyUserInfo")
 	AuthGroupToFunc(server.SQLList(),"User_DeleteMyUserInfo","Users","Exec",1)
 	server.Register(User_AddToGroup,"User_AddToGroup")
@@ -71,6 +72,8 @@ func Initialize(server http_engine.HTTPServer){
 	AuthGroupToFile(server.SQLList(),"/account","Users","Read",1)
 	AuthGroupToFile(server.SQLList(),"/dist/manifest.json","Guests","Read",1)
 	AuthGroupToFile(server.SQLList(),"/dist","Users","Read",1)
+	AuthGroupToFile(server.SQLList(),"/maxlimit","Guests","Read",1)
+	AuthGroupToFile(server.SQLList(),"/maxlimit","Users","Read",1)
 	
 	
 	

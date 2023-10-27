@@ -21,7 +21,7 @@ import (
 
 func main(){
 	//db,err := sql.Open("mysql","go_user:go_password@tcp(mysql:3306)/go_database")
-	time.Sleep(180 * time.Second)
+	time.Sleep(200 * time.Second)
 	jst, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
 		log.Fatal(err.Error())

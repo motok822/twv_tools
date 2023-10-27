@@ -47,19 +47,6 @@ function load(chart,svg){
 		if(!colors.includes("black")){
 			colors.push("black")
 		}
-		svg.append("defs").selectAll("marker")
-    .data(colors)
-    .join("marker")
-      .attr("id", d =>("arrow-end_"+d))
-      .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 15)
-      .attr("refY", -0.5)
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
-    .append("path")
-      .attr("fill",(d)=>(d))
-      .attr("d", "M0,-5L10,0L0,5");
 	}
 	
 	{

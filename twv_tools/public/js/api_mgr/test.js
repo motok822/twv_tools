@@ -5,9 +5,9 @@ import {AdvancedAPIManager} from "./AdvancedAPIManager.js"
 var BMgr=new BasicAPIManager()
 var AMgr=new AdvancedAPIManager()
 
-//console.log(await BMgr.User.GetUsers())
+console.log(await BMgr.User.GetUsers())
 //console.log(await BMgr.User.GetMyUserInfo())
-console.log(await BMgr.EquipClass.GetAll())
+//console.log(await BMgr.EquipClass.GetAll())
 //console.log(await BMgr.EquipInfo.GetOneYear())
 //console.log(await BMgr.Plans.GetOneYear())
 //console.log(await AMgr.EquipMap.GetPlanMapOneYear())
@@ -24,10 +24,14 @@ console.log(await BMgr.EquipInfo.RegisterInfos(arr))
 //console.log(await AMgr.EquipMap.GetPlanMapOneYear())
 
 var TempInfo={ID:null,UserName:"TestADD",Password:"testpass",FamilyName:"Guest",FirstName:"",Grade:-1,Belong:"なし",Sex:"Male",Birth:new Date('1999-12-31T15:00:00.000Z')}
-var DefaultPlanInfo={ID:null,Name:"雲取",FYear:2023,PlanType:"CLUB",PlanNum:1,ReserveStart:new Date('2023-08-23T15:00:00.000Z'),ReserveEnd:new Date('2023-08-30T15:00:00.000Z'),ClimeStart:new Date('2023-08-23T15:00:00.000Z'),ClimeEnd:new Date('2023-08-30T15:00:00.000Z'),LastUpdate:new Date('2023-08-30T15:00:00.000Z'),Members:[3]}
+var DefaultPlanInfo={ID:2,Name:"fuck",FYear:2023,PlanType:"CLUB",PlanNum:1,ReserveStart:new Date('2023-08-23T15:00:00.000Z'),ReserveEnd:new Date('2023-08-30T15:00:00.000Z'),ClimeStart:new Date('2023-08-23T15:00:00.000Z'),ClimeEnd:new Date('2023-08-30T15:00:00.000Z'),LastUpdate:new Date('2023-08-30T15:00:00.000Z'),Members:[3]}
 
 //console.log(JSON.stringify(DefaultPlanInfo))
 //console.log(await BMgr.Plans.Update(DefaultPlanInfo))
 //console.log(await BMgr.Plans.GetOneYear())
-//console.log(await BMgr.User.DeleteUserInfo("TestADD"));
+//console.log(await BMgr.User.UpdateUserInfo(TempInfo));
 //console.log(await BMgr.User.Logout())
+/*
+BMgr.User.RemoveFromGroup("temp","Guests")
+BMgr.User.AddToGroup("temp","Users")
+*/

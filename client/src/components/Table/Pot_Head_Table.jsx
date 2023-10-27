@@ -24,6 +24,7 @@ const Hongou = 2;
 const NotReserved = 3;
 
 const EquipTemplate = [
+  { Group: "", Type: "", Family: "", Name: "年度", state: Reserved, last: 1, value: 2023, ID: 0 },
   { Group: "", Type: "", Family: "", Name: "山行ID", state: Reserved, last: 1, value: 0, ID: 0 },
   { Group: "", Type: "", Family: "", Name: "山行名", state: Reserved, last: 1, value: "サンプル", ID: 0 },
   { Group: "コッヘル", Type: "", Family: "α", Name: "特大", state: NotReserved, last: 0, value: "", ID: 0 },
@@ -192,11 +193,13 @@ function Pot_Head_Table(props) {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="center" colSpan={4} style={{ borderBottom: "none" }}></TableCell>
+              <TableCell align="center" colSpan={6} style={{ borderBottom: "none" }}></TableCell>
               <TableCell align='left' colSpan={18}>コッヘル</TableCell>
               <TableCell align='left' colSpan={20}>ヘッド</TableCell>
             </TableRow>
             <TableRow>
+              <TableCell align='center' colSpan={1} >年度</TableCell>
+              <TableCell></TableCell>
               <TableCell align='center' colSpan={1} >山行ID</TableCell>
               <TableCell></TableCell>
               <TableCell align='center' colSpan={1} >山行名</TableCell>
@@ -204,6 +207,7 @@ function Pot_Head_Table(props) {
               {Table_Header()}
             </TableRow>
             <TableRow>
+              <TableCell align="center" colSpan={2}></TableCell>
               <TableCell align="center" colSpan={2}></TableCell>
               <TableCell align="center" colSpan={2}></TableCell>
               {Table_Header_Element()}

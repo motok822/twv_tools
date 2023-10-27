@@ -87,14 +87,14 @@ function ShowOnTable(props) {
         if (clickCount == 0 || !IsElementIn(selectedElement, selected)) {    //デフォルト状態
             return (
                 <Box style={{ cursor: "default" }}>
-                    <Box width={30} style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center", wordBreak: "break-all" }}>{info.name}</Box>
+                    <Box width={35} style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center", wordBreak: "break-all" }}>{info.name}</Box>
                 </Box>
             );
         } else if (IsElementIn(selectedElement, selected)) {                  //クリック一回or二回 選ばれたセルのみ拡張 
             return (
                 <Box style={{ cursor: "default" }}>
-                    <Box width={30} style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center", wordBreak: "break-all" }}>{info.name}</Box>
-                    <Box width={30} style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center", wordBreak: "break-all" }}>{info.place}</Box>
+                    <Box width={35} style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center", wordBreak: "break-all" }}>{info.name}</Box>
+                    <Box width={35} style={{ backgroundColor: `${info.color}`, padding: "4px", color: "white", textAlign: "center", wordBreak: "break-all" }}>{info.place}</Box>
                 </Box>
             );
         }
@@ -114,7 +114,7 @@ function ShowOnTable(props) {
                                 {
                                     rowsi.map((row, EquipID) => {
                                         const CellFullName = row.Group + row.Family + row.Name + PlanID.toString()
-                                        if (row.Name == "山行ID" || row.Name == "山行名") {
+                                        if (row.Name == "年度" || row.Name == "山行ID" || row.Name == "山行名") {
                                             return (
                                                 <>
                                                     <TableCell align='right' key={CellFullName} >

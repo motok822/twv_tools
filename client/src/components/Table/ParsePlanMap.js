@@ -48,6 +48,9 @@ const EquipTemplate =
 */
 
 let UserDictionary = null
+const YearColumn = 0
+const MountIDColumn = 1
+const MountNameColumn = 2
 async function ParsePlanMap(EquipTemplate, PlanMap) {
     console.log("PlanMap",PlanMap)
     if(UserDictionary == null){
@@ -87,30 +90,30 @@ async function ParsePlanMap(EquipTemplate, PlanMap) {
         res = [...res, nextRow]
     }
     for (let j = 0; j < PlanMap.planmap[EquipID[0]].length; j++) {
-        res[j][0].value = PlanMap.plans[j].ID
-        res[j][1].value = PlanMap.plans[j].Name
+        res[j][MountIDColumn].value = PlanMap.plans[j].ID
+        res[j][MountNameColumn].value = PlanMap.plans[j].Name
     }
     for (let i = 0; i < EquipID.length; i++) {    //Equip
         for (let j = 0; j < PlanMap.planmap[EquipID[i]].length; j++) {  //planの個数
-            res[j][i + 2].ID = PlanMap.planmap[EquipID[i]][j].EquipID
+            res[j][i + 3].ID = PlanMap.planmap[EquipID[i]][j].EquipID
             if (PlanMap.planmap[EquipID[i]][j].MoveDest == "本郷") {
-                res[j][i + 2].state = Hongou                         //山行のカラムがあるので+2
-                res[j][i + 2].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
+                res[j][i + 3].state = Hongou                         //山行のカラムがあるので+2
+                res[j][i + 3].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
             } else if (PlanMap.planmap[EquipID[i]][j].MoveDest == "駒場") {
-                res[j][i + 2].state = Komaba
-                res[j][i + 2].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
+                res[j][i + 3].state = Komaba
+                res[j][i + 3].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
             } else if (PlanMap.planmap[EquipID[i]][j].MoveDest == "予約") {
-                res[j][i + 2].state = Reserved
-                res[j][i + 2].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
+                res[j][i + 3].state = Reserved
+                res[j][i + 3].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
             } else {
-                res[j][i + 2].state = NotReserved
+                res[j][i + 3].state = NotReserved
             }
         }
     }
     res.sort(function(first, second){
-        if(first[0].value > second[0].value){
+        if(first[MountIDColumn].value > second[MountIDColumn].value){
             return -1;
-        }else if(first[0].value < second[0].value){
+        }else if(first[MountIDColumn].value < second[MountIDColumn].value){
             return 1;
         }else return 0;
     })

@@ -241,7 +241,7 @@ func User_UpdateMyUserInfo(arg_byte []byte,engine http_engine.HTTPEngine) (any,e
 	if info.ID!=engine.X().CurrentUserID {
 		return nil,errors.New("Not your account")
 	}
-	return User_UpdateMyUserInfo(arg_byte,engine)
+	return User_UpdateUserInfo(arg_byte,engine)
 }
 
 func User_DeleteMyUserInfo(arg_byte []byte,engine http_engine.HTTPEngine) (any,error){

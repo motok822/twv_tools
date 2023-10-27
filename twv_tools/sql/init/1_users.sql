@@ -43,7 +43,7 @@ create table SystemUser (
 );
 
 INSERT INTO SystemUser (content,userid) VALUES ("USER",2);
-INSERT INTO SystemUser (content,groupname) VALUES ("GROUP","USERS");
+INSERT INTO SystemUser (content,groupname) VALUES ("GROUP","Users");
 
 INSERT INTO USERLIST (id,username,password_hash,grade) VALUES (2,"SystemUser","c7d40d4259743068fa09931acc786acfccfb19493b805fe470db9f982aabcca20e890acdc0dd7ca45c95393aa8f51fc11959580346c930abf3211cbe37090048",-1);
 /*password:SystemUser*/
@@ -59,7 +59,7 @@ create table test_user (
 );
 
 INSERT INTO test_user (content,userid) VALUES ("USER",3);
-INSERT INTO test_user (content,groupname) VALUES ("GROUP","USERS");
+INSERT INTO test_user (content,groupname) VALUES ("GROUP","Users");
 
 INSERT INTO USERLIST (id,username,password_hash,grade) VALUES (3,"TestUser","f6c1788e5bc736fb2b6265a39c15178ded2deac2bd6cd4d27fc5185a9ebbdfd3165d1aad078619184b0fcedbc6b29aa48fd03753788b6758570f60f0beec30e0",-1);
 /*password:TestUser*/

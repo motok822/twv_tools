@@ -104,7 +104,7 @@ func (engine *httpengine) ServeHTTP(){
 func (engine *httpengine) DeployLocalFile(){
 	log.Print("llog:",engine.r.URL.Path)
 	if !sql_list.Certificate("Read",engine.sqllist.Auth().File(engine.r.URL.Path),engine.sqllist.Auth().User(engine.CurrentUserID)){
-		http_tools.RedirectToURILoop("/account/main.html",engine.X().W,engine.X().R,http.StatusTemporaryRedirect)
+		http_tools.RedirectToURILoopModeUnauthrized("/account/main.html",engine.X().W,engine.X().R,http.StatusTemporaryRedirect)
 		return
 	}
 	filename,err:=localmgr.ConvertPath(engine.r.URL.Path)
