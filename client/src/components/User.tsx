@@ -29,8 +29,8 @@ function User() {
     <div>
       <Header />
       <div style={{ minHeight: "100vh" }}>
-        <table>
-          <tbody style={{border: "1", borderCollapse: "collapse"}}>
+        <table style={{border: "1", borderCollapse: "collapse"}}>
+          <tbody>
             <tr>
               <td>ユーザー名</td>
               <td>{user?.UserName}</td>
