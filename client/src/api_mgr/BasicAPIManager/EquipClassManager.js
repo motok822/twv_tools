@@ -2,7 +2,7 @@
 import {APIFunc} from "../APIFunc.js"
 
 
-var DefaultEquipClass={ID:7,Group:"テント",Type:"７天",Family:"α"}
+var DefaultEquipClass={ID:7,Group:"テント",Type:"７天",Family:"α",Weight:1500,Priority:0}
 
 class EquipClassManager {
 	async GetAll(){//auth:user
@@ -104,6 +104,8 @@ class EquipClassManager {
 			}
 			info.Name=infos_raw[i].Name
 			info.ID=infos_raw[i].ID
+			info.Weight=infos_raw[i].Weight
+			info.Priority=infos_raw[i].Priority
 			infos.push(info)
 		}
 		return infos
@@ -117,7 +119,7 @@ function ParseEquipClass(str){
 	var infos=new Array()
 	for(var i=0;i< arr.length;) {
     infos.push({})
-    var v=i/3
+    var v=i/5
     infos[v].ID=Number(arr[i++])
     if(arr[i]=="") {
         infos[v].ParentID=null
@@ -128,6 +130,18 @@ function ParseEquipClass(str){
     infos[v].Name=arr[i++]
 		if(infos[v].Name==null){
 			infos[v].Name=""
+		}
+		if(arr[i]==null){
+			infos[v].Weight=0
+			i++
+		}else{
+			infos[v].Weight=Number(arr[i++])
+		}
+		if(arr[i]==null){
+			infos[v].Priority=0
+			i++
+		}else{
+			infos[v].Priority=Number(arr[i++])
 		}
 	}
 	return infos

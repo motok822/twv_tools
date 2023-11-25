@@ -461,7 +461,6 @@ func newauthlist() *authlist {
 type authlist struct{
 	users []int64
 	groups []string
-	original *authlist
 }
 func (list *authlist) Users() *([]int64) {
 	return &(list.users)
@@ -478,8 +477,6 @@ func (list *authlist) Clone() *authlist{
 	for _,v:=range list.groups {
 		newlist.groups=append(newlist.groups,v)
 	}
-	
-	newlist.original=list.original
 	return newlist
 } 
 
@@ -542,18 +539,18 @@ func (lists *authlists) push(list *authlist) error{
 	var content string
 	var userid sql.NullInt64
 	var groupname sql.NullString
-	
+	var original *authlist
+	var ok bool
 	tablename,err:=lists.sqllist.Table().Get(lists.dest)
 	if err != nil {
-		original,err:=lists.Pull()
+		val,err:=lists.Pull()
 		if err!=nil {
 			return err
 		}
-		val,ok:=original.(*authlist)
+		original,ok=val.(*authlist)
 		if !ok {
 			return errors.New("type assertion failed")
 		}
-		list.original=val
 		err=lists.Create()
 		if err!=nil {
 			return err
@@ -563,15 +560,14 @@ func (lists *authlists) push(list *authlist) error{
 			return err
 		}
 	}else{
-		original,err:=lists.Pull()
+		val,err:=lists.Pull()
 		if err!=nil {
 			return err
 		}
-		val,ok:=original.(*authlist)
+		original,ok=val.(*authlist)
 		if !ok {
 			return errors.New("type assertion failed")
 		}
-		list.original=val
 		
 	}
 	
@@ -584,7 +580,7 @@ func (lists *authlists) push(list *authlist) error{
 	}
 	defer stmtIns.Close()	
 	stmtIns2,err:=lists.sqllist.database.Prepare(
-	"DELETE FROM "+tablename+" WHERE content=? AND userid=? AND groupname=?;" )
+	"DELETE FROM "+tablename+" WHERE content=? AND (userid=? OR groupname=?);" )
 	if err != nil {
 		return err
 	}
@@ -595,7 +591,7 @@ func (lists *authlists) push(list *authlist) error{
 	groupname.Valid=false
 	for _,v:=range list.users {
 		update:=true
-		for _,w:=range list.original.users {
+		for _,w:=range original.users {
 			if v==w {
 				update=false
 			}
@@ -608,7 +604,7 @@ func (lists *authlists) push(list *authlist) error{
 			}
 		}
 	}
-	for _,v:=range list.original.users {
+	for _,v:=range original.users {
 		update:=true
 		for _,w:=range list.users {
 			if v==w {
@@ -628,7 +624,7 @@ func (lists *authlists) push(list *authlist) error{
 	groupname.Valid=true
 	for _,v:=range list.groups {
 		update:=true
-		for _,w:=range list.original.groups {
+		for _,w:=range original.groups {
 			if v==w {
 				update=false
 			}
@@ -641,7 +637,7 @@ func (lists *authlists) push(list *authlist) error{
 			}
 		}
 	}
-	for _,v:=range list.original.groups {
+	for _,v:=range original.groups {
 		update:=true
 		for _,w:=range list.groups {
 			if v==w {

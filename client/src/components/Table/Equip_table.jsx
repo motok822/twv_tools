@@ -24,12 +24,12 @@ function Equip_table(props) {
   const Fetch_Table = async () => {
     let BMgr = new BasicAPIManager();
     let AMgr = new AdvancedAPIManager();
-    console.log(await BMgr.User.GetUsers())
-    console.log(await BMgr.EquipClass.GetAll())
-    console.log(await BMgr.EquipInfo.GetOneYear())
-    console.log(await BMgr.Plans.GetOneYear())
+    // console.log(await BMgr.User.GetUsers())
+    // console.log(await BMgr.EquipClass.GetAll())
+    // console.log(await BMgr.EquipInfo.GetOneYear())
+    // console.log(await BMgr.Plans.GetOneYear())
     const res = await AMgr.EquipMap.GetPlanMapOneYear()
-    console.log("plan map",res)
+    // console.log("plan map",res)
     SetPlanMapOneYear(res)
   }
 

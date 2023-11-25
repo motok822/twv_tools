@@ -32,13 +32,14 @@ function viewer(){
 		
 	links=svg.selectAll("path").data(chart.objects.links).enter().append("path")
 		.attr("stroke-width", 1)
-		.attr("stroke", "black")
+		.attr("stroke",(d)=>(chart.line_color[d.type][d.route]!=null?chart.line_color[d.type][d.route]:(chart.line_color[d.type]["def"]!=null?chart.line_color[d.type]["def"]:"black")))
 		.attr("fill","white")
 		.attr("fill-opacity",0)
-		.attr("marker-end","url(#arrow-end_black)")
-
-
-	var colors=["black","white"]
+		.attr("marker-end",(d)=>("url(#arrow-end_"+(chart.line_color[d.type][d.route]!=null?chart.line_color[d.type][d.route]:(chart.line_color[d.type]["def"]!=null?chart.line_color[d.type]["def"]:"black")))+")")
+	var colors=new Array()
+	for(let p in chart.line_color.NORMAL)	colors.push(chart.line_color.NORMAL[p])
+	for(let p in chart.line_color.OR)	colors.push(chart.line_color.OR[p])
+	for(let p in chart.line_color.ER)	colors.push(chart.line_color.ER[p])
 	svg.append("defs").selectAll("marker")
 	.data(colors).enter()
 	.append("marker")
@@ -52,7 +53,7 @@ function viewer(){
 		.attr("orient", "auto")
 	.append("polygon")
 		.attr("points","0,0 5,5 0,10 10,5 ")
-		.attr("fill","red");
+		.attr("fill",d=>(d));
 
 	nodes=svg.selectAll("g").data(chart.objects.nodes).enter().append("g")
 	nodes.call(d3.drag()
@@ -79,7 +80,10 @@ function viewer(){
 
 	simulation.force("link")
 		.links(chart.objects.links)
-		.distance((d)=>(d.distance*chart.window_setting.line_magnification))
+		.distance((d)=>{
+			if(d.route=="bush") return 0.5*d.distance*chart.window_setting.line_magnification;
+			return d.distance*chart.window_setting.line_magnification;
+		})
 }
 function ticked(){
 	nodes.selectAll("circle").remove()
@@ -212,7 +216,7 @@ function delete_max(){
 	viewer()
 }
 
-function spread_time(id,time,from){
+function spread_time(id,time,from,arr){
 	for(let v of chart.objects.links){
 		if(v.to==id){
 			let target=null
@@ -220,6 +224,8 @@ function spread_time(id,time,from){
 				if(w.id==v.from) target=w
 			}
 			if(target==null) continue
+			if(target.type=="end_pin") continue
+			if(arr.includes(target.id)) continue
 			if(target.time2==null||target.time2>time+v.value){
 				if(time+v.value<target.time1||target.time1==null){
 					target.time2=target.time1
@@ -230,29 +236,36 @@ function spread_time(id,time,from){
 					target.time2=time+v.value
 					target.time2_from=from
 				}
-				spread_time(target.id,time+v.value,from)
+				arr.push(target.id)
+				spread_time(target.id,time+v.value,from,arr)
 			}
 		}
 	}
+	arr.pop()
 }
 
-function get_route(from,to,time){
+function get_route(from,to,time,route){
 	if(time<0){
 		return null
 	}
 	if(time==0&&from==to){
-		return [from]
+		return route
 	}
 	for(let v of chart.objects.links){
 		if(v.from==from){
-			let route=get_route(v.to,to,time-v.value)
-			if(route!=null){
-				return [from].concat(route)
+			if(route.includes(v.to)) continue
+			route.push(v.to)
+			let temp_route=get_route(v.to,to,time-v.value,route)
+			if(temp_route!=null){
+				return temp_route
 			}
+			route.pop()
 		}
 	}
+	return null
 }
 function sum_car_route(route){
+	console.log(route)
 	let sum_time=0
 	for(let i=0;i+1<route.length;++i){
 		for(let v of chart.objects.links){
@@ -260,6 +273,7 @@ function sum_car_route(route){
 				if(v.route=="car_road"){
 					sum_time+=v.value
 				}
+				break
 			}
 		}
 	}
@@ -284,7 +298,7 @@ function calc_max(){
 	}
 	for(let v of chart.objects.nodes){
 		if(v.type=="end_pin"){
-			spread_time(v.id,0,v.id)
+			spread_time(v.id,0,v.id,[v.id])
 		}
 	}
 	for(let v of chart.objects.nodes){
@@ -302,6 +316,28 @@ function calc_max(){
 	id_counter++
 	for(let v of chart.objects.nodes){
 		if(v.time2==0) continue
+		let is_edge_max=true
+		let only_to=null
+		for(let w of chart.objects.links){
+			if(w.from==v.id){
+				if(only_to!=null){
+					is_edge_max=false
+					break
+				}else{
+					only_to=w.to
+				}
+			}
+		}
+		if(is_edge_max){
+			for(let w of chart.objects.links){
+				if(w.to==v.id){
+					if(w.from!=only_to){
+						is_edge_max=false
+						break
+					}
+				}
+			}
+		}
 		let is_max=true
 		for(let w of chart.objects.links){
 			let compare=null
@@ -310,32 +346,46 @@ function calc_max(){
 			if(compare!=null){
 				for(let k of chart.objects.nodes){
 					if(k.id==compare){
-						if(k.time2>v.time2) is_max=false
+						if(k.time2<v.time2) is_max=false
 						break
 					}
 				}
 				if(!is_max) break
 			}
 		}
-		if(is_max){
-			console.log("1")
-			let route1=get_route(v.id,v.time1_from,v.time1)
-			if(route1==null){
+		if(is_max||is_edge_max){
+			let route1=get_route(v.id,v.time1_from,v.time1,[v.id])
+			if(route1==null||route1.length==0){
 				console.log("1:"+v.id+","+v.time1_from+","+v.time1)
+				continue
 			}
-			let route2=get_route(v.id,v.time2_from,v.time2)
-			if(route2==null){
+			let route2=get_route(v.id,v.time2_from,v.time2,[v.id])
+			if(route2==null||route2.length==0){
 				console.log("1:"+v.id+","+v.time2_from+","+v.time2)
+				continue
 			}
-			if(route1==null||route2==null) continue
+			if(route1[1]==route2[1]){
+				route2=route1
+				v.time2=v.time1
+				v.time2_from=v.time1_from
+			}
 			let result_str=""
 			result_str+="("+v.time1
-			if(sum_car_route(route1)!=0) result_str+="("+v.time1-sum_car_route(route1)+")"
+			if(sum_car_route(route1)!=0) result_str+="("+(v.time1-sum_car_route(route1))+")"
 			result_str+=","+v.time2
-			if(sum_car_route(route2)!=0) result_str+="("+v.time2-sum_car_route(route2)+")"
+			if(sum_car_route(route2)!=0) result_str+="("+(v.time2-sum_car_route(route2))+")"
 			result_str+=");"
 			
 			let margin=60
+			for(let i=0;i+1<route1.length;++i){
+				for(let w of chart.objects.links){
+					if(w.from==route1[i]&&w.to==route1[i+1]){
+						if(w.route=="bush"||w.route=="winter"){
+							margin=90
+						}
+					}
+				}
+			}
 			for(let i=0;i+1<route2.length;++i){
 				for(let w of chart.objects.links){
 					if(w.from==route2[i]&&w.to==route2[i+1]){
@@ -345,13 +395,17 @@ function calc_max(){
 					}
 				}
 			}
+			
 			let limittime=new Date()
 			limittime.setHours(dayend.hour)
 			limittime.setMinutes(dayend.minute)
-			limittime.setTime(limittime.getTime()-1000*60*(v.time2-sum_car_route(route2)+margin))
+			
+			limittime.setTime(limittime.getTime()-1.2*1000*60*((((v.time2-sum_car_route(route2))<(v.time1-sum_car_route(route1)))?(v.time1-sum_car_route(route1)):(v.time2-sum_car_route(route2))))-1000*60*margin)
+			
 			result_str+=limittime.getHours()+":"+limittime.getMinutes()
 			chart.objects.tags.push({id:id_counter,value:result_str,is_maxlimit:true,coord_type:"rel",rel_type:"nodes",rel_id:v.id,x:-30,y:-30})
 			id_counter++
+			console.log(route1,route2)
 		}
 	}
 	

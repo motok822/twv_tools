@@ -19,27 +19,56 @@ import (
 	"bytes"
 	"net/url"
 	"io/ioutil"
+	"sync"
 )
 
 type httpserver struct {
 	sqllist sql_list.SQLList
 	funclist map[string] http_engine.EngineFunc
+	enginelist []*httpengine
+	synclock sync.Mutex
 }
 
 func NewHTTPServer(sqllist sql_list.SQLList) http_engine.HTTPServer{
 	var server httpserver
 	server.sqllist=sqllist
 	server.funclist=make(map[string] http_engine.EngineFunc)
+	server.enginelist=make([]*httpengine,0,100)
 	return &server
 }
 
 func (server *httpserver) ServeHTTP(w http.ResponseWriter,r *http.Request){
+	//allocengine
+	server.synclock.Lock()
+	for _,v:= range server.enginelist {
+		v.using_async.Lock()
+		if !v.using {
+			v.using=true
+			v.using_async.Unlock()
+			server.synclock.Unlock()
+			v.w=w
+			v.r=r
+			v.ServeHTTP()
+			v.using_async.Lock()
+			v.using=false
+			v.using_async.Unlock()
+			return
+		}
+		v.using_async.Unlock()
+	}
 	var engine httpengine
 	engine.funclist=server.funclist
 	engine.w=w
 	engine.r=r
 	engine.sqllist=server.sqllist
-	engine.ServeHTTP()
+	engine.using=true
+	server.enginelist=append(server.enginelist,&engine)
+	server.synclock.Unlock()
+	engine.ServeHTTP()		
+	engine.using_async.Lock()
+	engine.using=false
+	engine.using_async.Unlock()
+	return
 }
 
 type httpengine struct {
@@ -49,6 +78,8 @@ type httpengine struct {
 	sqllist sql_list.SQLList
 	CurrentUserID int64
 	parseURL *url.URL
+	using bool
+	using_async sync.Mutex
 }
 
 

@@ -301,13 +301,15 @@ func User_RemoveFromGroup(arg_byte []byte,engine http_engine.HTTPEngine) (any,er
 	if err!=nil {
 		return nil,err
 	}
+	newusers:=make([]int64,0,100)
 	if slices.Contains(*(groupinfo.Users()),userid){
-		for i,v := range *(groupinfo.Users()){
-			if v==userid {
-				*(groupinfo.Users())=(*(groupinfo.Users()))[:i+copy((*(groupinfo.Users()))[i:], (*(groupinfo.Users()))[i+1:])]
+		for _,v := range *(groupinfo.Users()){
+			if v!=userid {
+				newusers=append(newusers,v)
 				break
 			}
 		}
+		*(groupinfo.Users())=newusers
 		err:=engine.X().SQLList.Auth().Group(arg.GroupName).Push(groupinfo)
 		if err!=nil {
 			return nil,err
@@ -319,13 +321,15 @@ func User_RemoveFromGroup(arg_byte []byte,engine http_engine.HTTPEngine) (any,er
 	if err!=nil {
 		return nil,err
 	}
+	newgroups:=make([]string,0,100)
 	if slices.Contains(*(userinfo.Groups()),arg.GroupName){
-		for i,v := range *(userinfo.Groups()){
-			if v==arg.GroupName {
-				*(userinfo.Groups())=(*(userinfo.Groups()))[:i+copy((*(userinfo.Groups()))[i:], (*(userinfo.Groups()))[i+1:])]
+		for _,v := range *(userinfo.Groups()){
+			if v!=arg.GroupName {
+				newgroups=append(newgroups,v)
 				break
 			}
 		}
+		*(userinfo.Groups())=newgroups
 		err:=engine.X().SQLList.Auth().User(userid).Push(userinfo)
 		if err!=nil {
 			return nil,err

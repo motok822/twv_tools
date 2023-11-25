@@ -3,6 +3,8 @@ import Header from '../Header'
 import Footer from '../Footer'
 import styles from '../styles/F_calc.module.css'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 const PayMoney = 1;
 const PayNoMoney = 0;
@@ -11,7 +13,8 @@ function F_calc() {
   const [PayMoneyList, SetPayMoneyList] = useState([]);
   const [PayNoMoneyList, SetPayNoMoneyList] = useState([]);
   const [CalcRes, SetCalcRes] = useState([[{ name: "", num: 0 }]])
-
+  const [PayMoneyNum, SetPayMoneyNum] = useState(0)
+  const [PayNoMoneyNum, SetPayNoMoneyNum] = useState(0)
 
   const PayMoneyForm = (num, state) => {
     let array = [];
@@ -95,14 +98,45 @@ function F_calc() {
       SetCalcRes(res);
     }
   }
+  const paymoneyplusone = async () => {
+    await SetPayMoneyNum((prev) => prev + 1)
+  }
+  const paymoneyminusone = async () => {
+    await SetPayMoneyNum((prev) => {
+      if(prev > 0)return (prev - 1)
+    })
+  }
+  const paynomoneyplusone = async () => {
+    await SetPayNoMoneyNum((prev) => prev + 1)
+  }
+  const paynomoneyminusone = async () => {
+    await SetPayNoMoneyNum((prev) => {
+      if(prev > 0)return (prev - 1)
+    })
+  }
+  useEffect(() => {
+    PayMoneyForm(PayMoneyNum, PayMoney)
+  }, [PayMoneyNum])
+
+  useEffect(() => {
+    PayMoneyForm(PayNoMoneyNum, PayNoMoney)
+  }, [PayNoMoneyNum])
 
   return (
     <div className={styles.Home}>
       <Header></Header>
       <main className={styles.main}>
         <h1 className={styles.text}>F清算計算ツール</h1>
-        <p className={styles.text}> お金を負担する人の数    <input type='number' min="0" onChange={(e) => { if(Number(e.target.value) != NaN)PayMoneyForm(e.target.value, PayMoney) }}></input></p>
-        <p className={styles.text}>お金を負担しない人の数    <input type='number' min="0" onChange={(e) => { if(Number(e.target.value) != NaN)PayMoneyForm(e.target.value, PayNoMoney) }}></input></p>
+        <p className={styles.text}> お金を負担する人の数    
+        <RemoveIcon onClick={() => paymoneyminusone()} className={styles.plusminus}></RemoveIcon>
+        <input type='number' min="0" value={PayMoneyNum} onChange={(e) => { if(Number(e.target.value) != NaN)SetPayMoneyNum(e.target.value) }}></input>
+        <AddIcon onClick={() => paymoneyplusone()} className={styles.plusminus}></AddIcon>
+        </p>
+        <p className={styles.text}>お金を負担しない人の数    
+        <RemoveIcon onClick={() => paynomoneyminusone()} className={styles.plusminus}></RemoveIcon>
+        <input type='number' min="0" value={PayNoMoneyNum} onChange={(e) => { if(Number(e.target.value) != NaN)SetPayNoMoneyNum(e.target.value) }}></input>
+        <AddIcon onClick={() => paynomoneyplusone()} className={styles.plusminus}></AddIcon>
+        </p>
         <p className={styles.text}>お金を負担する人の名前               金額</p>
         {
           PayMoneyList.map((val, index) => {

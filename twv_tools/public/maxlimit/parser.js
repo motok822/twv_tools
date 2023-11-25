@@ -1,5 +1,10 @@
 var chart={
 	window_setting:{x:0,y:0,zoom:1,fontsize:16,pin_radius:8,line_magnification:15},
+	line_color:{
+		NORMAL:{def:"black",car_road:"gray",bush:"green",stream:"skyblue",rock:"silver",winter:"antiquewhite"},
+		OR:{def:"blue"},
+		ER:{def:"red"},
+	},
 	objects:{
 		nodes:[{id:0,type:"pin",is_water:false,x:200,y:200},{id:1,type:"pin",is_water:false,x:400,y:400}],
 		links:[{id:0,from:0,to:1,type:"NORMAL",route:"road",distance:300},{id:1,from:1,to:0,type:"NORMAL",route:"road",distance:300}],
@@ -49,6 +54,8 @@ document.getElementById('save_json_file').addEventListener("click",()=>{
 	down_link.click();
 	URL.revokeObjectURL(url);
 });
+
+
 
 
 function getchart(){
@@ -131,7 +138,12 @@ function csvdata_to_chart(csvdata){
 	}
 	
 	return {
-		window_setting:{x:0,y:0,zoom:1,fontsize:8,pin_radius:8,line_magnification:4},
+		window_setting:{x:0,y:0,zoom:1,fontsize:8,pin_radius:8,line_magnification:2.5},
+		line_color:{
+			NORMAL:{def:"black",car_road:"gray",bush:"green",stream:"skyblue",rock:"silver",winter:"antiquewhite"},
+			OR:{def:"blue"},
+			ER:{def:"red"},
+		},
 		objects:{
 		nodes:nodes,
 		links:links,

@@ -203,6 +203,18 @@ func UnParseEquipClass(class *sql_list.EquipClass) string {
 	}
 	str=str+","
 	str=str+class.Name+","
+	if class.Weight.Valid {
+		str=str+fmt.Sprint(class.Weight.Int64)
+	}else{
+		str=str+"0"
+	}
+	str=str+","
+	if class.Priority.Valid {
+		str=str+fmt.Sprint(class.Priority.Int64)
+	}else{
+		str=str+"0"
+	}
+	str=str+","
 	return str
 }
 

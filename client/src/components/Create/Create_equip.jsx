@@ -18,8 +18,8 @@ function Create_equip() {
   const [ClimbingName, SetClimbingName] = useState("")
   const [ClimbingYear, SetClimbingYear] = useState(year)
   const [Tentnight, SetTentnight] = useState(0)
-  const [T1, SetT1] = useState(null)
-  const [T2, SetT2] = useState(null)
+  const [T1, SetT1] = useState('2023/5/3')
+  const [T2, SetT2] = useState('2023/5/3')
   const [AdditionalEquip, SetAdditionalEquip] = useState("防寒着　熊鈴")
   const navigate = useNavigate()
   const JumpToNext = () => {
@@ -74,7 +74,7 @@ function Create_equip() {
             <tbody>
               <tr>
                 <td>山行企画の番号</td>
-                <td>twv<input type='number' value={year} min="0" className={styles.NumberInput} onClick={(e) => { SetClimbingYear(e.target.value) }}></input>-
+                <td>twv<input type='number' placeholder={year} min="0" className={styles.NumberInput} onClick={(e) => { SetClimbingYear(e.target.value) }}></input>-
                   <input type="number" min="0" className={styles.NumberInput} onChange={(e) => { if(Number(e.target.value) > 0){SetClimbingId(Number(e.target.value))}else{SetClimbingId(0)} }}></input></td>
               </tr>
               <tr>
@@ -83,9 +83,9 @@ function Create_equip() {
               </tr>
               <tr>
                 <td>山行期間</td>
-                <input type='text' required onChange={(e) => { SetT1(e.target.value) }} placeholder='2023/5/3'></input>
+                <input type='text' required onChange={(e) => { SetT1(e.target.value) }} placeholder={T1}></input>
                 <div>から</div>
-                <input type='text' required onChange={(e) => { SetT2(e.target.value) }} placeholder='2023/5/3'></input>
+                <input type='text' required onChange={(e) => { SetT2(e.target.value) }} placeholder={T2}></input>
               </tr>
               <tr>
                 <td>山行形態</td>

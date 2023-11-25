@@ -75,8 +75,6 @@ function PopUp(props) {
     SetNewInfo({ Name: information.current.name, Place: information.current.place, PlanID: information.current.PlanID, EquipID: information.current.EquipID, ID: information.current.ID })
   }, [])  //初期設定
   const ButtonClick = async () => {
-    props.ClosePopUp()
-    console.log(props.CloseClick)
     let BMgr = new BasicAPIManager()
     props.rows[NewInfo.PlanID][NewInfo.EquipID].state = NewInfo.Place
     props.rows[NewInfo.PlanID][NewInfo.EquipID].value = NewInfo.Name  //user名
@@ -94,11 +92,12 @@ function PopUp(props) {
     console.log(await BMgr.EquipInfo.RegisterInfos(NewEquipRequest))
     console.log("EquipInfo")
     console.log(await BMgr.EquipInfo.GetOneYear())
+    props.ClosePopUp()
   }
   return (
     <StyledOverlay>
       <StyledContent className='PopUp'>
-        <select id='place_option' onClick={(e) => handlePlaceChange(e)}>
+        <select id='place_option' onChange={(e) => handlePlaceChange(e)}>
           <option>貸し出し中</option>
           <option>駒場</option>
           <option>本郷</option>

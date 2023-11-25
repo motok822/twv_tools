@@ -11,6 +11,7 @@ import Select_equip from './components/Create/Select_equip';
 import Distribute_equip from './components/Create/Distribute_equip';
 import Show_Distribution_Res from './components/Create/Show_Distribution_Res';
 import { ShowUser } from './components/UserManage';
+import User from './components/User';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route path={"/Create/DistributeEquip"} element={<Distribute_equip />} />
             <Route path={"/Create/ShowDistributionRes"} element={<Show_Distribution_Res />} />
             <Route path={"/Other"} element={<Other />}/>
+            <Route path={"/User"} element={<User />}/>
           </Routes>
         </HashRouter>
     </div>

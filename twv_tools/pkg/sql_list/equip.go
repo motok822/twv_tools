@@ -165,7 +165,7 @@ func (classes *equipclasses) Push(list []EquipClass) error {
 	}
 	stmtIns,err:=classes.sqllist.database.Prepare(
 	"INSERT into "+tablename+
-	" (ID,ParentID,Name) VALUES (?,?,?);" )
+	" (ID,ParentID,Name,Weight,Priority) VALUES (?,?,?,?,?);" )
 	if err != nil {
 		return err
 	}
@@ -185,14 +185,14 @@ func (classes *equipclasses) Pull() ([]*EquipClass,error){
 	if err != nil {
 		return lists,err
 	}
-	rows, err := classes.sqllist.database.Query("SELECT ID,ParentID,Name FROM "+tablename)
+	rows, err := classes.sqllist.database.Query("SELECT ID,ParentID,Name,Weight,Priority FROM "+tablename)
 	if err != nil {
 		return lists,err
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var class EquipClass
-		err := rows.Scan(&class.ID,&class.ParentID,&class.Name)
+		err := rows.Scan(&class.ID,&class.ParentID,&class.Name,&class.Weight,&class.Priority)
 		if err != nil {
 			return lists,err
 		}

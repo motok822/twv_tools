@@ -7,6 +7,8 @@ import { Equip_table } from '../Table/Equip_table';
 import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ShowUser } from '../UserManage';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 
 export const EquipsContext = createContext()
 let EquipInfoTemplate = { ID: null, UserID: 2, EquipID: 7, Act: "DELETE", T1: new Date("2022-08-18 14:58:00"), T2: null, MoveDest: "temp", PlanID: 0 }
@@ -30,7 +32,7 @@ function Select_equip() {
   const [MemberNum, SetMemberNum] = useState(5)
   const [Members, SetMembers] = useState(["1人目", "2人目", "3人目", "4人目", "5人目"])
   let UserDictionary = null
-  const setDict = async() =>{
+  const setDict = async () => {
     UserDictionary = await ShowUser()
   }
   useEffect(() => {
@@ -238,7 +240,7 @@ function Select_equip() {
       },
       {
         name: "お玉",
-        num: ClimbingState.Tentnight*2,
+        num: ClimbingState.Tentnight * 2,
       },
       {
         name: "しゃもじ",
@@ -351,7 +353,22 @@ function Select_equip() {
     PlanMapOneYear = await AMgr.EquipMap.GetPlanMapOneYear()
     SetEquipIDs()
   }
-
+  const plusone = async (ind) => {
+    await SetEquips((prev) => {
+      prev = Object.assign({}, prev)
+      prev.other[ind].num += 1
+      return prev
+    })
+  }
+  const minusone = async (ind) => {
+    if (EquipsState.other[ind].num > 0) {
+      await SetEquips((prev) => {
+        prev = Object.assign({}, prev)
+        prev.other[ind].num -= 1
+        return prev
+      })
+    }
+  }
   return (
     <div className={styles.Home}>
       <Header />
@@ -398,11 +415,13 @@ function Select_equip() {
           <p className={styles.Text}>その他</p>
 
           <div className={styles.GridTable}>
-            {EquipsState.other.map((value) => {
+            {EquipsState.other.map((value, ind) => {
               return (
-                <div style={{display: "flex", justifyContent: "center"}}>
+                <div style={{ display: "flex", justifyContent: "center" }}>
                   <div>{value.name}</div>
+                  <RemoveIcon onClick={() => minusone(ind)} className={styles.plusminus}></RemoveIcon>
                   <input type='number' className={styles.NumberInput} placeholder={value.num} onChange={(e) => SetOtherEquip(value, e)}></input>
+                  <AddIcon onClick={() => plusone(ind)} className={styles.plusminus}></AddIcon>
                 </div>
               )
             })}

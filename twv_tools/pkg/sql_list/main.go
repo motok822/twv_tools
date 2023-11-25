@@ -144,6 +144,8 @@ type EquipClass struct{
 	ID int64
 	ParentID sql.NullInt64
 	Name string
+	Weight sql.NullInt64
+	Priority sql.NullInt64
 }
 
 type UserInfo struct{

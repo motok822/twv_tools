@@ -6,12 +6,14 @@ import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import F_calc from './F/F_calc'
 import Max_calc from './Max/Max_calc'
 import { ShowUser } from './UserManage'
+import User from './User'
 
 function Home() {
   return (
     <div className={styles.Home}>
       <Header></Header>
       <main className={styles.main}>
+
         <div className={styles.title}>
           <h1><span className={styles.blank_space}></span>東京大学</h1>
           <h1>ワンダーフォーゲル部</h1>

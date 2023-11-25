@@ -36,3 +36,7 @@ create table Group_Users (
 
 INSERT INTO Group_Users (content,userid) VALUES ("USER",2);
 INSERT INTO Group_Users (content,userid) VALUES ("USER",3);
+INSERT INTO Group_Users (content,userid) VALUES ("USER",4);
+INSERT INTO Group_Users (content,userid) VALUES ("USER",5);
+INSERT INTO Group_Users (content,userid) VALUES ("USER",6);
+INSERT INTO Group_Users (content,userid) VALUES ("USER",7);

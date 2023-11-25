@@ -24,3 +24,7 @@
     width: 80%;
     margin: 0 auto;
 }
+
+.plusminus:hover{
+    opacity: 0.6;
+}

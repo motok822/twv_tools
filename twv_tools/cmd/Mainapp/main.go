@@ -12,12 +12,16 @@ import (
 	"github.com/windows-server-2003/twv_tools/pkg/sql_list"
 	//"github.com/windows-server-2003/twv_tools/pkg/html_transport"
 	_ "github.com/windows-server-2003/twv_tools/pkg/http_engine"
+	_ "github.com/windows-server-2003/twv_tools/pkg/http_tools"
 	"github.com/windows-server-2003/twv_tools/pkg/http_engine_imp"
 	"net/http"
 	"time"
 	_ "io"
-	
+	"strings"
 )
+func http_redirecter(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "https://"+(strings.Split(r.Host,":"))[0]+r.RequestURI, http.StatusMovedPermanently)
+}
 
 func main(){
 	//db,err := sql.Open("mysql","go_user:go_password@tcp(mysql:3306)/go_database")
@@ -58,6 +62,11 @@ func main(){
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
+	go func(){
+		http.HandleFunc("/", http_redirecter)
+		http.ListenAndServe(":80", nil)
+	} ()
+	
 	log.Fatal(my_serv.ListenAndServeTLS("../../cert/localhost/server.crt","../../cert/localhost/server.key"))
 	////log.Fatal(my_serv.ListenAndServe())
 	

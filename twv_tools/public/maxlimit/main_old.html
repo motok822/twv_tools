@@ -1,0 +1,17 @@
+<meta charset="utf-8">
+<div>csv file<input id="import_csv_file" type="file"></input></div>
+<div>json file<input id="import_json_file" type="file"></input></div>
+<div>save as json file<button id="save_json_file">save</button></div>
+<div>daystart
+<input type="time" id="daystart"></input>
+dayend<input type="time" id="dayend"></input>
+</div>
+<button id="delete_max_button">delete_max</button>
+<button id="calc_max_button">calc_max</button>
+<script type="text/javascript" src="d3/d3.v5.min.js"></script>
+<script src="./parser.js"></script>
+<script src="./viewer.js"></script>
+<script type>
+	document.getElementById("delete_max_button").addEventListener("click",delete_max);
+	document.getElementById("calc_max_button").addEventListener("click",calc_max);
+</script>

@@ -80,6 +80,9 @@ function Distribute_equip() {
     const EquipMove = (e, name) => {
         let flag = 0
         getPos()
+        if(e.type== "touchmove"){
+            e = e.touches[0]
+        }
         for (let i = 0; i < MemberPos.length; i++) {
             if (MemberPos[i].top <= e.clientY && e.clientY <= MemberPos[i].bottom && MemberPos[i].left <= e.clientX && e.clientX <= MemberPos[i].right) {
                 flag = 1

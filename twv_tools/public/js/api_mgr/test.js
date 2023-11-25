@@ -5,9 +5,9 @@ import {AdvancedAPIManager} from "./AdvancedAPIManager.js"
 var BMgr=new BasicAPIManager()
 var AMgr=new AdvancedAPIManager()
 
-console.log(await BMgr.User.GetUsers())
+//console.log(await BMgr.User.GetUsers())
 //console.log(await BMgr.User.GetMyUserInfo())
-//console.log(await BMgr.EquipClass.GetAll())
+console.log(await BMgr.EquipClass.GetAll())
 //console.log(await BMgr.EquipInfo.GetOneYear())
 //console.log(await BMgr.Plans.GetOneYear())
 //console.log(await AMgr.EquipMap.GetPlanMapOneYear())
