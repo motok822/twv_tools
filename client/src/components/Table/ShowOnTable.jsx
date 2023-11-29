@@ -21,7 +21,7 @@ function ShowOnTable(props) {
         let elm = e.target;
         let flag = 0;
         while (elm != null) {
-            if (elm.className != undefined && elm.className.startsWith("PopUp")) {
+            if (elm.className != undefined && (elm.className.startsWith("PopUp") || elm.className.startsWith(" css-"))) {
                 flag = 1;
                 break;
             }

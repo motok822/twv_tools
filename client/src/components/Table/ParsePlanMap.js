@@ -51,6 +51,7 @@ let UserDictionary = null
 const YearColumn = 0
 const MountIDColumn = 1
 const MountNameColumn = 2
+const MountYearColumn = 0
 async function ParsePlanMap(EquipTemplate, PlanMap) {
     console.log("PlanMap",PlanMap)
     if(UserDictionary == null){
@@ -111,12 +112,13 @@ async function ParsePlanMap(EquipTemplate, PlanMap) {
         }
     }
     res.sort(function(first, second){
-        if(first[MountIDColumn].value > second[MountIDColumn].value){
+        if(first[MountYearColumn].value > second[MountYearColumn].value || (first[MountYearColumn].value == second[MountYearColumn].value &&first[MountIDColumn].value > second[MountIDColumn].value)){
             return -1;
-        }else if(first[MountIDColumn].value < second[MountIDColumn].value){
+        }else if(first[MountYearColumn].value < second[MountYearColumn].value || (first[MountYearColumn].value == second[MountYearColumn].value && first[MountIDColumn].value < second[MountIDColumn].value)){
             return 1;
         }else return 0;
     })
+    console.log("res", res)
     return res
 }
 export { ParsePlanMap }

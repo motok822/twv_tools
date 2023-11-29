@@ -74,8 +74,8 @@ function Create_equip() {
             <tbody>
               <tr>
                 <td>山行企画の番号</td>
-                <td>twv<input type='number' placeholder={year} min="0" className={styles.NumberInput} onClick={(e) => { SetClimbingYear(e.target.value) }}></input>-
-                  <input type="number" min="0" className={styles.NumberInput} onChange={(e) => { if(Number(e.target.value) > 0){SetClimbingId(Number(e.target.value))}else{SetClimbingId(0)} }}></input></td>
+                <td>twv<input type='number' value={ClimbingYear} min="0" className={styles.NumberInput} onChange={(e) => { SetClimbingYear(e.target.value) }}></input>-
+                  <input type="number" reguired min="0" className={styles.NumberInput} onChange={(e) => { if(Number(e.target.value) > 0){SetClimbingId(Number(e.target.value))}else{SetClimbingId(0)} }}></input></td>
               </tr>
               <tr>
                 <td>企画名</td>

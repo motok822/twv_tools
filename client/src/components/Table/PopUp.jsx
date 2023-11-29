@@ -1,8 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styled from '@emotion/styled';
-import { Button, FormControl, InputLabel, MenuItem, NativeSelect, Select } from '@mui/material';
+import { Button, FormControl, InputLabel, MenuItem, NativeSelect } from '@mui/material';
+import Select from 'react-select'
 import { BasicAPIManager } from '../../api_mgr/BasicAPIManager';
 import { ShowUser } from '../UserManage';
+import { useAsyncError } from 'react-router-dom';
 
 const Reserved = 0;
 const Komaba = 1;
@@ -33,16 +35,35 @@ let EquipInfoTemplate = { ID: null, UserID: 2, EquipID: 7, Act: "DELETE", T1: ne
 
 function PopUp(props) {
   const [NewInfo, SetNewInfo] = useState({ Name: "", Place: "", PlanID: 0, EquipID: 0 })
-  let UserDictionary = null
-  const SearchUser = async (Name) => {
-    if(UserDictionary == null) UserDictionary = await ShowUser()
-    for(let i = 0;i < UserDictionary.length; i++){
-        if(UserDictionary[i].UserName == Name){
-            return UserDictionary[i].ID
+  let dictionary = null
+  const [UserDictionary, SetUserDictionary] = useState(null)
+  const [UserNameDictionary, SetUserNameDictionary] = useState({ value: "default", label: "default" })
+  const UpdaeUserNameDictionary = async () => {
+    if (dictionary == null){
+      dictionary = await ShowUser()
+      await SetUserDictionary(dictionary)
+    }
+    console.log(UserDictionary)
+    SetUserNameDictionary(
+      dictionary.map((x) => {
+        return {
+          value: x.UserName,
+          label: x.UserName,
         }
+      }
+      )
+    )
+    console.log(UserNameDictionary)
+  }
+  const SearchUser = (Name) => {
+    console.log(UserDictionary)
+    for (let i = 0; i < UserDictionary.length; i++) {
+      if (UserDictionary[i].UserName == Name) {
+        return UserDictionary[i].ID
+      }
     }
     return 3 //TestUser
-}
+  }
   const ConstToString = (place) => {
     let res = ""
     switch (place) {
@@ -65,7 +86,7 @@ function PopUp(props) {
     SetNewInfo({ Name: NewInfo.Name, Place: e.target.selectedIndex, PlanID: NewInfo.PlanID, EquipID: NewInfo.EquipID, ID: NewInfo.ID })
   }
   const handleNameChange = (e) => {
-    SetNewInfo({ Name: e.target.value, Place: NewInfo.Place, PlanID: NewInfo.PlanID, EquipID: NewInfo.EquipID, ID: NewInfo.ID })
+    SetNewInfo({ Name: e.value, Place: NewInfo.Place, PlanID: NewInfo.PlanID, EquipID: NewInfo.EquipID, ID: NewInfo.ID })
   }
   const information = useRef(null);
   information.current = props.information;
@@ -73,6 +94,7 @@ function PopUp(props) {
     const place_option_elm = document.getElementById("place_option");
     place_option_elm.options[information.current.place].selected = true;
     SetNewInfo({ Name: information.current.name, Place: information.current.place, PlanID: information.current.PlanID, EquipID: information.current.EquipID, ID: information.current.ID })
+    UpdaeUserNameDictionary()
   }, [])  //初期設定
   const ButtonClick = async () => {
     let BMgr = new BasicAPIManager()
@@ -85,7 +107,7 @@ function PopUp(props) {
     EquipInfoTemplate.MoveDest = ConstToString(NewInfo.Place)
     EquipInfoTemplate.PlanID = props.rows[NewInfo.PlanID][1].value
     EquipInfoTemplate.EquipID = NewInfo.ID
-    EquipInfoTemplate.UserID = await SearchUser(NewInfo.Name)
+    EquipInfoTemplate.UserID = SearchUser(NewInfo.Name)
     NewEquipRequest.push(EquipInfoTemplate)
     console.log("EquipInfoTemplate")
     console.log(EquipInfoTemplate)
@@ -103,7 +125,7 @@ function PopUp(props) {
           <option>本郷</option>
           <option>使用しない</option>
         </select>
-        <p><input type='text' value={NewInfo.Name} onChange={(e) => handleNameChange(e)} ></input></p>
+        <Select options={UserNameDictionary} className="aaa" onChange={(e) => {handleNameChange(e)}}/>
         <Button onClick={ButtonClick}>E表に反映</Button>
       </StyledContent>
     </StyledOverlay>

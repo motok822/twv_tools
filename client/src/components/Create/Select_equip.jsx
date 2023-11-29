@@ -9,6 +9,7 @@ import { AdvancedAPIManager } from '../../api_mgr/AdvancedAPIManager';
 import { ShowUser } from '../UserManage';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import Select from 'react-select';
 
 export const EquipsContext = createContext()
 let EquipInfoTemplate = { ID: null, UserID: 2, EquipID: 7, Act: "DELETE", T1: new Date("2022-08-18 14:58:00"), T2: null, MoveDest: "temp", PlanID: 0 }
@@ -31,7 +32,26 @@ function Select_equip() {
   const [ClimbingState, SetClimbingState] = useState(location.state)
   const [MemberNum, SetMemberNum] = useState(5)
   const [Members, SetMembers] = useState(["1人目", "2人目", "3人目", "4人目", "5人目"])
-  let UserDictionary = null
+  let dictionary = null
+  const [UserDictionary, SetUserDictionary] = useState(null)
+  const [UserNameDictionary, SetUserNameDictionary] = useState({ value: "default", label: "default" })
+  const UpdaeUserNameDictionary = async () => {
+    if (dictionary == null) {
+      dictionary = await ShowUser()
+      await SetUserDictionary(dictionary)
+    }
+    console.log(UserDictionary)
+    SetUserNameDictionary(
+      dictionary.map((x) => {
+        return {
+          value: x.UserName,
+          label: x.UserName,
+        }
+      }
+      )
+    )
+    console.log(UserNameDictionary)
+  }
   const setDict = async () => {
     UserDictionary = await ShowUser()
   }
@@ -51,7 +71,8 @@ function Select_equip() {
   }, [MemberNum])
   useEffect(() => {
     SetEquipIDs()
-  })
+    UpdaeUserNameDictionary()
+  }, [])
   const [EquipsState, SetEquips] = useState({
     tent: [
       {
@@ -393,16 +414,18 @@ function Select_equip() {
             <tr>
               <td className={styles.TableTitle}>参加メンバー</td>
               <td className={styles.TableContent}>
-                {Members.map((val, ind) => {
-                  return (
-                    <input type='text' onChange={(e) => {
-                      SetMembers((prev) => {
-                        prev[ind] = e.target.value
-                        return prev
-                      })
-                    }} placeholder={val}></input>
-                  )
-                })}
+                <div style={{display: "flex"}}>
+                  {Members.map((val, ind) => {
+                    return (
+                      <Select key={ind} options={UserNameDictionary} onChange={(e) => {
+                        SetMembers((prev) => {
+                          prev[ind] = e.value
+                          return prev
+                        })
+                      }} />
+                    )
+                  })}
+                </div>
               </td>
             </tr>
           </tbody>
