@@ -41,11 +41,12 @@ function Select_equip() {
       await SetUserDictionary(dictionary)
     }
     console.log(UserDictionary)
+    dictionary = dictionary.filter((x) => x.FamilyName != '' || x.FirstName != '')
     SetUserNameDictionary(
       dictionary.map((x) => {
         return {
           value: x.UserName,
-          label: x.UserName,
+          label: x.FamilyName + x.FirstName,
         }
       }
       )
@@ -414,7 +415,7 @@ function Select_equip() {
             <tr>
               <td className={styles.TableTitle}>参加メンバー</td>
               <td className={styles.TableContent}>
-                <div style={{display: "flex"}}>
+                <div style={{ display: "flex" }}>
                   {Members.map((val, ind) => {
                     return (
                       <Select key={ind} options={UserNameDictionary} onChange={(e) => {

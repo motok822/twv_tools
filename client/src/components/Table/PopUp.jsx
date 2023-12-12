@@ -39,16 +39,17 @@ function PopUp(props) {
   const [UserDictionary, SetUserDictionary] = useState(null)
   const [UserNameDictionary, SetUserNameDictionary] = useState({ value: "default", label: "default" })
   const UpdaeUserNameDictionary = async () => {
-    if (dictionary == null){
+    if (dictionary == null) {
       dictionary = await ShowUser()
       await SetUserDictionary(dictionary)
     }
     console.log(UserDictionary)
+    dictionary = dictionary.filter((x) => x.FamilyName != '' || x.FirstName != '')
     SetUserNameDictionary(
       dictionary.map((x) => {
         return {
           value: x.UserName,
-          label: x.UserName,
+          label: x.FamilyName + x.FirstName,
         }
       }
       )
@@ -125,7 +126,7 @@ function PopUp(props) {
           <option>本郷</option>
           <option>使用しない</option>
         </select>
-        <Select options={UserNameDictionary} className="aaa" onChange={(e) => {handleNameChange(e)}}/>
+        <Select options={UserNameDictionary} className="aaa" onChange={(e) => { handleNameChange(e) }} />
         <Button onClick={ButtonClick}>E表に反映</Button>
       </StyledContent>
     </StyledOverlay>

@@ -41,7 +41,7 @@ function Show_Distribution_Res() {
         EquipList.map((value) => {
             const newEquipInfo = Object.assign({}, EquipInfoTemplate)
             newEquipInfo.T1 = new Date(ClimbingState.T1)
-            newEquipInfo.Act = "MOVE"
+            newEquipInfo.Act = "RESERVE"
             newEquipInfo.T2 = new Date(ClimbingState.T2)
             newEquipInfo.MoveDest = "予約"
             newEquipInfo.PlanID = ClimbingState.ClimbingId

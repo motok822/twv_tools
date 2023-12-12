@@ -1,4 +1,4 @@
-import React, { createContext } from 'react'
+import React, { createContext, useEffect } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import styles from './styles/Home.module.css'

@@ -60,7 +60,7 @@ async function ParsePlanMap(EquipTemplate, PlanMap) {
     const SearchUser= (ID) => {
         for(let i = 0;i < UserDictionary.length;i++){
             if(UserDictionary[i].ID == ID){
-                return UserDictionary[i].UserName
+                return UserDictionary[i].FamilyName + UserDictionary[i].FirstName
             }
         }
     }
@@ -103,7 +103,7 @@ async function ParsePlanMap(EquipTemplate, PlanMap) {
             } else if (PlanMap.planmap[EquipID[i]][j].MoveDest == "駒場") {
                 res[j][i + 3].state = Komaba
                 res[j][i + 3].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
-            } else if (PlanMap.planmap[EquipID[i]][j].MoveDest == "予約") {
+            } else if (PlanMap.planmap[EquipID[i]][j].MoveDest == "予約" || PlanMap.planmap[EquipID[i]][j].Act == 'RESERVE') {
                 res[j][i + 3].state = Reserved
                 res[j][i + 3].value = SearchUser(PlanMap.planmap[EquipID[i]][j].UserID)
             } else {
