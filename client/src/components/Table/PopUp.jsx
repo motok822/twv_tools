@@ -59,7 +59,7 @@ function PopUp(props) {
   const SearchUser = (Name) => {
     console.log(UserDictionary)
     for (let i = 0; i < UserDictionary.length; i++) {
-      if (UserDictionary[i].UserName == Name) {
+      if (UserDictionary[i].FamilyName + UserDictionary[i].FirstName == Name) {
         return UserDictionary[i].ID
       }
     }
@@ -87,7 +87,7 @@ function PopUp(props) {
     SetNewInfo({ Name: NewInfo.Name, Place: e.target.selectedIndex, PlanID: NewInfo.PlanID, EquipID: NewInfo.EquipID, ID: NewInfo.ID })
   }
   const handleNameChange = (e) => {
-    SetNewInfo({ Name: e.value, Place: NewInfo.Place, PlanID: NewInfo.PlanID, EquipID: NewInfo.EquipID, ID: NewInfo.ID })
+    SetNewInfo({ Name: e.label, Place: NewInfo.Place, PlanID: NewInfo.PlanID, EquipID: NewInfo.EquipID, ID: NewInfo.ID })
   }
   const information = useRef(null);
   information.current = props.information;

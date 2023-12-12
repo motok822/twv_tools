@@ -420,7 +420,7 @@ function Select_equip() {
                     return (
                       <Select key={ind} options={UserNameDictionary} onChange={(e) => {
                         SetMembers((prev) => {
-                          prev[ind] = e.value
+                          prev[ind] = e.label
                           return prev
                         })
                       }} />

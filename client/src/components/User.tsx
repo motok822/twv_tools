@@ -14,14 +14,17 @@ interface UserInfo {
   Grade: number;
   Belong: string;
   Sex: "Male" | "Female";
-  Birth: string | null;
+  Birth: Date;
 }
+
 function User() {
   const [user, setUser] = useState<null | UserInfo>(null)
   const BMgr = new BasicAPIManager()
+  const [month, setMonth] = useState<null | Number>(null)
   async function GetData(): Promise<void> {
-    await setUser(await BMgr.User.GetMyUserInfo())
-    console.log(user)
+    const res:UserInfo = await BMgr.User.GetMyUserInfo()
+    setMonth(res.Birth.getMonth() + 1)
+    setUser(res)
   }
   useEffect(() => {
     GetData()
@@ -55,11 +58,11 @@ function User() {
               </TableRow>
               <TableRow>
                   <TableCell align="center">性別</TableCell>
-                  <TableCell align="center">{user?.Sex}</TableCell>
+                  <TableCell align="center">{user?.Sex == 'Male' ? "男" : "女"}</TableCell>
               </TableRow>
               <TableRow>
                   <TableCell align="center">誕生日</TableCell>
-                  <TableCell align="center">{user?.Birth}</TableCell>
+                  <TableCell align="center">{user?.Birth.getFullYear() + "年" + month + "月" + user?.Birth.getDate() + "日"}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
