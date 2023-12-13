@@ -27,7 +27,6 @@ function App() {
             <Route path={"/Create/SelectEquip"} element={<Select_equip />} />
             <Route path={"/Create/DistributeEquip"} element={<Distribute_equip />} />
             <Route path={"/Create/ShowDistributionRes"} element={<Show_Distribution_Res />} />
-            <Route path={"/Other"} element={<Other />}/>
             <Route path={"/User"} element={<User />}/>
           </Routes>
         </HashRouter>

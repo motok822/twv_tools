@@ -129,12 +129,12 @@ function F_calc() {
         <h1 className={styles.text}>F清算計算ツール</h1>
         <p className={styles.text}> お金を負担する人の数    
         <RemoveIcon onClick={() => paymoneyminusone()} className={styles.plusminus}></RemoveIcon>
-        <input type='number' min="0" value={PayMoneyNum} onChange={(e) => { if(Number(e.target.value) != NaN)SetPayMoneyNum(Number(e.target.value)) }}></input>
+        <input type='text' inputMode='numeric' min="0" value={PayMoneyNum} onChange={(e) => { if(Number(e.target.value) != NaN)SetPayMoneyNum(Number(e.target.value)) }}></input>
         <AddIcon onClick={() => paymoneyplusone()} className={styles.plusminus}></AddIcon>
         </p>
         <p className={styles.text}>お金を負担しない人の数    
         <RemoveIcon onClick={() => paynomoneyminusone()} className={styles.plusminus}></RemoveIcon>
-        <input type='number' min="0" value={PayNoMoneyNum} onChange={(e) => { if(Number(e.target.value) != NaN)SetPayNoMoneyNum(Number(e.target.value)) }}></input>
+        <input type='text' inputMode='numeric' min="0" value={PayNoMoneyNum} onChange={(e) => { if(Number(e.target.value) != NaN)SetPayNoMoneyNum(Number(e.target.value)) }}></input>
         <AddIcon onClick={() => paynomoneyplusone()} className={styles.plusminus}></AddIcon>
         </p>
         <p className={styles.text}>お金を負担する人の名前               金額</p>
@@ -143,7 +143,7 @@ function F_calc() {
             return (
               <p className={styles.text}>
                 <input type='text' placeholder='名前' onChange={(e) => { val.name = e.target.value }}></input>
-                <input type='number' min="0" placeholder='金額' onChange={(e) => { 
+                <input type='text' inputMode='numeric' min="0" placeholder='金額' onChange={(e) => { 
                 if(Number(e.target.value) != NaN && Number(e.target.value) >= 0){
                   val.num = Number(e.target.value)
                  }else{
@@ -159,7 +159,7 @@ function F_calc() {
             return (
               <p className={styles.text}>
                 <input type='text' placeholder='名前' onChange={(e) => { val.name = e.target.value }}></input>
-                <input type='number' min="0" placeholder='金額' onChange={(e) => { 
+                <input type='text' inputMode='numeric' min="0" placeholder='金額' onChange={(e) => { 
                 if(Number(e.target.value) != NaN && Number(e.target.value) >= 0){
                   val.num = Number(e.target.value)
                 }else{

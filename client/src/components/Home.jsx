@@ -28,7 +28,6 @@ function Home() {
             <Link to={'/F'} className={styles.HomeLinkElement}>F清算</Link>
             <Link to={'/Max'} className={styles.HomeLinkElement}>Max計算</Link>
             <Link to={'/Create'} className={styles.HomeLinkElement}>E表作成</Link>
-            <Link to={'/Other'} className={styles.HomeLinkElement}>その他</Link>
           </ul>
         </div>
       </main>

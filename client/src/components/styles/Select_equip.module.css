@@ -12,6 +12,7 @@
     border-collapse: collapse;
     margin-left: 1%;
     margin-top: 1rem;
+    width: 100%;
 }
 
 .plusminus:hover{
@@ -30,6 +31,10 @@
     font-size: 2rem;
     font-weight: normal;
     margin-left: 2rem;
+}
+.SetMember{
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(160px, 1fr));  
 }
 .button{
     margin-top: 2rem;

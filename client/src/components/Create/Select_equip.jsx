@@ -365,8 +365,9 @@ function Select_equip() {
     return Requests
   }
   const SetOtherEquip = (value, e) => {
-    value.num = Number(e.target.value)
-    if (value.num < 0) value.num = 0
+    let k = {name: value.name, num: Number(e.target.value)}
+    if(k.num < 0)k.num = 0
+    value = k
   }
   let PlanMapOneYear = null
   const SendInfoToServer = async () => {
@@ -407,7 +408,7 @@ function Select_equip() {
             </tr>
             <tr>
               <td className={styles.TableTitle}>参加人数</td>
-              <td className={styles.TableContent}><input type='number' value={MemberNum} onChange={
+              <td className={styles.TableContent}><input type='text' inputMode='numeric' value={MemberNum} onChange={
                 (e) => {
                   SetMemberNum(e.target.value);
                 }}></input>人</td>
@@ -415,7 +416,7 @@ function Select_equip() {
             <tr>
               <td className={styles.TableTitle}>参加メンバー</td>
               <td className={styles.TableContent}>
-                <div style={{ display: "flex" }}>
+                <div className={styles.SetMember}>
                   {Members.map((val, ind) => {
                     return (
                       <Select key={ind} options={UserNameDictionary} onChange={(e) => {
@@ -444,7 +445,7 @@ function Select_equip() {
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <div>{value.name}</div>
                   <RemoveIcon onClick={() => minusone(ind)} className={styles.plusminus}></RemoveIcon>
-                  <input type='number' className={styles.NumberInput} placeholder={value.num} onChange={(e) => SetOtherEquip(value, e)}></input>
+                  <input type='number' className={styles.NumberInput} value={value.num} onChange={(e) => SetOtherEquip(value, e)}></input>
                   <AddIcon onClick={() => plusone(ind)} className={styles.plusminus}></AddIcon>
                 </div>
               )

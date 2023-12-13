@@ -74,8 +74,8 @@ function Create_equip() {
             <tbody>
               <tr>
                 <td>山行企画の番号</td>
-                <td>twv<input type='number' value={ClimbingYear} min="0" className={styles.NumberInput} onChange={(e) => { SetClimbingYear(e.target.value) }}></input>-
-                  <input type="number" reguired min="0" className={styles.NumberInput} onChange={(e) => { if(Number(e.target.value) > 0){SetClimbingId(Number(e.target.value))}else{SetClimbingId(0)} }}></input></td>
+                <td>twv<input type='text' inputMode='numeric' value={ClimbingYear} min="0" className={styles.NumberInput} onChange={(e) => { SetClimbingYear(e.target.value) }}></input>-
+                  <input type='text' inputMode='numeric' reguired min="0" className={styles.NumberInput} onChange={(e) => { if(Number(e.target.value) > 0){SetClimbingId(Number(e.target.value))}else{SetClimbingId(0)} }}></input></td>
               </tr>
               <tr>
                 <td>企画名</td>
@@ -108,23 +108,23 @@ function Create_equip() {
               </tr>
               <tr>
                 <td>ポリタンク</td>
-                <td><input type="number" min="0" value={Water} className={styles.NumberInput} onClick={(e) => { SetWater(e.target.value) }}></input>発</td>
+                <td><input type='text' inputMode='numeric' min="0" value={Water} className={styles.NumberInput} onClick={(e) => { SetWater(e.target.value) }}></input>発</td>
               </tr>
               <tr>
                 <td>行動食</td>
-                <td><input type='number' min="0" value={ActiveFood} className={styles.NumberInput} onClick={(e) => { SetActiveFood(e.target.value) }}></input>日分</td>
+                <td><input type='text' inputMode='numeric' min="0" value={ActiveFood} className={styles.NumberInput} onClick={(e) => { SetActiveFood(e.target.value) }}></input>日分</td>
               </tr>
               <tr>
                 <td>非常食</td>
-                <td><input type='number' min="0" value={EmergencyFood} className={styles.NumberInput} onClick={(e) => { SetEmergencyFood(e.target.value) }}></input>日分</td>
+                <td><input type='text' inputMode='numeric' min="0" value={EmergencyFood} className={styles.NumberInput} onClick={(e) => { SetEmergencyFood(e.target.value) }}></input>日分</td>
               </tr>
               <tr>
                 <td>予備食</td>
-                <td><input type='number' min="0" value={SpareFood} className={styles.NumberInput} onClick={(e) => { SetSpareFood(e.target.value) }}></input>日分</td>
+                <td><input type='text' inputMode='numeric' min="0" value={SpareFood} className={styles.NumberInput} onClick={(e) => { SetSpareFood(e.target.value) }}></input>日分</td>
               </tr>
               <tr>
                 <td>米</td>
-                <td><input type='number' min="0" value={Rice} className={styles.NumberInput} onClick={(e) => { SetRice(e.target.value) }} ></input>合</td>
+                <td><input type='text' inputMode='numeric' min="0" value={Rice} className={styles.NumberInput} onClick={(e) => { SetRice(e.target.value) }} ></input>合</td>
               </tr>
               <tr>
                 <td>追加の個装</td>

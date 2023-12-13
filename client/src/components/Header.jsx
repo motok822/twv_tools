@@ -17,7 +17,6 @@ function Header() {
               <Link to = {'/Max'} className={styles.HeaderLinkElement} ><div className={styles.BottonDiv}>Max計算</div></Link>
               <Link to = {'/Table'} className={styles.HeaderLinkElement} ><div className={styles.BottonDiv}>E表</div></Link>
               <Link to = {'/Create'} className={styles.HeaderLinkElement} ><div className={styles.BottonDiv}>E表作成</div></Link>
-              <Link to = {'/Other'} className={styles.HeaderLinkElement} ><div className={styles.BottonDiv}>その他</div></Link>
             </Toolbar>            
         </AppBar>
     </div>
