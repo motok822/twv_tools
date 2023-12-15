@@ -3,7 +3,7 @@ import { BasicAPIManager } from '../api_mgr/BasicAPIManager'
 import Header from './Header';
 import Footer from './Footer';
 import * as styles from './styles/Home.module.css';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 //var DefaultUserInfo={ID:0,UserName:"Guest",FamilyName:"Guest",FirstName:"",Grade:-1,Belong:"無所属",Sex:"Male",Birth:new Date('1999-12-31T15:00:00.000Z')}
 
 interface UserInfo {
@@ -67,6 +67,9 @@ function User() {
             </TableBody>
           </Table>
         </TableContainer>
+        <Button style={{margin: "1rem 1rem 1rem auto"}}>
+        <a href='https://internal.u-twv.com/account/main.html?mode=update_account'>変更はこちら</a>
+        </Button>
       </div>
       <Footer />
     </div>

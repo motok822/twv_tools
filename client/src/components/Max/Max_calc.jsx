@@ -7,9 +7,9 @@ function Max_calc() {
   return (
     <div className={styles.Home}>
     <Header></Header>
-    <main className={styles.main}>
-      <div>ちょい待ち</div>
-    </main>
+    <div style={{display: "flex", justifyContent: "center"}}>
+      <iframe src='https://internal.u-twv.com/maxlimit/embedded.html' width={"95%"} height={"700px"}></iframe>
+    </div>
     <Footer></Footer>
     </div>
   )
