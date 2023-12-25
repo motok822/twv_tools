@@ -108,27 +108,27 @@ function Create_equip() {
               </tr>
               <tr>
                 <td>ポリタンク</td>
-                <td><input type='text' inputMode='numeric' min="0" value={Water} className={styles.NumberInput} onClick={(e) => { SetWater(e.target.value) }}></input>発</td>
+                <td><input type='text' inputMode='numeric' min="0" placeholder={Water} className={styles.NumberInput} onChange={(e) => { SetWater(Number(e.target.value)) }}></input>発</td>
               </tr>
               <tr>
                 <td>行動食</td>
-                <td><input type='text' inputMode='numeric' min="0" value={ActiveFood} className={styles.NumberInput} onClick={(e) => { SetActiveFood(e.target.value) }}></input>日分</td>
+                <td><input type='text' inputMode='numeric' min="0" placeholder={ActiveFood} className={styles.NumberInput} onChange={(e) => { SetActiveFood(Number(e.target.value)) }}></input>日分</td>
               </tr>
               <tr>
                 <td>非常食</td>
-                <td><input type='text' inputMode='numeric' min="0" value={EmergencyFood} className={styles.NumberInput} onClick={(e) => { SetEmergencyFood(e.target.value) }}></input>日分</td>
+                <td><input type='text' inputMode='numeric' min="0" placeholder={EmergencyFood} className={styles.NumberInput} onChange={(e) => { SetEmergencyFood(Number(e.target.value)) }}></input>日分</td>
               </tr>
               <tr>
                 <td>予備食</td>
-                <td><input type='text' inputMode='numeric' min="0" value={SpareFood} className={styles.NumberInput} onClick={(e) => { SetSpareFood(e.target.value) }}></input>日分</td>
+                <td><input type='text' inputMode='numeric' min="0" placeholder={SpareFood} className={styles.NumberInput} onChange={(e) => { SetSpareFood(Number(e.target.value)) }}></input>日分</td>
               </tr>
               <tr>
                 <td>米</td>
-                <td><input type='text' inputMode='numeric' min="0" value={Rice} className={styles.NumberInput} onClick={(e) => { SetRice(e.target.value) }} ></input>合</td>
+                <td><input type='text' inputMode='numeric' min="0" placeholder={Rice} className={styles.NumberInput} onChange={(e) => { SetRice(Number(e.target.value)) }} ></input>合</td>
               </tr>
               <tr>
                 <td>追加の個装</td>
-                <td><textarea rows="5" cols="33" value={AdditionalEquip} onChange={(e) => { SetAdditionalEquip(e.target.value) }}></textarea></td>
+                <td><textarea rows="5" cols="33" placeholder={AdditionalEquip} onChange={(e) => { SetAdditionalEquip(e.target.value) }}></textarea></td>
               </tr>
             </tbody>
           </table>

@@ -293,6 +293,26 @@ function Select_equip() {
         num: 0,
       },
       {
+        name: "三規格ロープ",
+        num: 0,
+      },
+      {
+        name: "シングルロープ",
+        num: 0,
+      },
+      {
+        name: "セルフジャミングプーリー",
+        num: 0,
+      },
+      {
+        name: "アッセンダー",
+        num: 0,
+      },
+      {
+        name: "捨て綱7mm×7m",
+        num: 0,
+      },
+      {
         name: "ハーケン",
         num: 0,
       },
@@ -364,10 +384,14 @@ function Select_equip() {
     })
     return Requests
   }
-  const SetOtherEquip = (value, e) => {
-    let k = {name: value.name, num: Number(e.target.value)}
-    if(k.num < 0)k.num = 0
-    value = k
+  const SetOtherEquip = async(ind, e) => {
+    let n = Number(e.target.value)
+    if(n < 0)n = 0;
+    await SetEquips((prev) => {
+      prev = Object.assign({}, prev)
+      prev.other[ind].num = n
+      return prev
+    })
   }
   let PlanMapOneYear = null
   const SendInfoToServer = async () => {
@@ -445,7 +469,7 @@ function Select_equip() {
                 <div style={{ display: "flex", justifyContent: "center" }}>
                   <div>{value.name}</div>
                   <RemoveIcon onClick={() => minusone(ind)} className={styles.plusminus}></RemoveIcon>
-                  <input type='number' className={styles.NumberInput} value={value.num} onChange={(e) => SetOtherEquip(value, e)}></input>
+                  <input type='number' className={styles.NumberInput} placeholder={value.num} onChange={(e) => SetOtherEquip(ind, e)}></input>
                   <AddIcon onClick={() => plusone(ind)} className={styles.plusminus}></AddIcon>
                 </div>
               )

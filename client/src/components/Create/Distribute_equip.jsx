@@ -42,7 +42,7 @@ function Distribute_equip() {
             if (key == "other") {
                 Equips[key].map((value) => {
                     if(value.num >= 1){
-                        if (value.name != "ペグ" && value.name != "ハーケン" && value.name != "お玉") {
+                        if (value.name != "アッセンダー" && value.name != "セルフジャミングプーリー" && value.name != "赤布" && value.name != "ペグ" && value.name != "ハーケン" && value.name != "お玉") {
                             for (let i = 1; i <= value.num; i++) {
                                 SetEquipList((prev) => [...prev, { Name: value.name, MemberID: -1, UserName: "", EquipID: -1, cnt: String(i) }])
                             }
@@ -54,7 +54,14 @@ function Distribute_equip() {
                             for(let i = 1; i <= value.num/2; i+= 1){
                                 SetEquipList((prev) => [...prev, { Name: value.name+"2", MemberID: -1, UserName: "", EquipID: -1, cnt: String(i) }])
                             }
-                        }else{
+                        }else if(value.name == "赤布"){
+                            SetEquipList((prev) => [...prev, { Name: value.name+String(value.num), MemberID: -1, UserName: "", EquipID: -1, cnt: "" }])
+                        }else if(value.name == "アッセンダー"){
+                            SetEquipList((prev) => [...prev, { Name: value.name+String(value.num), MemberID: -1, UserName: "", EquipID: -1, cnt: "" }])
+                        }else if(value.name == "セルフジャミングプーリー"){
+                            SetEquipList((prev) => [...prev, { Name: value.name+String(value.num), MemberID: -1, UserName: "", EquipID: -1, cnt: "" }])
+                        }
+                        else{
                             SetEquipList((prev) => [...prev, { Name: value.name+String(value.num), MemberID: -1, UserName: "", EquipID: -1,  cnt: "" }])
                         }
                     }
