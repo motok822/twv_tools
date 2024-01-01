@@ -43,7 +43,7 @@ function PopUp(props) {
       dictionary = await ShowUser()
       await SetUserDictionary(dictionary)
     }
-    console.log(UserDictionary)
+    // console.log(UserDictionary)
     dictionary = dictionary.filter((x) => x.FamilyName != '' || x.FirstName != '')
     SetUserNameDictionary(
       dictionary.map((x) => {
@@ -54,10 +54,10 @@ function PopUp(props) {
       }
       )
     )
-    console.log(UserNameDictionary)
+    // console.log(UserNameDictionary)
   }
   const SearchUser = (Name) => {
-    console.log(UserDictionary)
+    // console.log(UserDictionary)
     for (let i = 0; i < UserDictionary.length; i++) {
       if (UserDictionary[i].FamilyName + UserDictionary[i].FirstName == Name) {
         return UserDictionary[i].ID
@@ -110,10 +110,10 @@ function PopUp(props) {
     EquipInfoTemplate.EquipID = NewInfo.ID
     EquipInfoTemplate.UserID = SearchUser(NewInfo.Name)
     NewEquipRequest.push(EquipInfoTemplate)
-    console.log("EquipInfoTemplate")
-    console.log(EquipInfoTemplate)
+    // console.log("EquipInfoTemplate")
+    // console.log(EquipInfoTemplate)
     console.log(await BMgr.EquipInfo.RegisterInfos(NewEquipRequest))
-    console.log("EquipInfo")
+    // console.log("EquipInfo")
     console.log(await BMgr.EquipInfo.GetOneYear())
     props.ClosePopUp()
   }

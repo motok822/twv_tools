@@ -72,7 +72,7 @@ function Distribute_equip() {
                         val.selected.map((v) => {
                             if (v.flag == true) {
                                 if (value.Group == "テント") {
-                                    console.log(value.Type + val.Family + v.Name, "EquipID", v.EquipID)
+                                    // console.log(value.Type + val.Family + v.Name, "EquipID", v.EquipID)
                                     SetEquipList((prev) => [...prev, { Name: value.Type + val.Family + v.Name, MemberID: -1, UserName: "", EquipID: v.EquipID , cnt: ""}])
                                 } else {
                                     SetEquipList((prev) => [...prev, { Name: value.Group + value.Type + val.Family + v.Name, MemberID: -1, UserName: "", EquipID: v.EquipID, cnt: "" }])

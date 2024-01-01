@@ -1,25 +1,32 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import Header from '../Header'
-import Footer from '../Footer'
 import styles from '../styles/F_calc.module.css'
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
+import Footer from '../Footer';
+import Header from '../Header';
 
 const PayMoney = 1;
 const PayNoMoney = 0;
-
+interface Member {
+    name: string;
+    num: number;
+}
 function F_calc() {
-  const [PayMoneyList, SetPayMoneyList] = useState([]);
-  const [PayNoMoneyList, SetPayNoMoneyList] = useState([]);
+  const [PayMoneyList, SetPayMoneyList] = useState <Member[]>([]);
+  const [PayNoMoneyList, SetPayNoMoneyList] = useState<Member[]>([]);
   const [CalcRes, SetCalcRes] = useState([[{ name: "", num: 0 }]])
-  const [PayMoneyNum, SetPayMoneyNum] = useState(0)
-  const [PayNoMoneyNum, SetPayNoMoneyNum] = useState(0)
+  const [PayMoneyNum, SetPayMoneyNum] = useState<number>(0)
+  const [PayNoMoneyNum, SetPayNoMoneyNum] = useState<number>(0)
 
-  const PayMoneyForm = (num, state) => {
-    let array = [];
+  const PayMoneyForm = (num :number, state: number) => {
+    let array: Member[] = [];
     for (let i = 0; i < num; i++) {
-      array.push([{ name: i.toString(), num: 0 }])
+      if(i < PayMoneyList.length){
+        array.push({name: PayMoneyList[i].name, num: PayMoneyList[i].num})
+      }else{
+        array.push({ name: i.toString(), num: 0 })
+      }
     }
     if (state == PayMoney) {
       SetPayMoneyList(array);
@@ -31,7 +38,7 @@ function F_calc() {
 
   function calc() {
     let MoneySum = 0;
-    console.log("paymoneyList", PayMoneyList)
+    // console.log("paymoneyList", PayMoneyList)
     for (let i = 0; i < PayMoneyList.length; i++) {
       MoneySum += PayMoneyList[i].num
     }
@@ -39,9 +46,9 @@ function F_calc() {
       MoneySum += PayNoMoneyList[i].num
     }
     let MoneyPerPerson = Math.floor(MoneySum / PayMoneyList.length)
-    console.log("money per person", MoneyPerPerson);
-    const HaveToPay = []
-    const PaidBack = []
+    // console.log("money per person", MoneyPerPerson);
+    const HaveToPay:Member[] = []
+    const PaidBack:Member[] = []
     PayMoneyList.map((val, index) => {
       if (val.num < MoneyPerPerson) HaveToPay.push(Object.assign({}, val));
       if (val.num > MoneyPerPerson) PaidBack.push(Object.assign({}, val));
@@ -59,59 +66,67 @@ function F_calc() {
     })
     HaveToPay.map((val, index) => {
       val.num = MoneyPerPerson - val.num;
-      console.log(val.num);
     })
     PaidBack.sort((first, second) => {
       if (first.num < second.num) return 1;
       else if (first.num > second.num) return -1;
       else return 0;
     })
-    let cnt = 0;
+
+    // console.log("PaidBack", PaidBack)
+    // console.log("HaveToPay", HaveToPay)
     let res = new Array(PaidBack.length)
+    //resのinitialization
     for (let i = 0; i < PaidBack.length; i++) {
-      res[i] = new Array(HaveToPay.length + 1)
-      res[i][0] = { name: PaidBack[i].name, num: 0 }
+      res[i] = new Array(HaveToPay.length + 1)  //払われる人の名前と額が行で、払う人の名前と額が列の二次元配列
+      res[i][0] = { name: PaidBack[i].name, num: 0 }  //行の先頭には自分の名前と額
       for (let j = 1; j < HaveToPay.length + 1; j++) {
-        res[i][j] = { name: "", num: 0 }
+        res[i][j] = { name: HaveToPay[j - 1].name, num: 0 }
       }
     }
+    //resに値を代入
+    let cnt = 0;
     HaveToPay.map((val, index) => {
       while (val.num != 0) {
         if (PaidBack[cnt].num == 0) {
-          cnt++; continue;
+          cnt++
+          continue
         }
         if (PaidBack[cnt].num - val.num >= 0) {
-          res[cnt][index + 1] = { name: val.name, num: val.num }
-          PaidBack[cnt].num -= val.num;
-          val.num = 0;
+          res[cnt][index + 1].num = val.num 
+          PaidBack[cnt].num -= val.num
+          val.num = 0
+          break
         }
         if (PaidBack[cnt].num - val.num < 0) {
-          res[cnt][index + 1] = { name: val.name, num: PaidBack[cnt].num }
-          val.num -= PaidBack[cnt].num;
-          PaidBack[cnt].num = 0;
+          res[cnt][index + 1].num =  PaidBack[cnt].num 
+          val.num -= PaidBack[cnt].num
+          PaidBack[cnt].num = 0
         }
       }
     })
-    console.log("result")
-    console.log(res);
+    // console.log("result")
+    // console.log(res)
     if(res.length != 0){
-      SetCalcRes(res);
+      SetCalcRes(res)
     }
   }
   const paymoneyplusone = async () => {
     await SetPayMoneyNum((prev) => prev + 1)
   }
   const paymoneyminusone = async () => {
-    await SetPayMoneyNum((prev) => {
-      if(prev > 0)return (prev - 1)
-    })
+    await SetPayMoneyNum((prev: number) => {
+          if (prev > 0) return (prev - 1);
+          else return 0
+      })
   }
   const paynomoneyplusone = async () => {
     await SetPayNoMoneyNum((prev) => prev + 1)
   }
   const paynomoneyminusone = async () => {
-    await SetPayNoMoneyNum((prev) => {
+    await SetPayNoMoneyNum((prev :number) => {
       if(prev > 0)return (prev - 1)
+      else return 0
     })
   }
   useEffect(() => {
@@ -129,12 +144,12 @@ function F_calc() {
         <h1 className={styles.text}>F清算計算ツール</h1>
         <p className={styles.text}> お金を負担する人の数    
         <RemoveIcon onClick={() => paymoneyminusone()} className={styles.plusminus}></RemoveIcon>
-        <input type='text' inputMode='numeric' min="0" value={PayMoneyNum} onChange={(e) => { if(Number(e.target.value) != NaN)SetPayMoneyNum(Number(e.target.value)) }}></input>
+        <input type='text' inputMode='numeric' min="0" value={PayMoneyNum} onChange={(e) => { if(Number(e.target.value) >= 0)SetPayMoneyNum(Number(e.target.value)) }}></input>
         <AddIcon onClick={() => paymoneyplusone()} className={styles.plusminus}></AddIcon>
         </p>
         <p className={styles.text}>お金を負担しない人の数    
         <RemoveIcon onClick={() => paynomoneyminusone()} className={styles.plusminus}></RemoveIcon>
-        <input type='text' inputMode='numeric' min="0" value={PayNoMoneyNum} onChange={(e) => { if(Number(e.target.value) != NaN)SetPayNoMoneyNum(Number(e.target.value)) }}></input>
+        <input type='text' inputMode='numeric' min="0" value={PayNoMoneyNum} onChange={(e) => { if(Number(e.target.value) >= 0)SetPayNoMoneyNum(Number(e.target.value)) }}></input>
         <AddIcon onClick={() => paynomoneyplusone()} className={styles.plusminus}></AddIcon>
         </p>
         <p className={styles.text}>お金を負担する人の名前               金額</p>
@@ -144,11 +159,11 @@ function F_calc() {
               <p className={styles.text}>
                 <input type='text' placeholder='名前' onChange={(e) => { val.name = e.target.value }}></input>
                 <input type='text' inputMode='numeric' min="0" placeholder='金額' onChange={(e) => { 
-                if(Number(e.target.value) != NaN && Number(e.target.value) >= 0){
+                if(Number(e.target.value) >= 0 && Number(e.target.value) >= 0){
                   val.num = Number(e.target.value)
                  }else{
-                  e.target.value = NaN
-                 } }}></input>
+                  e.target.value = "0"
+                 } }}></input>  
               </p>
             )
           })
@@ -160,10 +175,10 @@ function F_calc() {
               <p className={styles.text}>
                 <input type='text' placeholder='名前' onChange={(e) => { val.name = e.target.value }}></input>
                 <input type='text' inputMode='numeric' min="0" placeholder='金額' onChange={(e) => { 
-                if(Number(e.target.value) != NaN && Number(e.target.value) >= 0){
+                if(Number(e.target.value) >= 0 && Number(e.target.value) >= 0){
                   val.num = Number(e.target.value)
                 }else{
-                  e.target.value = NaN
+                  e.target.value = "0"
                 }
                   }}></input>
               </p>

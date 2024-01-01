@@ -53,7 +53,7 @@ const MountIDColumn = 1
 const MountNameColumn = 2
 const MountYearColumn = 0
 async function ParsePlanMap(EquipTemplate, PlanMap) {
-    console.log("PlanMap",PlanMap)
+    // console.log("PlanMap",PlanMap)
     if(UserDictionary == null){
         UserDictionary = await ShowUser()
     }
@@ -118,7 +118,7 @@ async function ParsePlanMap(EquipTemplate, PlanMap) {
             return 1;
         }else return 0;
     })
-    console.log("res", res)
+    // console.log("res", res)
     return res
 }
 export { ParsePlanMap }
