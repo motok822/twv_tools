@@ -35,6 +35,7 @@ let EquipInfoTemplate = { ID: null, UserID: 2, EquipID: 7, Act: "DELETE", T1: ne
 
 function PopUp(props) {
   const [NewInfo, SetNewInfo] = useState({ Name: "", Place: "", PlanID: 0, EquipID: 0 })
+  const [SelectedPerson, SetSelectedPerson] = useState(props.information.name)
   let dictionary = null
   const [UserDictionary, SetUserDictionary] = useState(null)
   const [UserNameDictionary, SetUserNameDictionary] = useState({ value: "default", label: "default" })
@@ -48,7 +49,7 @@ function PopUp(props) {
     SetUserNameDictionary(
       dictionary.map((x) => {
         return {
-          value: x.UserName,
+          value: x.FamilyName + x.FirstName,
           label: x.FamilyName + x.FirstName,
         }
       }
@@ -126,7 +127,7 @@ function PopUp(props) {
           <option>本郷</option>
           <option>使用しない</option>
         </select>
-        <Select options={UserNameDictionary} className="aaa" onChange={(e) => { handleNameChange(e) }} />
+        <Select options={UserNameDictionary} defaultValue={{value: SelectedPerson, label: SelectedPerson}} className="aaa" onChange={(e) => { handleNameChange(e) }} />
         <Button onClick={ButtonClick}>E表に反映</Button>
       </StyledContent>
     </StyledOverlay>

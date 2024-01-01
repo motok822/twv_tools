@@ -42,6 +42,8 @@ function ShowOnTable(props) {
             ID: ID
         };
         information.current = info;
+        console.log("information")
+        console.log(information.current)
         if (clickCount == 1 || clickCount == 0) {
             document.addEventListener("click", closeModal);
             event.stopPropagation();
