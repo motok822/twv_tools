@@ -4,7 +4,7 @@ twv_toolsディレクトリにおいて、以下のコマンドを実行する
 
 これによってmysqlとgoのAPIサーバーのコンテナが立ちます。
 
-この後https://localhost/dist/index.htmlにアクセスすると部内ページにアクセスできます。
+この後https://localhost/dist/index.html にアクセスすると部内ページにアクセスできます。
 
 ログインの際は以下のユーザー名とパスワードを使ってください。
 >ユーザー名: TestUser  
