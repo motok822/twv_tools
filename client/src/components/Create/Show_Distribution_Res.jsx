@@ -60,19 +60,20 @@ function Show_Distribution_Res() {
             console.log("newEquipInfo", newEquipInfo)
             NewEquipRequest.push(newEquipInfo)
         })
-        console.log(await BMgr.EquipInfo.RegisterInfos(NewEquipRequest))
+        await BMgr.EquipInfo.RegisterInfos(NewEquipRequest)
         console.log("EquipInfo")
-        console.log(await BMgr.EquipInfo.GetOneYear())
+        await BMgr.EquipInfo.GetOneYear()
         navigate("/Table")
     }
     const AddPlan = async () => {
         let BMgr = new BasicAPIManager()
         let AMgr = new AdvancedAPIManager()
         console.log("ClimbingState", ClimbingState)
+        console.log("hello!!")
         let DefaultPlanInfo = { ID: ClimbingState.ClimbingId, Name: ClimbingState.ClimbingName, FYear: ClimbingState.ClimbingYear, PlanType: "CLUB", PlanNum: 1, ReserveStart: new Date(ClimbingState.T1), ReserveEnd: new Date(ClimbingState.T2), ClimeStart: new Date(ClimbingState.T1), ClimeEnd: new Date(ClimbingState.T2), LastUpdate: new Date('2023-08-30T15:00:00.000Z'), Members: [MemberNum] }
-        console.log(JSON.stringify(DefaultPlanInfo))
-        console.log(await BMgr.Plans.Update(DefaultPlanInfo))
-        console.log(await BMgr.Plans.GetOneYear())
+        JSON.stringify(DefaultPlanInfo)
+        await BMgr.Plans.Update(DefaultPlanInfo)
+        await BMgr.Plans.GetOneYear()
     }
     EquipList.map((value) => {
         MemberEquip[value.MemberID] = [...MemberEquip[value.MemberID], value.Name]
